@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="1">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:elevation="7dp"
+        android:id="@+id/selectbranchLayout"
+        android:orientation="vertical"
+        android:background="@color/colorAccent"
+        android:layout_weight="0.05">
+
+        <ImageView
+            android:id="@+id/close"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="end"
+            android:src="@drawable/v5_icon_popup_close_100px"></ImageView>
+
+        <TextView
+            android:id="@+id/selectBranchLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Informasi Penting"
+            android:paddingBottom="20dp"
+            android:textColor="@color/white"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:gravity="center"/>
+
+    </LinearLayout>
+    <android.support.v4.widget.NestedScrollView
+        android:layout_below="@+id/selectbranchLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/rl_card_news"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="30dp"
+            android:orientation="vertical">
+
+
+        </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layoutButton"
+                android:layout_below="@+id/rl_card_news"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:visibility="gone"
+                android:layout_weight="0.05"
+                android:padding="5dp"
+                android:weightSum="0.5">
+                <Button
+                    android:id="@+id/kembaliButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:text="@string/buttonBack"
+                    android:textColor="@color/white"
+                    android:background="@color/orange_light"/>
+                <Button
+                    android:id="@+id/fotoUlangButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:visibility="gone"
+                    android:text="Foto Ulang"
+                    android:textColor="@color/white"
+                    android:background="@color/orange_light"/>
+            </LinearLayout>
+
+
+        </RelativeLayout>
+    </android.support.v4.widget.NestedScrollView>
+
+
+</RelativeLayout>
