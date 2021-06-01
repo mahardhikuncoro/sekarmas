@@ -22,7 +22,6 @@
         android:id="@+id/viewPagerArrowIndicator"
         android:layout_below="@+id/layoutSlider"
         android:layout_height="80dp"
-        android:visibility="gone"
         android:layout_width="match_parent"
         android:elevation="4dp"
         android:layout_marginLeft="20dp"
@@ -40,45 +39,12 @@
         </com.sembozdemir.viewpagerarrowindicator.library.ViewPagerArrowIndicator>
 
     <LinearLayout
-        android:id="@+id/lnr_showmore"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="-30dp"
-        android:padding="20dp"
-        android:gravity="center"
-        android:layout_centerHorizontal="true"
-        android:layout_marginRight="30dp"
-        android:layout_marginLeft="30dp"
-        android:orientation="horizontal"
-        android:layout_below="@+id/viewPagerArrowIndicator"
-        android:background="@drawable/shape_round_shadow_white">
-
-        <ImageView
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginRight="20dp"
-            android:src="@mipmap/ic_news">
-
-        </ImageView>
-        <TextView
-            android:id="@+id/txt_showmore"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            android:text="Informasi Penting">
-
-        </TextView>
-
-    </LinearLayout>
-
-    <LinearLayout
         android:id="@+id/linearMain"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:layout_marginTop="10dp"
-        android:layout_below="@+id/lnr_showmore">
+        android:layout_below="@+id/viewPagerArrowIndicator">
         <SearchView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -148,7 +114,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginRight="15dp"
-        android:visibility="gone"
         android:layout_marginTop="-150dp"
         android:layout_marginEnd="15dp"
         android:layout_alignParentRight="true"

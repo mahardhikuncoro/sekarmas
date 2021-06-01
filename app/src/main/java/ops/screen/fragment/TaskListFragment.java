@@ -709,10 +709,10 @@ public class TaskListFragment extends Fragment implements TaskListInterface, Bas
         mWebView.loadUrl("https://www.youtube.com/watch?v=c-74OSumhNk");
     }
 
-    @OnClick(R.id.lnr_showmore)
+ /*   @OnClick(R.id.lnr_showmore)
     public void clickNews(){
         showInformation("","","");
-    }
+    }*/
 
     private void showInformation(String url, final String doc_code, final String doc_id){
         String urldetail = url.replace("_thumbnails", "");
