@@ -19,7 +19,9 @@ import android.widget.RadioGroup;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import base.data.Information;
 import base.network.FormJson;
 import base.network.LoginJson;
 import base.network.LoginNewJson;
@@ -182,26 +184,26 @@ public class LoginAcitivityApiData extends BaseDialogActivity  {
         }
     }
 
-    private void saveUserData(Response<LoginJson.loginAutenticationCallback> response, String useridlos){
+    private void saveUserData(Response<LoginNewJson> response, String useridlos){
 
-        userdata.save(response.body().getUserid(),
-                response.body().getFullname(),
-                response.body().getPhotoprofile(),
+        userdata.save("Test",
+                "Test",
+                "Test",
                 useridlos,
-                response.body().getGroupname(),
-                response.body().getBranchid(),
-                response.body().getBranchname(),
-                response.body().getAccesstoken(),
-                response.body().getTokentype(),
-                response.body().getExpiredin());
+                "Test",
+                "Test",
+                "Test",
+                response.body().getAccessToken(),
+                "Test",
+                "Test");
 //        setFormMaster(response.body().getAccesstoken());
 
-        sliderDataList = new ArrayList<Slider>();
+      /*  sliderDataList = new ArrayList<Slider>();
         sliderList = new ArrayList<String>();
         sliderdql.deleteAll();
         for(LoginJson.SliderObject slider : response.body().getSlider()){
             saveApiSlider(slider);
-        }
+        }*/
         Intent intentdashboard = new Intent(getApplicationContext(), MainActivityDashboard.class);
         startActivity(intentdashboard);
         finish();
@@ -354,7 +356,7 @@ public class LoginAcitivityApiData extends BaseDialogActivity  {
         }
     }
 
-    protected void  callNewLogin(String userId, final String password, final Activity activity){
+ /*   protected void  callNewLogin(String userId, final String password, final Activity activity){
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -454,7 +456,7 @@ public class LoginAcitivityApiData extends BaseDialogActivity  {
 
         }
     }
-
+*/
     protected void showUser(Activity activity, final Response<LoginJson.loginAutenticationCallback> response){
         final AlertDialog dialogBuilder = new AlertDialog.Builder(this).create();
         LayoutInflater inflater = this.getLayoutInflater();
@@ -497,7 +499,7 @@ public class LoginAcitivityApiData extends BaseDialogActivity  {
             @Override
             public void onClick(View v) {
                 if(!groupId.equalsIgnoreCase("")) {
-                    saveUserData(response, groupId);
+//                    saveUserData(response, groupId);
                 }
             }
         });
@@ -531,6 +533,7 @@ public class LoginAcitivityApiData extends BaseDialogActivity  {
                     if(response.isSuccessful()){
                         dialog.dismiss();
                         startActivity(new Intent(activity, MainActivityDashboard.class));
+                        saveUserData(response,response.body().getTokenType());
                     }else {
                         dialog.dismiss();
                     }
@@ -543,7 +546,5 @@ public class LoginAcitivityApiData extends BaseDialogActivity  {
             });
         }
     }
-
-
 
 }

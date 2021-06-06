@@ -53,12 +53,19 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+import base.data.Information;
+import base.data.Visi;
+import base.data.VisiMisi;
 import base.network.EndPoint;
 import base.network.LoginJson;
 import base.network.NetworkClient;
 import base.network.NetworkConnection;
 import base.network.Slider;
 import base.network.TaskListJson;
+import base.service.InformationEndpoint;
+import base.service.InformationUtils;
+import base.service.VisiMisiEndpoint;
+import base.service.VisiMisiUtils;
 import base.sqlite.DataMenuModel;
 import base.sqlite.FormData;
 import base.sqlite.NewsModel;
@@ -72,6 +79,7 @@ import butterknife.ButterKnife;
 
 import butterknife.OnClick;
 import id.sekarmas.mobile.application.R;
+import ops.screen.MainActivityDashboard;
 import ops.screen.TaskListAdapter;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -86,8 +94,8 @@ public class TaskListFragment extends Fragment implements TaskListInterface, Bas
     @BindView(R.id.taskListRecycleAll)
     RecyclerView taskListRecycleAll;
 
-    @BindView(R.id.swiperefresh)
-    SwipeRefreshLayout _swiperefresh;
+//    @BindView(R.id.swiperefresh)
+//    SwipeRefreshLayout _swiperefresh;
 
     @BindView(R.id.linearTitleSwipe)
     LinearLayout _linearTitleSwipe;
@@ -101,9 +109,6 @@ public class TaskListFragment extends Fragment implements TaskListInterface, Bas
 
     @BindView(R.id.shortingFloatingButton)
     FloatingActionButton _sortFloatingButton;
-
-    @BindView(R.id.etSearch)
-    SearchView _etSearch;
 
     @BindView(R.id.slider)
     SliderLayout sliderLayout;
@@ -119,9 +124,11 @@ public class TaskListFragment extends Fragment implements TaskListInterface, Bas
 
 
     private Config config;
-    private ArrayList<TaskListDetailModel> taskListList;
+    private ArrayList<Visi> taskListList;
     private TaskListAdapter taskListAdapter;
     private EndPoint endPoint;
+    private InformationEndpoint informationEndpoint;
+    private VisiMisiEndpoint visiMisiEndpoint;
     private NetworkConnection networkConnection;
     public Dialog dialogmaterial;
     private Userdata userdata;
@@ -147,9 +154,10 @@ public class TaskListFragment extends Fragment implements TaskListInterface, Bas
                              Bundle savedInstanceState) {
         View view = (ViewGroup) inflater.inflate(R.layout.tasklist_fragment, container, false);
         ButterKnife.bind(this, view);
-//        initialisation();
+        initialisation();
 //        prepare();
         onAttach(getActivity());
+        getInformation();
 //        getMenuAccess();
 //        showMenu();
 //        searchList();
@@ -227,17 +235,17 @@ public class TaskListFragment extends Fragment implements TaskListInterface, Bas
         }
     }
 
-    private void prepare(){
-        _swiperefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                isNew = null;
-                fillList(assignedType);
-            }
-        });
-    }
+//    private void prepare(){
+//        _swiperefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+//            @Override
+//            public void onRefresh() {
+//                isNew = null;
+////                fillList(assignedType);
+//            }
+//        });
+//    }
 
-    protected void fillList(final String typeList){
+  /*  protected void fillList(final String typeList){
 
         _swiperefresh.setRefreshing(true);
         if (!networkConnection.isNetworkConnected()) {
@@ -340,28 +348,28 @@ public class TaskListFragment extends Fragment implements TaskListInterface, Bas
                 }
             });
         }
-    }
+    }*/
 
     private void initialisation() {
 
-        formData = new FormData(getActivity().getApplicationContext());
-        if(getArguments()!= null) {
-            if(getArguments().getString("ASSIGNED_TYPE") != null && getArguments().getString("ASSIGNED_TYPE").equalsIgnoreCase("1")) {
-                assignedType = "assigned";
-                tc = getArguments().getString("ASSIGNED_TC");
-            }
-            else if(getArguments().getString("ASSIGNED_TYPE") != null && getArguments().getString("ASSIGNED_TYPE").equalsIgnoreCase("0")) {
-                assignedType = "unassigned";
-                tc = getArguments().getString("ASSIGNED_TC");
-            }
-            else{
-                assignedType = "allassigned";
-                tc = "5.0";
-            }
-        }else{
-            assignedType = "allassigned";
-            tc = "5.0";
-        }
+//        formData = new FormData(getActivity().getApplicationContext());
+//        if(getArguments()!= null) {
+//            if(getArguments().getString("ASSIGNED_TYPE") != null && getArguments().getString("ASSIGNED_TYPE").equalsIgnoreCase("1")) {
+//                assignedType = "assigned";
+//                tc = getArguments().getString("ASSIGNED_TC");
+//            }
+//            else if(getArguments().getString("ASSIGNED_TYPE") != null && getArguments().getString("ASSIGNED_TYPE").equalsIgnoreCase("0")) {
+//                assignedType = "unassigned";
+//                tc = getArguments().getString("ASSIGNED_TC");
+//            }
+//            else{
+//                assignedType = "allassigned";
+//                tc = "5.0";
+//            }
+//        }else{
+//            assignedType = "allassigned";
+//            tc = "5.0";
+//        }
         userdata = new Userdata(getActivity().getApplicationContext());
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -377,9 +385,12 @@ public class TaskListFragment extends Fragment implements TaskListInterface, Bas
                 .build();
         menulist = new ArrayList<>();
         endPoint = retrofit.create(EndPoint.class);
+
         networkConnection = new NetworkConnection(getActivity());
         slidersql = new SliderSQL(getActivity().getApplicationContext());
 
+        informationEndpoint = InformationUtils.getInformation();
+        visiMisiEndpoint = VisiMisiUtils.getVisiMisi();
         ((View)viewPager.getParent()).requestLayout();
     }
 
@@ -507,7 +518,7 @@ public class TaskListFragment extends Fragment implements TaskListInterface, Bas
                 .show();
     }
     private void showMenu() {
-        fillList(assignedType);
+//        fillList(assignedType);
         showNews(news);
     }
 
@@ -559,18 +570,18 @@ public class TaskListFragment extends Fragment implements TaskListInterface, Bas
 //                        e.printStackTrace();
 //                    }
 //                }
-                if(!isNew)
-                    Collections.sort(taskListList);
-                else
-                    Collections.sort(taskListList, Collections.reverseOrder());
+//                if(!isNew)
+//                    Collections.sort(taskListList);
+//                else
+//                    Collections.sort(taskListList, Collections.reverseOrder());
 
 //                sortDate();
-                taskListAdapter = new TaskListAdapter(getActivity().getApplicationContext(), taskListList, assignedType, new TaskListInterface() {
+               /* taskListAdapter = new TaskListAdapter(getActivity().getApplicationContext(), taskListList, assignedType, new TaskListInterface() {
                     @Override
                     public void onListSelected(TaskListDetailModel list) {
 
                     }
-                });
+                });*/
                 taskListAdapter.notifyDataSetChanged();
                 taskListRecycleAll.setAdapter(taskListAdapter);
                 dialogBuilder.cancel();
@@ -586,7 +597,7 @@ public class TaskListFragment extends Fragment implements TaskListInterface, Bas
     }
 
 
-    private void searchList(){
+ /*   private void searchList(){
         SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
 
         if(taskListAdapter == null){
@@ -618,7 +629,7 @@ public class TaskListFragment extends Fragment implements TaskListInterface, Bas
                 return false;
             }
         });
-    }
+    }*/
 
     @Override
     public void onListSelected(TaskListDetailModel list) {
@@ -693,6 +704,7 @@ public class TaskListFragment extends Fragment implements TaskListInterface, Bas
         FragmentManager fragManager = myContext.getSupportFragmentManager();
         viewPager.setAdapter(new MyPagerAdapter(fragManager, news, getActivity().getApplicationContext()));
         viewPagerArrowIndicator.bind(viewPager);
+        getVisiDanMisi();
     }
 
     private void popUpSlider(){
@@ -742,6 +754,89 @@ public class TaskListFragment extends Fragment implements TaskListInterface, Bas
                 dialogBuilder.cancel();
             }
         });
+    }
+
+    protected void getInformation(){
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            builder.setView(R.layout.progress_bar).setCancelable(false);
+        }
+        dialog = builder.create();
+        dialog.show();
+        if (!networkConnection.isNetworkConnected()) {
+            dialog.dismiss();
+            dialog(R.string.errorNoInternetConnection);
+        } else {
+            informationEndpoint.getInformationList("Bearer " + userdata.select().getAccesstoken()).enqueue(new Callback<List<Information>>() {
+                @Override
+                public void onResponse(Call<List<Information>> call, Response<List<Information>> response) {
+                    if(response.isSuccessful()){
+                        dialog.dismiss();
+                        news = new ArrayList<>();
+                        for(int i = 0; i<response.body().size() ;i++){
+                            NewsModel newsmod = new NewsModel();
+                            newsmod.setNewsId(response.body().get(i).getId());
+                            newsmod.setNewsTitle(response.body().get(i).getTitle());
+                            newsmod.setNewsDesc(response.body().get(i).getDescription());
+                            newsmod.setActive(response.body().get(i).getTitle());
+                            news.add(newsmod);
+                        }
+                        showNews(news);
+                    }else {
+                        dialog.dismiss();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<List<Information>> call, Throwable t) {
+
+                }
+            });
+        }
+    }
+
+    private void getVisiDanMisi(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            builder.setView(R.layout.progress_bar).setCancelable(false);
+        }
+        dialog = builder.create();
+        dialog.show();
+        if (!networkConnection.isNetworkConnected()) {
+            dialog.dismiss();
+            dialog(R.string.errorNoInternetConnection);
+        } else {
+            visiMisiEndpoint.getVisiMisi("Bearer " + userdata.select().getAccesstoken()).enqueue(new Callback<VisiMisi>() {
+                @Override
+                public void onResponse(Call<VisiMisi> call, Response<VisiMisi> response) {
+                    if(response.isSuccessful()){
+                        dialog.dismiss();
+                        taskListList = new ArrayList<Visi>();
+                        for(int i = 0; i<response.body().getData().size();i++) {
+                            VisiMisi visiMisi = new VisiMisi();
+                            visiMisi.setData(response.body().getData());
+                            for (int j=0;j<response.body().getData().get(i).getMisi().size();j++){
+                                Visi visi = new Visi();
+                                visi.setContent(visiMisi.getData().get(i).getVisi().get(j).getContent());
+                                taskListList.add(visi);
+                            }
+                        }
+                        taskListAdapter = new TaskListAdapter(getActivity().getApplicationContext(), taskListList);
+                        taskListAdapter.notifyDataSetChanged();
+                        taskListRecycleAll.setAdapter(taskListAdapter);
+                    }else {
+                        dialog.dismiss();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<VisiMisi> call, Throwable t) {
+
+                }
+            });
+
+        }
     }
 }
 

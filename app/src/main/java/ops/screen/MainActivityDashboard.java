@@ -140,9 +140,9 @@ public class MainActivityDashboard extends BaseDialogActivity implements Service
         bottomNavigationView.getMenu().add(Menu.NONE, R.id.navigation_home, Menu.NONE, "Beranda").setIcon(R.drawable.ic_home);
 //        bottomNavigationView.getMenu().add(Menu.NONE, R.id.navigation_history, Menu.NONE, "Riwayat").setIcon(R.drawable.ic_history);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
-            bottomNavigationView.getMenu().add(Menu.NONE, R.id.navigation_task, Menu.NONE, "JackServices").setIcon(R.drawable.ic_task_navigation);
+            bottomNavigationView.getMenu().add(Menu.NONE, R.id.navigation_task, Menu.NONE, "Laporan").setIcon(R.drawable.ic_task_navigation);
         else
-            bottomNavigationView.getMenu().add(Menu.NONE, R.id.navigation_task, Menu.NONE, "JackServices").setIcon(R.drawable.ic_task_navigation);
+            bottomNavigationView.getMenu().add(Menu.NONE, R.id.navigation_task, Menu.NONE, "Laporan").setIcon(R.drawable.ic_task_navigation);
         bottomNavigationView.getMenu().add(Menu.NONE, R.id.navigation_profile, Menu.NONE, "Profil").setIcon(R.drawable.ic_profile);
 
         bottomNavigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);

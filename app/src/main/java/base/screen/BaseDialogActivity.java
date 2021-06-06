@@ -53,6 +53,8 @@ import base.network.LoginJson;
 import base.network.NetworkClient;
 import base.network.NetworkConnection;
 import base.service.EndpointLogin;
+import base.service.InformationEndpoint;
+import base.service.InformationUtils;
 import base.service.LoginUtils;
 import base.sqlite.FormData;
 import base.sqlite.SQLiteConfig;
@@ -79,6 +81,7 @@ public class BaseDialogActivity extends AppCompatActivity {
     protected NetworkConnection networkConnection;
     protected EndPoint endPoint;
     protected EndpointLogin newEndPoint;
+    protected InformationEndpoint informationEndpoint;
     protected TelephonyManager telephonyManager;
     protected String UserImei = "";
     protected Userdata userdata;
@@ -122,6 +125,7 @@ public class BaseDialogActivity extends AppCompatActivity {
         telephonyManager = (TelephonyManager) getApplicationContext().getSystemService(Context.TELEPHONY_SERVICE);
 
         newEndPoint = LoginUtils.getLogin();
+
 
         TelephonyManager telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
     }

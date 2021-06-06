@@ -19,6 +19,8 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import java.util.ArrayList;
 import java.util.List;
 
+import base.data.Visi;
+import base.data.VisiMisi;
 import base.network.EndPoint;
 import base.network.NetworkClient;
 import base.network.NetworkConnection;
@@ -34,8 +36,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.ViewHolder> implements Filterable {
 
-    private List<TaskListDetailModel> list;
-    private static List<TaskListDetailModel> listFiltered;
+    private List<Visi> list;
+    private static List<Visi> listFiltered;
     private Context context;
     private int lastPosition = -1;
     private Config config;
@@ -45,12 +47,11 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.ViewHo
     private static TaskListInterface listener;
 
 
-    public TaskListAdapter(Context context, List<TaskListDetailModel> list, String typeList, TaskListInterface listener) {
+    public TaskListAdapter(Context context, List<Visi> list) {
 
         notifyDataSetChanged();
         this.list = list;
         this.context = context;
-        this.typelist = typeList;
         this.listFiltered = list;
         this.listener = listener;
 
@@ -75,8 +76,8 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(final TaskListAdapter.ViewHolder holder, @SuppressLint("RecyclerView") final int position) {
-            ((TaskListLine) holder).namaNasabah.setText("" + list.get(position).getNamaNasabah());
-            ((TaskListLine) holder).idNasabah.setText("" + list.get(position).getIdNasabah());
+            ((TaskListLine) holder).namaNasabah.setText("" + list.get(position).getContent());
+           /* ((TaskListLine) holder).idNasabah.setText("" + list.get(position).getIdNasabah());
             ((TaskListLine) holder).date.setVisibility(View.GONE);
             ((TaskListLine) holder).date.setText("" + list.get(position).getLast_track_date());
 
@@ -132,7 +133,7 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.ViewHo
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
             }
-        });
+        });*/
 
     }
 
@@ -144,7 +145,7 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.ViewHo
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    listener.onListSelected(listFiltered.get(getAdapterPosition()));
+//                    listener.onListSelected(listFiltered.get(getAdapterPosition()));
                 }
             });
         }
@@ -177,7 +178,7 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.ViewHo
             @Override
             protected FilterResults performFiltering(CharSequence constraint) {
                 String charString = constraint.toString();
-                if(charString.isEmpty()) {
+/*                if(charString.isEmpty()) {
                     listFiltered = list;
                 }else{
                     List<TaskListDetailModel> filteredList = new ArrayList<>();
@@ -187,7 +188,7 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.ViewHo
                         }
                     }
                     listFiltered = filteredList;
-                }
+                }*/
                 FilterResults filterResults = new FilterResults();
                 filterResults.values = listFiltered;
                 return filterResults;
@@ -197,8 +198,8 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.ViewHo
             protected void publishResults(CharSequence constraint, FilterResults results) {
 //                try {
                     Log.e("SIZE ","listFiltered : " + listFiltered.size());
-                    listFiltered = (ArrayList<TaskListDetailModel>) results.values;
-                    notifyDataSetChanged();
+//                    listFiltered = (ArrayList<TaskListDetailModel>) results.values;
+//                    notifyDataSetChanged();
 //                }catch (Exception e){}
 
             }

@@ -262,12 +262,12 @@ public class HomeFragment extends Fragment implements BaseSliderView.OnSliderCli
                                     taskListList.add(detailModel);
                                 }
                                 // set up the RecyclerView
-                                taskListAdapter = new TaskListAdapter(getActivity().getApplicationContext(), taskListList, "allassigned", new TaskListInterface() {
+                               /* taskListAdapter = new TaskListAdapter(getActivity().getApplicationContext(), taskListList, "allassigned", new TaskListInterface() {
                                     @Override
                                     public void onListSelected(TaskListDetailModel list) {
 
                                     }
-                                });
+                                });*/
                                 recyclerView.setAdapter(taskListAdapter);
                             }
                         }

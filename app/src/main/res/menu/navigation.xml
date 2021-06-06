@@ -16,7 +16,7 @@
     <item
         android:id="@+id/navigation_task"
         android:icon="@drawable/ic_task_navigation"
-        android:title="JackServices" />
+        android:title="Laporan" />
 
     <item
         android:id="@+id/navigation_profile"

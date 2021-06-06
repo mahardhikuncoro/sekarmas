@@ -1,37 +1,34 @@
 package ops.screen.fragment;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.Bitmap;
+import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import base.sqlite.NewsModel;
 import id.sekarmas.mobile.application.R;
-import ops.screen.CameraActivity;
-import ops.screen.offline.FormOfflineDocument;
 
-public class MyPagerAdapter extends FragmentPagerAdapter {
+public class MyPagerAdapter extends FragmentStatePagerAdapter {
 
     private List<Fragment> pages;
-    Context myContextl;
+    public Context myContext;
     public MyPagerAdapter(FragmentManager fm, ArrayList<NewsModel> list, Context myContext) {
         super(fm);
-        this.myContextl = myContext;
+        this.myContext = myContext;
         notifyDataSetChanged();
         initPages(list);
     }
@@ -70,7 +67,6 @@ public class MyPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        Log.e("WOISSS "," : " + position);
         return pages.get(position);
     }
 
@@ -90,6 +86,8 @@ class BookOnPageChangeListener extends ViewPager.SimpleOnPageChangeListener {
         currentPage = position;
         Log.e("TEST "," " + currentPage);
     }
+
+
 
     public int getCurrentPage() {
         return currentPage;
@@ -137,5 +135,7 @@ class BookOnPageChangeListener extends ViewPager.SimpleOnPageChangeListener {
 //            }
 //        });
 //    }
+
+
 
 }
