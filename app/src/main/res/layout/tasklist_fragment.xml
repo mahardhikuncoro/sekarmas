@@ -52,36 +52,51 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="10dp"
             android:gravity="center"
             android:background="@drawable/half_rounded"
             android:id="@+id/linearTitleSwipe"
             android:orientation="horizontal">
-        <ImageView
-            android:layout_width="15dp"
-            android:layout_height="20dp"
-            android:tint="@color/grey"
-            android:src="@drawable/ic_refresh"></ImageView>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:textSize="10dp"
-                android:textColor="@color/grey"
-                android:text="pull down to refresh"/>
+
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/linearLayoutRecycler"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:orientation="vertical"
             android:layout_below="@+id/linearTitleSwipe"
             android:background="@color/white">
 
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="10dp"
+                android:textStyle="bold"
+                android:text="VISI"/>
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/taskListRecycleAll"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/white"
+                    android:isScrollContainer="false"
+                    tools:listitem="@layout/tasklist_holder"
+                    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+                </android.support.v7.widget.RecyclerView>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="10dp"
+                android:textStyle="bold"
+                android:text="MISI"/>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/taskListRecycleMisi"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@color/white"
@@ -112,6 +127,7 @@
         android:layout_marginRight="15dp"
         android:layout_marginTop="-150dp"
         android:layout_marginEnd="15dp"
+        android:visibility="gone"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_below="@+id/linearMain"

@@ -54,6 +54,7 @@ import java.util.Date;
 import java.util.List;
 
 import base.data.Information;
+import base.data.Misi;
 import base.data.Visi;
 import base.data.VisiMisi;
 import base.network.EndPoint;
@@ -79,6 +80,7 @@ import butterknife.ButterKnife;
 
 import butterknife.OnClick;
 import id.sekarmas.mobile.application.R;
+import ops.TaskListMisiAdapter;
 import ops.screen.MainActivityDashboard;
 import ops.screen.TaskListAdapter;
 import retrofit2.Call;
@@ -93,6 +95,9 @@ public class TaskListFragment extends Fragment implements TaskListInterface, Bas
 
     @BindView(R.id.taskListRecycleAll)
     RecyclerView taskListRecycleAll;
+
+    @BindView(R.id.taskListRecycleMisi)
+    RecyclerView taskListRecycleMisi;
 
 //    @BindView(R.id.swiperefresh)
 //    SwipeRefreshLayout _swiperefresh;
@@ -125,7 +130,9 @@ public class TaskListFragment extends Fragment implements TaskListInterface, Bas
 
     private Config config;
     private ArrayList<Visi> taskListList;
+    private ArrayList<Misi> taskListListMisi;
     private TaskListAdapter taskListAdapter;
+    private TaskListMisiAdapter taskListAdapterMisi;
     private EndPoint endPoint;
     private InformationEndpoint informationEndpoint;
     private VisiMisiEndpoint visiMisiEndpoint;
@@ -376,6 +383,13 @@ public class TaskListFragment extends Fragment implements TaskListInterface, Bas
         taskListRecycleAll.setLayoutManager(linearLayoutManager);
         taskListRecycleAll.setHasFixedSize(true);
         taskListRecycleAll.smoothScrollToPosition(10);
+
+        LinearLayoutManager linearLayoutManagermisi = new LinearLayoutManager(getActivity());
+        linearLayoutManagermisi.setOrientation(LinearLayoutManager.VERTICAL);
+
+        taskListRecycleMisi.setLayoutManager(linearLayoutManagermisi);
+        taskListRecycleMisi.setHasFixedSize(true);
+        taskListRecycleMisi.smoothScrollToPosition(10);
 
         config = new Config(getActivity().getApplicationContext());
         Retrofit retrofit = new Retrofit.Builder()
@@ -813,18 +827,22 @@ public class TaskListFragment extends Fragment implements TaskListInterface, Bas
                     if(response.isSuccessful()){
                         dialog.dismiss();
                         taskListList = new ArrayList<Visi>();
+                        taskListListMisi = new ArrayList<Misi>();
                         for(int i = 0; i<response.body().getData().size();i++) {
                             VisiMisi visiMisi = new VisiMisi();
                             visiMisi.setData(response.body().getData());
-                            for (int j=0;j<response.body().getData().get(i).getMisi().size();j++){
+                            for (int j=0;j<response.body().getData().get(i).getVisi().size();j++){
                                 Visi visi = new Visi();
                                 visi.setContent(visiMisi.getData().get(i).getVisi().get(j).getContent());
                                 taskListList.add(visi);
                             }
+                            for (int j=0;j<response.body().getData().get(i).getMisi().size();j++){
+                                Misi misi = new Misi();
+                                misi.setContent(visiMisi.getData().get(i).getMisi().get(j).getContent());
+                                taskListListMisi.add(misi);
+                            }
                         }
-                        taskListAdapter = new TaskListAdapter(getActivity().getApplicationContext(), taskListList);
-                        taskListAdapter.notifyDataSetChanged();
-                        taskListRecycleAll.setAdapter(taskListAdapter);
+                        setAdapter();
                     }else {
                         dialog.dismiss();
                     }
@@ -837,6 +855,16 @@ public class TaskListFragment extends Fragment implements TaskListInterface, Bas
             });
 
         }
+    }
+
+    private void setAdapter() {
+        taskListAdapter = new TaskListAdapter(getActivity().getApplicationContext(), taskListList);
+        taskListAdapter.notifyDataSetChanged();
+        taskListRecycleAll.setAdapter(taskListAdapter);
+
+        taskListAdapterMisi = new TaskListMisiAdapter(getActivity().getApplicationContext(), taskListListMisi);
+        taskListAdapter.notifyDataSetChanged();
+        taskListRecycleMisi.setAdapter(taskListAdapter);
     }
 }
 
