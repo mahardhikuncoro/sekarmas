@@ -9,8 +9,8 @@ import android.database.sqlite.SQLiteDatabase;
 import java.util.ArrayList;
 import java.util.List;
 
-import base.sqlite.Config;
-import base.sqlite.SQLiteHelperBexi;
+import base.sqlite.model.Config;
+import base.sqlite.model.SQLiteHelperBexi;
 
 public class DokumenOfflineData {
 

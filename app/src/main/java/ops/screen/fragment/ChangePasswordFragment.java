@@ -20,14 +20,14 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.jakewharton.picasso.OkHttp3Downloader;
 import com.squareup.picasso.Picasso;
 
-import base.network.EndPoint;
-import base.network.NetworkClient;
-import base.network.NetworkConnection;
-import base.network.ParameterJson;
-import base.network.ResponseStatus;
-import base.sqlite.Userdata;
-import base.sqlite.SQLiteConfig;
-import base.sqlite.Config;
+import base.network.callback.EndPoint;
+import base.network.callback.NetworkClient;
+import base.network.callback.NetworkConnection;
+import base.network.callback.ParameterJson;
+import base.network.callback.ResponseStatus;
+import base.sqlite.model.Userdata;
+import base.sqlite.model.SQLiteConfig;
+import base.sqlite.model.Config;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -152,11 +152,11 @@ public class ChangePasswordFragment extends Fragment {
     private void getProfile(){
 
         datapribadi = new Userdata(getActivity());
-        dataNama =  datapribadi.select().getUserid();
-        dataNoHp = datapribadi.select().getUserid();
-        dataKTP = datapribadi.select().getUserid();
-        dataGender = datapribadi.select().getUserid();
-        dataEmail = datapribadi.select().getUserid();
+        dataNama =  datapribadi.select().getUsername();
+        dataNoHp = datapribadi.select().getUsername();
+        dataKTP = datapribadi.select().getUsername();
+        dataGender = datapribadi.select().getUsername();
+        dataEmail = datapribadi.select().getUsername();
         Log.e("FULLNAME "," " + dataNama);
     }
 
@@ -190,7 +190,7 @@ public class ChangePasswordFragment extends Fragment {
                 request.setVersion(config.getServerVersion());
                 request.setCurrent_password(etPass.getText().toString());
                 request.setNew_password(etPassNew.getText().toString());
-                request.setTelp(datapribadi.select().getUserid());
+                request.setTelp(datapribadi.select().getUsername());
                 Call<ParameterJson.changePassResponse> call = endPoint.changePassEndpoint(request);
                 call.enqueue(new Callback<ParameterJson.changePassResponse>() {
                     @Override

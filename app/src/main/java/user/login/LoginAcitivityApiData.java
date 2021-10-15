@@ -5,7 +5,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Build;
-import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,20 +18,18 @@ import android.widget.RadioGroup;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
-import java.util.List;
 
-import base.data.Information;
-import base.network.FormJson;
-import base.network.LoginJson;
-import base.network.LoginNewJson;
-import base.network.Slider;
-import base.network.Wewenang;
+import base.data.userlogin.UserLoginJson;
+import base.network.callback.FormJson;
+import base.network.callback.LoginJson;
+import base.data.loginmodel.LoginNewJson;
+import base.network.callback.Slider;
+import base.network.callback.Wewenang;
 import base.screen.BaseDialogActivity;
-import base.sqlite.SliderSQL;
-import id.sekarmas.mobile.application.BuildConfig;
+import base.sqlite.model.SliderSQL;
 import id.sekarmas.mobile.application.R;
 import ops.screen.MainActivityDashboard;
-import base.sqlite.TaskListDetailModel;
+import base.sqlite.model.TaskListDetailModel;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -50,6 +47,7 @@ public class LoginAcitivityApiData extends BaseDialogActivity  {
 
     protected RadioGroup rg;
     protected RadioButton[] rb;
+    AlertDialog.Builder builder;
 
     protected void  callLoginAuthentication(String userId, final String password, final Activity activity){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -184,17 +182,17 @@ public class LoginAcitivityApiData extends BaseDialogActivity  {
         }
     }
 
-    private void saveUserData(Response<LoginNewJson> response, String useridlos){
+    private void saveUserData(Response<LoginNewJson> response, Response<UserLoginJson> userModel){
 
-        userdata.save("Test",
-                "Test",
-                "Test",
-                useridlos,
-                "Test",
-                "Test",
-                "Test",
+        userdata.save(userModel.body().getUser().getUsername(),
+                userModel.body().getUser().getFullname(),
+                userModel.body().getUser().getAvatar(),
+                String.valueOf(userModel.body().getUser().getRole()),
+                userModel.body().getUser().getGender(),
+                userModel.body().getUser().getPhone(),
+                userModel.body().getUser().getId(),
                 response.body().getAccessToken(),
-                "Test",
+                userModel.body().getUser().getEmail(),
                 "Test");
 //        setFormMaster(response.body().getAccesstoken());
 
@@ -295,7 +293,7 @@ public class LoginAcitivityApiData extends BaseDialogActivity  {
 
             final FormJson.RequestForm requestForm = new FormJson().new RequestForm();
             requestForm.setType("form");
-            requestForm.setUserid(userdata.select().getUserid());
+            requestForm.setUserid(userdata.select().getUsername());
 //            String token = userdata.select().getAccesstoken();
 
             Call<FormJson.CallbackForm> callForm = endPoint.getDataMaster(token,requestForm);
@@ -517,7 +515,7 @@ public class LoginAcitivityApiData extends BaseDialogActivity  {
     //SEKARMAS
 
     protected void  callLoginUser(String userId, final String password, final Activity activity) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder = new AlertDialog.Builder(this);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             builder.setView(R.layout.progress_bar).setCancelable(false);
         }
@@ -531,10 +529,10 @@ public class LoginAcitivityApiData extends BaseDialogActivity  {
                 @Override
                 public void onResponse(Call<LoginNewJson> call, Response<LoginNewJson> response) {
                     if(response.isSuccessful()){
-                        dialog.dismiss();
-                        startActivity(new Intent(activity, MainActivityDashboard.class));
-                        saveUserData(response,response.body().getTokenType());
+//                        dialog.dismiss();
+                        getUserLogin(response,activity);
                     }else {
+                        dialog(R.string.errorPassword);
                         dialog.dismiss();
                     }
                 }
@@ -545,6 +543,28 @@ public class LoginAcitivityApiData extends BaseDialogActivity  {
                 }
             });
         }
+    }
+
+    private void getUserLogin(final Response<LoginNewJson> responseLogin, final Activity activity){
+
+        newEndPoint.getUserLogin("Bearer " + responseLogin.body().getAccessToken()).enqueue(new Callback<UserLoginJson>() {
+            @Override
+            public void onResponse(Call<UserLoginJson> call, Response<UserLoginJson> response) {
+                if (response.isSuccessful()) {
+                    dialog.dismiss();
+                    Log.e("AVATAR" ," + " + response.body().getUser().getAvatar());
+                    saveUserData(responseLogin,response);
+                    startActivity(new Intent(activity, MainActivityDashboard.class));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UserLoginJson> call, Throwable t) {
+
+            }
+        });
+
+
     }
 
 }

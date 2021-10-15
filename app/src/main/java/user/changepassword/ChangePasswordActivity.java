@@ -5,15 +5,12 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.afollestad.materialdialogs.MaterialDialog;
-
-import base.network.ChangePassJson;
+import base.network.callback.ChangePassJson;
 import base.screen.BaseDialogActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -61,7 +58,7 @@ public class ChangePasswordActivity extends BaseDialogActivity {
             } else {
 
                 final ChangePassJson.ChangePassRequest request = new ChangePassJson().new ChangePassRequest();
-                request.setUserid(userdata.select().getUserid());
+                request.setUserid(userdata.select().getUsername());
                 request.setPassword(encryptPassword(etOldpass.getText().toString()));
                 request.setNewpwd(encryptPassword(etNewpass.getText().toString()));
                 request.setNewpwd2(encryptPassword(etNewpassconf.getText().toString()));
@@ -111,7 +108,7 @@ public class ChangePasswordActivity extends BaseDialogActivity {
 
     private void setToolbar() {
 
-        String id = userdata.select().getGroupname().equalsIgnoreCase("")? "Group Name" : userdata.select().getGroupname();
+        String id = userdata.select().getGender().equalsIgnoreCase("")? "Group Name" : userdata.select().getGender();
         String fullname = userdata.select().getFullname();
         txtIdUser.setText(id);
         txtFullname.setText(fullname);

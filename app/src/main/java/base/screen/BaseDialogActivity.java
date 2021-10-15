@@ -28,6 +28,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -48,18 +49,17 @@ import java.util.List;
 import java.util.Locale;
 
 import base.data.DokumenOfflineData;
-import base.network.EndPoint;
-import base.network.LoginJson;
-import base.network.NetworkClient;
-import base.network.NetworkConnection;
-import base.service.EndpointLogin;
-import base.service.InformationEndpoint;
-import base.service.InformationUtils;
-import base.service.LoginUtils;
-import base.sqlite.FormData;
-import base.sqlite.SQLiteConfig;
-import base.sqlite.Config;
-import base.sqlite.Userdata;
+import base.data.loginmodel.LogoutJson;
+import base.network.callback.EndPoint;
+import base.network.callback.LoginJson;
+import base.network.callback.NetworkClient;
+import base.network.callback.NetworkConnection;
+import base.service.login.EndpointLogin;
+import base.service.information.InformationEndpoint;
+import base.sqlite.model.FormData;
+import base.sqlite.model.SQLiteConfig;
+import base.sqlite.model.Config;
+import base.sqlite.model.Userdata;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -71,7 +71,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
 import user.changepassword.ChangePasswordActivity;
 import user.login.LoginActivity;
-import id.sekarmas.mobile.application.BuildConfig;
 import id.sekarmas.mobile.application.R;
 
 
@@ -95,6 +94,8 @@ public class BaseDialogActivity extends AppCompatActivity {
     protected Double longitude = 0.00;
     protected Double latitude = 0.00;
     protected String address ="Unknown street";
+    protected String cityName ="Unknown city";
+
 
     protected void initiateApiData(){
         config = new Config(this);
@@ -124,7 +125,8 @@ public class BaseDialogActivity extends AppCompatActivity {
 
         telephonyManager = (TelephonyManager) getApplicationContext().getSystemService(Context.TELEPHONY_SERVICE);
 
-        newEndPoint = LoginUtils.getLogin();
+//        newEndPoint = LoginUtils.getLogin();
+        newEndPoint = retrofit.create(EndpointLogin.class);
 
 
         TelephonyManager telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
@@ -176,6 +178,11 @@ public class BaseDialogActivity extends AppCompatActivity {
         dialog.show();
     }
 
+    protected void hideKeyboard() {
+        InputMethodManager inputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
+                InputMethodManager.HIDE_NOT_ALWAYS);
+    }
     protected void dialogPlaystore(int rString) {
         final SQLiteConfig config = new SQLiteConfig(this);
         new MaterialDialog.Builder(this)
@@ -389,6 +396,7 @@ public class BaseDialogActivity extends AppCompatActivity {
             setLatitude(latitude);
             setLongitude(longitude);
             setAddress(getCompleteAddressString(latitude,longitude));
+            setCityName(getCityNameString(latitude,longitude));
         }
     };
 
@@ -409,9 +417,10 @@ public class BaseDialogActivity extends AppCompatActivity {
                                     setLongitude(location.getLongitude());
                                     Log.e("","LONGITUDE " + getLongitude());
                                     Log.e("","LATITUDE " + getLatitude());
-                                    if(networkConnection.isNetworkConnected())
-                                        setAddress(getCompleteAddressString(location.getLatitude(),location.getLongitude()));
-                                    else
+                                    if(networkConnection.isNetworkConnected()) {
+                                        setAddress(getCompleteAddressString(location.getLatitude(), location.getLongitude()));
+                                        setCityName(getCityNameString(location.getLatitude(),location.getLongitude()));
+                                    } else
                                         dialog(R.string.errorNoInternetConnection);
                                 }
                             }
@@ -427,18 +436,23 @@ public class BaseDialogActivity extends AppCompatActivity {
 
     protected String getCompleteAddressString(double LATITUDE, double LONGITUDE) {
         String strAdd = "";
+        String cityName = "";
         Geocoder geocoder = new Geocoder(this, Locale.getDefault());
         try {
             List<Address> addresses = geocoder.getFromLocation(LATITUDE, LONGITUDE, 1);
             if (addresses != null) {
                 Address returnedAddress = addresses.get(0);
                 StringBuilder strReturnedAddress = new StringBuilder("");
+                StringBuilder strReturnedCity = new StringBuilder("");
 
                 for (int i = 0; i <= returnedAddress.getMaxAddressLineIndex(); i++) {
                     strReturnedAddress.append(returnedAddress.getAddressLine(i)).append("\n");
+                    strReturnedCity.append(returnedAddress.getLocality()).append("\n");
                 }
                 strAdd = strReturnedAddress.toString();
+                cityName = strReturnedCity.toString();
                 Log.e("Address :", strReturnedAddress.toString());
+                Log.e("CITY :", strReturnedCity.toString());
             } else {
                 strAdd = "Unknown address";
                 Log.e("Address : ", "No Address returned!");
@@ -449,6 +463,26 @@ public class BaseDialogActivity extends AppCompatActivity {
             Log.e("HAA ", "Canont get Address!" + e);
         }
         return strAdd;
+    }
+
+    protected String getCityNameString(double LATITUDE, double LONGITUDE) {
+        String cityName = "";
+        Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+        try {
+            List<Address> addresses = geocoder.getFromLocation(LATITUDE, LONGITUDE, 1);
+            cityName = addresses.get(0).getLocality();
+            String stateName = addresses.get(0).getAddressLine(1);
+            String countryName = addresses.get(0).getAddressLine(2);
+
+            Log.e("CITY ", "Canont get Address!" + cityName);
+            Log.e("STATE ", "Canont get Address!" + stateName);
+            Log.e("COUNTRY ", "Canont get Address!" + countryName);
+        } catch (Exception e) {
+            e.printStackTrace();
+            cityName = "Unknown City";
+            Log.e("HAA ", "Canont get Address!" + e);
+        }
+        return cityName;
     }
 
 
@@ -476,6 +510,14 @@ public class BaseDialogActivity extends AppCompatActivity {
         this.address = address;
     }
 
+    public String getCityName() {
+        return cityName;
+    }
+
+    public void setCityName(String cityName) {
+        this.cityName = cityName;
+    }
+
     protected void  callLogout(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -487,44 +529,18 @@ public class BaseDialogActivity extends AppCompatActivity {
             dialog.dismiss();
             dialog(R.string.errorNoInternetConnection);
         } else {
-            final LoginJson.LoginRequest request = new LoginJson().new LoginRequest();
-
-            request.setLoginType("logoutuser");
-            request.setUserid(userdata.select().getUserid());
-            request.setLon(String.valueOf(getLongitude()));
-            request.setLat(String.valueOf(getLatitude()));
-            request.setAddr(String.valueOf(getAddress()));
-
-            Call<LoginJson.loginAutenticationCallback> call = endPoint.getAutentication(request);
-            call.enqueue(new Callback<LoginJson.loginAutenticationCallback>() {
+            newEndPoint.logoutUser("Bearer " + userdata.select().getAccesstoken()).enqueue(new Callback<LogoutJson>() {
                 @Override
-                public void onResponse(Call<LoginJson.loginAutenticationCallback> call, Response<LoginJson.loginAutenticationCallback> response) {
-                    try {
-                        if(response.isSuccessful()){
-                            if(response.body().getStatus().equalsIgnoreCase("1")) {
-                                if(BuildConfig.FLAVOR.equalsIgnoreCase("bpdbali")) {
-                                    unregistrasiFirebase();
-                                }else{
-                                    removeUserData(response.body().getMessage());
-                                }
-                            }else{
-                                dialog.dismiss();
-                                dialogMessage(response.body().getMessage());
-                            }
-                        }else{
-                            dialog.dismiss();
-                            dialog(R.string.errorBackend);
-                        }
-                    }catch (Exception e){
+                public void onResponse(Call<LogoutJson> call, Response<LogoutJson> response) {
+                    if (response.isSuccessful()) {
                         dialog.dismiss();
-                        dialog(R.string.errorBackend);
+                        removeUserData(response.body().getMessage());
                     }
                 }
 
                 @Override
-                public void onFailure(Call<LoginJson.loginAutenticationCallback> call, Throwable t) {
-                    dialog.dismiss();
-                    dialog(R.string.errorBackend);
+                public void onFailure(Call<LogoutJson> call, Throwable t) {
+
                 }
             });
         }
@@ -569,7 +585,7 @@ public class BaseDialogActivity extends AppCompatActivity {
     private void unregistrasiFirebase(){
         final LoginJson.LoginRequest request = new LoginJson().new LoginRequest();
         request.setLoginType("unregisterDevice");
-        request.setUserid(userdata.select().getUserid());
+        request.setUserid(userdata.select().getUsername());
         request.setDeviceId(getdeviceId());
         Call<LoginJson.loginAutenticationCallback> call = endPoint.getAutentication(request);
         call.enqueue(new Callback<LoginJson.loginAutenticationCallback>() {

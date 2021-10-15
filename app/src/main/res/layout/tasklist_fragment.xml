@@ -1,11 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="10dp">
+<android.support.v4.widget.NestedScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:layout_marginBottom="50dp"
-    app:layout_behavior="@string/hide_bottom_view_on_scroll_behavior"
-    xmlns:tools="http://schemas.android.com/tools">
+    app:layout_behavior="@string/hide_bottom_view_on_scroll_behavior">
 
 <RelativeLayout
     android:id="@+id/bckground1"
@@ -22,7 +30,6 @@
             layout="@layout/slider"/>
     </LinearLayout>
 
-
     <com.sembozdemir.viewpagerarrowindicator.library.ViewPagerArrowIndicator
         android:id="@+id/viewPagerArrowIndicator"
         android:layout_below="@+id/layoutSlider"
@@ -38,6 +45,7 @@
             android:id="@+id/viewPagerNews"
             android:layout_width="match_parent"
             android:padding="5dp"
+            android:onClick="clickPager"
             android:layout_height="match_parent" />
 
         </com.sembozdemir.viewpagerarrowindicator.library.ViewPagerArrowIndicator>
@@ -83,7 +91,6 @@
                     android:layout_height="match_parent"
                     android:background="@color/white"
                     android:isScrollContainer="false"
-                    tools:listitem="@layout/tasklist_holder"
                     app:layout_behavior="@string/appbar_scrolling_view_behavior">
                 </android.support.v7.widget.RecyclerView>
 
@@ -95,16 +102,13 @@
                 android:textStyle="bold"
                 android:text="MISI"/>
 
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/taskListRecycleMisi"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@color/white"
-                    android:isScrollContainer="false"
-                    tools:listitem="@layout/tasklist_holder"
-                    app:layout_behavior="@string/appbar_scrolling_view_behavior">
-                </android.support.v7.widget.RecyclerView>
-
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/taskListRecycleMisi"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/white"
+                android:isScrollContainer="false"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"></android.support.v7.widget.RecyclerView>
 
 
         </LinearLayout>
@@ -119,23 +123,22 @@
 
     </RelativeLayout>
 
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/shortingFloatingButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="15dp"
-        android:layout_marginTop="-150dp"
-        android:layout_marginEnd="15dp"
-        android:visibility="gone"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_below="@+id/linearMain"
-        android:src="@drawable/ic_sorting"
-        android:tint="@color/white"
-        app:fabSize="normal"
-        app:borderWidth="0dp"/>
-
 </RelativeLayout>
 
-    </android.support.v4.widget.NestedScrollView>
+</android.support.v4.widget.NestedScrollView>
+    </RelativeLayout>
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fb_call"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_call"
+        android:tint="@color/white"
+        app:fabSize="normal"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_gravity="end|bottom"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="100dp"
+        app:borderWidth="0dp"/>
+</android.support.design.widget.CoordinatorLayout>

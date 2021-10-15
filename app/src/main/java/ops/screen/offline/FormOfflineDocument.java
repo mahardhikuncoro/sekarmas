@@ -23,12 +23,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -37,14 +34,13 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import base.data.DokumenOfflineModel;
 import base.endpoint.UploadImageJson;
 import base.screen.BaseDialogActivity;
-import base.sqlite.DocumenTypeModel;
+import base.sqlite.model.DocumenTypeModel;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -53,8 +49,6 @@ import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import ops.screen.CameraActivity;
-import ops.screen.MainActivityDashboard;
-import ops.screen.fragment.FullEntryList;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -343,7 +337,7 @@ public class FormOfflineDocument extends BaseDialogActivity {
 
                 MultipartBody.Part body = MultipartBody.Part.createFormData("file", image.getName(), reqFile);
                 RequestBody regno = RequestBody.create(MediaType.parse("text/plain"), getIntent().getStringExtra("REGNO") == null ? "M111202002858537" : getIntent().getStringExtra("REGNO"));
-                RequestBody userid = RequestBody.create(MediaType.parse("text/plain"), userdata.select().getUserid());
+                RequestBody userid = RequestBody.create(MediaType.parse("text/plain"), userdata.select().getUsername());
                 RequestBody tc = RequestBody.create(MediaType.parse("text/plain"), getIntent().getStringExtra("TC"));
                 RequestBody uploadtype = RequestBody.create(MediaType.parse("text/plain"), "surveyDocument");
                 RequestBody docid = RequestBody.create(MediaType.parse("text/plain"), getDokumen(idDokumen).getDocid());
@@ -364,7 +358,7 @@ public class FormOfflineDocument extends BaseDialogActivity {
                 map.put("addr", address);
                 Log.e("Ahh 1", "HALO LINK" + image.getName());
                 Log.e("Ahh 2", "HALO LINK" + getIntent().getStringExtra("REGNO"));
-                Log.e("Ahh 3", "HALO LINK" + userdata.select().getUserid());
+                Log.e("Ahh 3", "HALO LINK" + userdata.select().getUsername());
                 Log.e("Ahh 4", "HALO LINK" + getIntent().getStringExtra("TC"));
                 Log.e("Ahh 5", "HALO LINK" + getIntent().getStringExtra("UPLOAD_TYPE"));
                 Log.e("Ahh 6", "HALO LINK" + doccode);

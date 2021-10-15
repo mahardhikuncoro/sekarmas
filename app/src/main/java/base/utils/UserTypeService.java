@@ -17,11 +17,11 @@ import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 import com.google.firebase.messaging.FirebaseMessaging;
 
-import base.network.EndPoint;
-import base.network.LoginJson;
-import base.network.NetworkClient;
-import base.sqlite.Config;
-import base.sqlite.Userdata;
+import base.network.callback.EndPoint;
+import base.network.callback.LoginJson;
+import base.network.callback.NetworkClient;
+import base.sqlite.model.Config;
+import base.sqlite.model.Userdata;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -104,7 +104,7 @@ public class UserTypeService extends IntentService {
         final LoginJson.LoginRequest request = new LoginJson().new LoginRequest();
 
         request.setLoginType("registerDevice");
-        request.setUserid(userdata.select().getUserid());
+        request.setUserid(userdata.select().getUsername());
         request.setDeviceId(token);
         Call<LoginJson.loginAutenticationCallback> call = endPoint.getAutentication(request);
         call.enqueue(new Callback<LoginJson.loginAutenticationCallback>() {

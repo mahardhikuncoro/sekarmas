@@ -1,16 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="10dp">
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:paddingRight="10dp"
-        android:paddingLeft="10dp"
         android:orientation="vertical">
 
     <!--FRAME BUTTON-->
@@ -21,7 +24,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/coorLayout2"
-        android:background="@drawable/half_rounded_grey"
+        android:background="@drawable/half_rounded"
         android:layout_marginTop="10dp"
         android:paddingBottom="20dp"
         android:id="@+id/successLayout">
@@ -184,14 +187,14 @@
             <ImageView
                 android:layout_width="15dp"
                 android:layout_height="20dp"
-                android:tint="@color/grey"
+                android:tint="@color/black"
                 android:src="@drawable/ic_refresh"></ImageView>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
                 android:textSize="10dp"
-                android:textColor="@color/grey"
+                android:textColor="@color/black"
                 android:text="pull down to refresh"/>
         </LinearLayout>
 
@@ -221,13 +224,13 @@
     </LinearLayout>
 
     <!--FRAME UNTUK DASHBOARD LIST-->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/white"
-            android:layout_marginBottom="50dp"
-            android:id="@+id/linearRecycle"
-            android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:layout_marginBottom="50dp"
+        android:id="@+id/linearRecycle"
+        android:orientation="vertical">
             <FrameLayout
                 android:id="@+id/frameLayout"
                 android:layout_width="match_parent"
@@ -245,12 +248,11 @@
                     android:layout_height="match_parent"
                     android:layout_marginBottom="100dp"
                     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-                    android:background="@color/white"></android.support.v7.widget.RecyclerView>
+                    android:background="@color/white"/>
                 </android.support.v4.widget.SwipeRefreshLayout>
-    </FrameLayout>
-        </LinearLayout>
-
-    <LinearLayout
+            </FrameLayout>
+    </LinearLayout>
+        <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -258,4 +260,22 @@
     </LinearLayout>
     </LinearLayout>
 
-</LinearLayout>
+
+    </RelativeLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/create_post_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_newdoc"
+        android:tint="@color/white"
+        app:fabSize="normal"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_gravity="end|bottom"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="100dp"
+        app:borderWidth="0dp"/>
+
+</android.support.design.widget.CoordinatorLayout>

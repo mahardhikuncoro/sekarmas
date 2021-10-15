@@ -1,18 +1,11 @@
 package user.login;
 
-import android.Manifest;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.media.Image;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.TextInputLayout;
-import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -26,17 +19,11 @@ import android.widget.Toast;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
-import java.net.URL;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Formatter;
 
-import base.sqlite.SliderSQL;
+import base.sqlite.model.SliderSQL;
 import base.utils.Security;
 import butterknife.BindString;
 import butterknife.BindView;
@@ -220,23 +207,23 @@ public class LoginActivity extends LoginAcitivityApiData {
 
     public void loadImage(String photoprofile,String name) {
         String img_url = photoprofile;
-        if (!img_url.equalsIgnoreCase("")) {
-            Picasso.with(getApplicationContext()).load(img_url).placeholder(R.drawable.ic_person_white_24dp)// Place holder image from drawable folder
-                    .error(R.drawable.ic_person_white_24dp)
-                    .resize(200, 200)
-                    .centerCrop()
-//                    .rotate(90)
-                    .into(imagePropic);
-            txtviewusername.setText(name.toUpperCase());
-        }else{
-            Picasso.with(getApplicationContext())
-                    .load(R.mipmap.ic_profile_login).placeholder(R.mipmap.ic_profile_login)// Place holder image from drawable folder
-                    .error(R.mipmap.ic_profile_login)
-                    .resize(200, 200)
-                    .centerCrop()
-//                    .rotate(90)
-                    .into(imagePropic);
-        }
+//        if (!img_url.equalsIgnoreCase("")) {
+//            Picasso.with(getApplicationContext()).load(img_url).placeholder(R.drawable.ic_person_white_24dp)// Place holder image from drawable folder
+//                    .error(R.drawable.ic_person_white_24dp)
+//                    .resize(200, 200)
+//                    .centerCrop()
+////                    .rotate(90)
+//                    .into(imagePropic);
+//            txtviewusername.setText(name.toUpperCase());
+//        }else{
+//            Picasso.with(getApplicationContext())
+//                    .load(R.mipmap.ic_profile_login).placeholder(R.mipmap.ic_profile_login)// Place holder image from drawable folder
+//                    .error(R.mipmap.ic_profile_login)
+//                    .resize(200, 200)
+//                    .centerCrop()
+////                    .rotate(90)
+//                    .into(imagePropic);
+//        }
     }
 
     @OnClick(R.id.imageOffline)public void goOffline(){

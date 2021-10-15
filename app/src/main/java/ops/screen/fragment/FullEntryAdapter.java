@@ -13,9 +13,9 @@ import android.view.animation.AnimationUtils;
 import com.afollestad.materialdialogs.MaterialDialog;
 
 import java.util.List;
-import base.network.NetworkConnection;
-import base.sqlite.Config;
-import base.sqlite.TaskListDetailModel;
+import base.network.callback.NetworkConnection;
+import base.sqlite.model.Config;
+import base.sqlite.model.TaskListDetailModel;
 import id.sekarmas.mobile.application.R;
 
 

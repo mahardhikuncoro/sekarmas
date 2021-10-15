@@ -1,12 +1,10 @@
 package ops.screen.fragment;
 
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.Fragment;
-import android.app.SearchManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -19,7 +17,6 @@ import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -32,9 +29,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
-import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -46,42 +40,36 @@ import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.daimajia.slider.library.Tricks.ViewPagerEx;
 import com.sembozdemir.viewpagerarrowindicator.library.ViewPagerArrowIndicator;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 
-import base.data.Information;
-import base.data.Misi;
-import base.data.Visi;
-import base.data.VisiMisi;
-import base.network.EndPoint;
-import base.network.LoginJson;
-import base.network.NetworkClient;
-import base.network.NetworkConnection;
-import base.network.Slider;
-import base.network.TaskListJson;
-import base.service.InformationEndpoint;
-import base.service.InformationUtils;
-import base.service.VisiMisiEndpoint;
-import base.service.VisiMisiUtils;
-import base.sqlite.DataMenuModel;
-import base.sqlite.FormData;
-import base.sqlite.NewsModel;
-import base.sqlite.Config;
-import base.sqlite.SliderSQL;
-import base.sqlite.TaskListDetailModel;
-import base.sqlite.Userdata;
+import base.data.informationmodel.Information;
+import base.data.visimisimodel.Misi;
+import base.data.visimisimodel.Visi;
+import base.data.visimisimodel.VisiMisi;
+import base.network.callback.NetworkClient;
+import base.network.callback.NetworkConnection;
+import base.network.callback.Slider;
+import base.service.information.InformationEndpoint;
+import base.service.kontak.Kontak;
+import base.service.kontak.KontakEndpoint;
+import base.service.visimisi.VisiMisiEndpoint;
+import base.sqlite.model.DataMenuModel;
+import base.sqlite.model.FormData;
+import base.sqlite.model.NewsModel;
+import base.sqlite.model.Config;
+import base.sqlite.model.SliderSQL;
+import base.sqlite.model.TaskListDetailModel;
+import base.sqlite.model.Userdata;
+//import base.widget.TextSliderViewCustom;
 import base.widget.TextSliderViewCustom;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import butterknife.OnClick;
 import id.sekarmas.mobile.application.R;
-import ops.TaskListMisiAdapter;
-import ops.screen.MainActivityDashboard;
+import ops.screen.adapter.KontakAdapter;
+import ops.screen.adapter.TaskListMisiAdapter;
 import ops.screen.TaskListAdapter;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -112,8 +100,8 @@ public class TaskListFragment extends Fragment implements TaskListInterface, Bas
 //    PagerIndicator pagerIndicator = (PagerIndicator) rootView.findViewById(R.id.banner_slider_indicator);
 //    DefaultSliderView defaultSliderView = new DefaultSliderView(getContext());
 
-    @BindView(R.id.shortingFloatingButton)
-    FloatingActionButton _sortFloatingButton;
+    @BindView(R.id.fb_call)
+    FloatingActionButton fbKontak;
 
     @BindView(R.id.slider)
     SliderLayout sliderLayout;
@@ -133,7 +121,7 @@ public class TaskListFragment extends Fragment implements TaskListInterface, Bas
     private ArrayList<Misi> taskListListMisi;
     private TaskListAdapter taskListAdapter;
     private TaskListMisiAdapter taskListAdapterMisi;
-    private EndPoint endPoint;
+    private KontakEndpoint kontakEndpoint;
     private InformationEndpoint informationEndpoint;
     private VisiMisiEndpoint visiMisiEndpoint;
     private NetworkConnection networkConnection;
@@ -148,6 +136,7 @@ public class TaskListFragment extends Fragment implements TaskListInterface, Bas
     private FormData formData;
     private SliderSQL slidersql;
     private List<LinearLayout> linearLayouts = new ArrayList<>();
+    private Integer newsPosition=0;
 
     private FragmentActivity myContext;
 
@@ -162,18 +151,16 @@ public class TaskListFragment extends Fragment implements TaskListInterface, Bas
         View view = (ViewGroup) inflater.inflate(R.layout.tasklist_fragment, container, false);
         ButterKnife.bind(this, view);
         initialisation();
-//        prepare();
         onAttach(getActivity());
         getInformation();
 //        getMenuAccess();
 //        showMenu();
 //        searchList();
         loadSlider();
-
+        fbKontak.setAlpha(0.5f);;
         viewPager.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.e(" ONCLICK ","NEWSSS ");
                 final View addView = getActivity().getLayoutInflater().inflate(R.layout.about_bexi, null);
                 new AlertDialog.Builder(getActivity().getApplicationContext()).setTitle(R.string.app_name).setView(addView)
                         .setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -199,8 +186,8 @@ public class TaskListFragment extends Fragment implements TaskListInterface, Bas
 
     private void loadSlider() {
 
-//        Integer slidesize = slidersql.count();
-        Integer slidesize = 0;
+        Integer slidesize = slidersql.count();
+//        Integer slidesize = 0;
         if (slidesize > 0) {
             sliderLayout.setBackgroundColor(getResources().getColor(R.color.white));
 
@@ -228,7 +215,6 @@ public class TaskListFragment extends Fragment implements TaskListInterface, Bas
 
             }
 
-
             sliderLayout.setPresetTransformer(SliderLayout.Transformer.DepthPage);
             sliderLayout.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom);
             sliderLayout.setCustomAnimation(new DescriptionAnimation());
@@ -236,147 +222,11 @@ public class TaskListFragment extends Fragment implements TaskListInterface, Bas
             sliderLayout.setCustomIndicator(pagerIndicator);
             sliderLayout.addOnPageChangeListener(TaskListFragment.this);
 
-
-
-
         }
     }
 
-//    private void prepare(){
-//        _swiperefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-//            @Override
-//            public void onRefresh() {
-//                isNew = null;
-////                fillList(assignedType);
-//            }
-//        });
-//    }
-
-  /*  protected void fillList(final String typeList){
-
-        _swiperefresh.setRefreshing(true);
-        if (!networkConnection.isNetworkConnected()) {
-//            dialogmaterial.dismiss();
-            _swiperefresh.setRefreshing(false);
-            dialog(R.string.errorNoInternetConnection);
-
-        } else {
-            final TaskListJson.TasklistRequest request = new TaskListJson().new TasklistRequest();
-            request.setUserid(userdata.select().getUserid());
-            request.setType(typeList);
-            request.setTc(tc);
-            String token = userdata.select().getAccesstoken();
-            Call<TaskListJson.TasklistCallback> call = endPoint.getInbox(token, request);
-            call.enqueue(new Callback<TaskListJson.TasklistCallback>() {
-                @SuppressLint("RestrictedApi")
-                @Override
-                public void onResponse(Call<TaskListJson.TasklistCallback> call, Response<TaskListJson.TasklistCallback> response) {
-//                    try{
-                        if(response.isSuccessful()) {
-                            _swiperefresh.setRefreshing(false);
-                            if (response.body().getMessage().equalsIgnoreCase("Data not available.")) {
-//                        dialogmaterial.dismiss();
-                                Log.e("Data List", " Empty");
-                                taskListList = new ArrayList<TaskListDetailModel>();
-                                taskListAdapter = new TaskListAdapter(getActivity().getApplicationContext(), taskListList, typeList, new TaskListInterface() {
-                                    @Override
-                                    public void onListSelected(TaskListDetailModel list) {
-
-                                    }
-                                });
-                                taskListAdapter.notifyDataSetChanged();
-                                taskListRecycleAll.setAdapter(taskListAdapter);
-//                            _linearTitleSwipe.setBackground(getResources().getDrawable(R.color.grey));
-                            } else if (response.body().getMessage().equalsIgnoreCase("Invalid Token")) {
-                                Toast.makeText(getActivity().getApplicationContext(), R.string.invalidToken, Toast.LENGTH_SHORT)
-                                        .show();
-                                userdata.deleteAll();
-                                startActivity(new Intent(getActivity(), LoginActivity.class));
-
-                            } else {
-//                        dialogmaterial.dismiss();
-                                taskListList = new ArrayList<TaskListDetailModel>();
-                                for (TaskListJson.TasklistCallback.Data callbackList : response.body().getData()) {
-                                    TaskListDetailModel detailModel = new TaskListDetailModel();
-                                    detailModel.setIdNasabah(callbackList.getAp_regno().toUpperCase());
-                                    detailModel.setCustomertype_id(callbackList.getCustomertype_id());
-                                    detailModel.setCustomertype_desc(callbackList.getCustomertype_desc().toUpperCase());
-                                    detailModel.setNamaNasabah(callbackList.getCustomername().toUpperCase());
-                                    detailModel.setCustomerdocument_id(callbackList.getCustomerdocument_id().toUpperCase());
-                                    detailModel.setCustomerdocument_type(callbackList.getCustomerdocument_type().toUpperCase());
-                                    detailModel.setProduct_id(callbackList.getProduct_id().toUpperCase());
-                                    detailModel.setProduct_desc(callbackList.getProduct_desc().toUpperCase());
-                                    detailModel.setPlafon(callbackList.getPlafon().toUpperCase());
-                                    detailModel.setTrack_id(callbackList.getTrack_id());
-                                    detailModel.setTrack_name(callbackList.getTrack_name());
-                                    detailModel.setFormCode(callbackList.getFormCode());
-
-                                    detailModel.setIcon(callbackList.getIcon());
-                                    detailModel.setLast_track_date(callbackList.getLast_track_date());
-                                    if(!callbackList.getLast_track_date().equalsIgnoreCase("")) {
-                                        SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
-                                        Date date = null;
-                                        try {
-                                            date = dateFormat.parse(callbackList.getLast_track_date());
-                                        } catch (ParseException e) {
-                                            e.printStackTrace();
-                                        }
-                                        detailModel.setSort_date(date);
-                                    }else{
-                                        _sortFloatingButton.setVisibility(View.GONE);
-                                    }
-                                    taskListList.add(detailModel);
-                                }
-                                // set up the RecyclerView
-
-//                            Collections.sort(taskListList, Collections.reverseOrder());
-//                            sortDate();
-                                taskListAdapter = new TaskListAdapter(getActivity().getApplicationContext(), taskListList, typeList, new TaskListInterface() {
-                                    @Override
-                                    public void onListSelected(TaskListDetailModel list) {
-
-                                    }
-                                });
-                                taskListAdapter.notifyDataSetChanged();
-                                taskListRecycleAll.setAdapter(taskListAdapter);
-                            }
-
-                        }
-//                    }catch (Exception e){
-//                        _swiperefresh.setRefreshing(false);
-//                        dialogMessage(e.toString());
-//                    }
-                }
-
-                @Override
-                public void onFailure(Call<TaskListJson.TasklistCallback> call, Throwable t) {
-                    _swiperefresh.setRefreshing(false);
-//                    dialogmaterial.dismiss();
-                }
-            });
-        }
-    }*/
-
     private void initialisation() {
 
-//        formData = new FormData(getActivity().getApplicationContext());
-//        if(getArguments()!= null) {
-//            if(getArguments().getString("ASSIGNED_TYPE") != null && getArguments().getString("ASSIGNED_TYPE").equalsIgnoreCase("1")) {
-//                assignedType = "assigned";
-//                tc = getArguments().getString("ASSIGNED_TC");
-//            }
-//            else if(getArguments().getString("ASSIGNED_TYPE") != null && getArguments().getString("ASSIGNED_TYPE").equalsIgnoreCase("0")) {
-//                assignedType = "unassigned";
-//                tc = getArguments().getString("ASSIGNED_TC");
-//            }
-//            else{
-//                assignedType = "allassigned";
-//                tc = "5.0";
-//            }
-//        }else{
-//            assignedType = "allassigned";
-//            tc = "5.0";
-//        }
         userdata = new Userdata(getActivity().getApplicationContext());
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -398,110 +248,20 @@ public class TaskListFragment extends Fragment implements TaskListInterface, Bas
                 .client(NetworkClient.getUnsafeOkHttpClient())
                 .build();
         menulist = new ArrayList<>();
-        endPoint = retrofit.create(EndPoint.class);
+        kontakEndpoint = retrofit.create(KontakEndpoint.class);
 
         networkConnection = new NetworkConnection(getActivity());
         slidersql = new SliderSQL(getActivity().getApplicationContext());
 
-        informationEndpoint = InformationUtils.getInformation();
-        visiMisiEndpoint = VisiMisiUtils.getVisiMisi();
+//        informationEndpoint = InformationUtils.getInformation();
+//        visiMisiEndpoint = VisiMisiUtils.getVisiMisi();
+
+        informationEndpoint =retrofit.create(InformationEndpoint.class);;
+        visiMisiEndpoint = retrofit.create(VisiMisiEndpoint.class);
         ((View)viewPager.getParent()).requestLayout();
     }
 
-    protected void getMenuAccess(){
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            builder.setView(R.layout.progress_bar).setCancelable(false);
-        }
-        dialogmaterial = builder.create();
-        dialogmaterial.show();
-        if (!networkConnection.isNetworkConnected()) {
-            dialogmaterial.dismiss();
-            dialog(R.string.errorNoInternetConnection);
-        }else{
 
-            final LoginJson.LoginRequest request = new LoginJson().new LoginRequest();
-            request.setUserid(userdata.select().getUserid());
-            request.setGroupid(userdata.select().getUserRoleID());
-            Call<LoginJson.getmenuCallback> callback = endPoint.getMenuAccess(userdata.select().getAccesstoken(),request);
-            callback.enqueue(new Callback<LoginJson.getmenuCallback>() {
-                @Override
-                public void onResponse(Call<LoginJson.getmenuCallback> call, Response<LoginJson.getmenuCallback> response) {
-                    try{
-                        if(response.isSuccessful()) {
-                            dataModels = new ArrayList<>();
-                            if(response.body().getStatus().equalsIgnoreCase("1")){
-                                if(response.body().getData() != null) {
-                                    for (DataMenuModel callbackdata : response.body().getData()) {
-                                        DataMenuModel dataModel = new DataMenuModel();
-                                        dataModel.setUserid(callbackdata.getUserid());
-                                        dataModel.setSu_fullname(callbackdata.getSu_fullname());
-                                        dataModel.setGroupid(callbackdata.getGroupid());
-                                        dataModel.setSg_grpname(callbackdata.getSg_grpname());
-                                        dataModel.setBranchid(callbackdata.getBranchid());
-                                        dataModel.setBranchname(callbackdata.getBranchname());
-                                        dataModel.setTypeid(callbackdata.getTypeid());
-                                        dataModel.setMenuid(callbackdata.getMenuid());
-                                        dataModel.setMenudesc(callbackdata.getMenudesc());
-                                        dataModel.setAssigned(callbackdata.getAssigned());
-                                        dataModel.setTrack(callbackdata.getTrack());
-                                        dataModel.setIs_add(callbackdata.getIs_add());
-                                        dataModel.setJumlahaplikasi(callbackdata.getJumlahaplikasi());
-                                        dataModel.setMenutrack(callbackdata.getMenutrack());
-                                        dataModel.setIcon(callbackdata.getIcon());
-                                        dataModels.add(dataModel);
-
-                                        String data = callbackdata.getMenudesc();
-                                        menulist.add(data);
-                                    }
-                                }
-
-                                if(response.body().getNews() != null) {
-                                    news = new ArrayList<>();
-                                    for (NewsModel newsModel : response.body().getNews()) {
-                                        NewsModel newsmod = new NewsModel();
-                                        newsmod.setNewsId(newsModel.getNewsId());
-                                        newsmod.setNewsTitle(newsModel.getNewsTitle());
-                                        newsmod.setNewsDesc(newsModel.getNewsDesc());
-                                        newsmod.setActive(newsModel.getActive());
-                                        news.add(newsmod);
-                                    }
-                                }
-
-                                showMenu();
-                            }else if(response.body().getMessage().equalsIgnoreCase("Invalid Token")) {
-                                userdata.deleteAll();
-                                startActivity(new Intent(getActivity().getApplicationContext(), LoginActivity.class));
-                                Toast.makeText(getActivity().getApplicationContext(), R.string.invalidToken, Toast.LENGTH_LONG)
-                                        .show();
-                            }/*else if(response.body().getStatus().equalsIgnoreCase("0")) {
-                                userdata.deleteAll();
-                                startActivity(new Intent(getActivity().getApplicationContext(), LoginActivity.class));
-                            }*/else if(response.body().getStatus().equalsIgnoreCase("100")){
-                                removeUserData(response.body().getMessage().toString());
-                            }else{
-                                dialogMessage(response.body().getMessage());
-                            }
-                            dialogmaterial.dismiss();
-
-                        }else{
-                            dialogmaterial.dismiss();
-//                            dialogMessage(response.body().getMessage());
-                        }
-                    }catch (Exception e){
-                        dialogmaterial.dismiss();
-                        dialogMessage(e.toString());
-                    }
-
-                }
-                @Override
-                public void onFailure(Call<LoginJson.getmenuCallback> call, Throwable t) {
-                    dialogmaterial.dismiss();
-                    dialog(R.string.errorBackend);
-                }
-            });
-        }
-    }
 
     protected void dialog(int rString) {
         new MaterialDialog.Builder(getActivity())
@@ -512,7 +272,6 @@ public class TaskListFragment extends Fragment implements TaskListInterface, Bas
                     @Override
                     public void onPositive(MaterialDialog dialog) {
                         dialog.dismiss();
-                        getMenuAccess();
                     }
                 })
                 .cancelable(true)
@@ -537,77 +296,48 @@ public class TaskListFragment extends Fragment implements TaskListInterface, Bas
     }
 
 
-    @OnClick(R.id.shortingFloatingButton)
-    public void sort(){
+    @OnClick(R.id.fb_call)
+    public void showKontak(){
         final AlertDialog dialogBuilder = new AlertDialog.Builder(getActivity()).create();
         LayoutInflater inflater = getActivity().getLayoutInflater();
-        View dialogView = inflater.inflate(R.layout.sorting_popup, null);
-        final Button _branchSaveButton = (Button) dialogView.findViewById(R.id.branchSaveButton);
-        final Button _branchCancelButton = (Button) dialogView.findViewById(R.id.branchCancelButton);
-        final RadioGroup _rbGroupSort = (RadioGroup) dialogView.findViewById(R.id.rbGroupSort);
-        final RadioButton _rbTerbaru = (RadioButton) dialogView.findViewById(R.id.rbTerbaru);
-        final RadioButton _rbTerlama= (RadioButton) dialogView.findViewById(R.id.rbTerlama);
+        View dialogView = inflater.inflate(R.layout.kontak_popup, null);
+        final RecyclerView rvKontak = (RecyclerView)dialogView.findViewById(R.id.rv_kotak);
+        final ProgressBar pbKontak = (ProgressBar)dialogView.findViewById(R.id.pb_kontak);
+        final ImageView ivCLose = (ImageView) dialogView.findViewById(R.id.iv_close);
+        final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
 
-        dialogBuilder.setView(dialogView);
-        dialogBuilder.show();
-        if(isNew != null) {
-            _rbTerbaru.setChecked(isNew ? true : false);
-            _rbTerlama.setChecked(!isNew ? true : false);
-        }
-        _branchSaveButton.setOnClickListener(new View.OnClickListener() {
+        kontakEndpoint.getKontak("Bearer " + userdata.select().getAccesstoken()).enqueue(new Callback<List<Kontak>>() {
+            @Override
+            public void onResponse(Call<List<Kontak>> call, Response<List<Kontak>> response) {
+                if(response.isSuccessful()){
+                    pbKontak.setVisibility(View.GONE);
+                    ArrayList<Kontak> listKontak = new ArrayList<>();
+                    for (Kontak kontakModel : response.body()) {
+                        Kontak kontak = new Kontak();
+                        kontak.setName(kontakModel.getName());
+                        kontak.setPhone(kontakModel.getPhone());
+                        listKontak.add(kontak);
+                    }
+                    KontakAdapter kontakAdapter = new KontakAdapter(getActivity().getApplicationContext(),listKontak);
+                    rvKontak.setLayoutManager(linearLayoutManager);
+                    rvKontak.setAdapter(kontakAdapter);
+                }
+            }
+            @Override
+            public void onFailure(Call<List<Kontak>> call, Throwable t) {
+
+            }
+        });
+
+        ivCLose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.e("VALUE "," RADIO BUTTON " + _rbGroupSort.getCheckedRadioButtonId());
-                if(_rbTerbaru.isChecked() == true){
-                    isNew = true;
-                }else{
-                    isNew = false;
-                }
-
-
-//                ArrayList<TaskListDetailModel> arraylist = new ArrayList<>();
-//                for(TaskListDetailModel model : taskListList){
-//                    SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-//                    try {
-//                        TaskListDetailModel detailModel = new TaskListDetailModel();
-//                        detailModel.setNamaNasabah(model.getNamaNasabah().toUpperCase());
-//                        detailModel.setIdNasabah(model.getIdNasabah().toUpperCase());
-//                        detailModel.setTrack_id(model.getTrack_id());
-//                        detailModel.setCustomertype_id(model.getCustomertype_id());
-//                        detailModel.setFormCode(model.getFormCode());
-//                        detailModel.setIcon(model.getIcon());
-//                        detailModel.setLast_track_date(model.getLast_track_date());
-//                        Date date = dateFormat.parse(model.getLast_track_date());
-//                        detailModel.setSort_date(date);
-//                        arraylist.add(detailModel);
-//                    } catch (ParseException e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-//                if(!isNew)
-//                    Collections.sort(taskListList);
-//                else
-//                    Collections.sort(taskListList, Collections.reverseOrder());
-
-//                sortDate();
-               /* taskListAdapter = new TaskListAdapter(getActivity().getApplicationContext(), taskListList, assignedType, new TaskListInterface() {
-                    @Override
-                    public void onListSelected(TaskListDetailModel list) {
-
-                    }
-                });*/
-                taskListAdapter.notifyDataSetChanged();
-                taskListRecycleAll.setAdapter(taskListAdapter);
-                dialogBuilder.cancel();
+                dialogBuilder.dismiss();
             }
         });
+        dialogBuilder.setView(dialogView);
+        dialogBuilder.show();
 
-        _branchCancelButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dialogBuilder.cancel();
-            }
-        });
     }
 
 
@@ -714,10 +444,53 @@ public class TaskListFragment extends Fragment implements TaskListInterface, Bas
     }
 
     private void showNews(ArrayList<NewsModel> news) {
-        Log.e("HAHAHAHHA "," WOII " + news.size());
+
         FragmentManager fragManager = myContext.getSupportFragmentManager();
         viewPager.setAdapter(new MyPagerAdapter(fragManager, news, getActivity().getApplicationContext()));
         viewPagerArrowIndicator.bind(viewPager);
+
+        viewPagerArrowIndicator.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.e("HAHAHAHHA "," click : " + newsPosition);
+
+            }
+        });
+
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int i, float v, int i1) {
+                Log.e("HAHAHAHHA "," onPageScrolled : " + i);
+                newsPosition = i;
+            }
+
+            @Override
+            public void onPageSelected(int i) {
+                Log.e("HAHAHAHHA "," onPageSelected : " + i);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int i) {
+                Log.e("HAHAHAHHA "," onPageScrollStateChanged : " );
+            }
+        });
+
+        viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int i, float v, int i1) {
+
+            }
+
+            @Override
+            public void onPageSelected(int i) {
+                Log.e("HAHAHAHHA "," onPageSelected : " + i);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int i) {
+
+            }
+        });
         getVisiDanMisi();
     }
 
@@ -735,10 +508,11 @@ public class TaskListFragment extends Fragment implements TaskListInterface, Bas
         mWebView.loadUrl("https://www.youtube.com/watch?v=c-74OSumhNk");
     }
 
- /*   @OnClick(R.id.lnr_showmore)
-    public void clickNews(){
-        showInformation("","","");
-    }*/
+//        @OnClick(R.id.lnr_news)
+//        public void clickNews(){
+////            showInformation("","","");
+//            Log.e("HAHAHAHHA "," clicked news : " + newsPosition);
+//        }
 
     private void showInformation(String url, final String doc_code, final String doc_id){
         String urldetail = url.replace("_thumbnails", "");
@@ -794,6 +568,7 @@ public class TaskListFragment extends Fragment implements TaskListInterface, Bas
                             newsmod.setNewsTitle(response.body().get(i).getTitle());
                             newsmod.setNewsDesc(response.body().get(i).getDescription());
                             newsmod.setActive(response.body().get(i).getTitle());
+                            newsmod.setImageUrl(response.body().get(i).getImageUrl());
                             news.add(newsmod);
                         }
                         showNews(news);

@@ -1,9 +1,6 @@
 package ops.screen.fragment;
 
 import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,7 +11,7 @@ import android.view.animation.AnimationUtils;
 import com.afollestad.materialdialogs.MaterialDialog;
 
 import java.util.List;
-import base.sqlite.ContentModel;
+import base.sqlite.model.ContentModel;
 import id.sekarmas.mobile.application.R;
 
 

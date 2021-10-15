@@ -19,8 +19,8 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import java.util.ArrayList;
 import java.util.List;
 
-import base.sqlite.TaskListDetailModel;
-import base.utils.ParameterKey;
+import base.sqlite.model.TaskListDetailModel;
+import base.utils.enm.ParameterKey;
 import id.sekarmas.mobile.application.R;
 import ops.screen.fragment.FullEntry;
 import ops.screen.fragment.TaskListInterface;

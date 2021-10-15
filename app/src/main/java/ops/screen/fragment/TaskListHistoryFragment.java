@@ -25,17 +25,17 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import base.network.EndPoint;
-import base.network.NetworkClient;
-import base.network.NetworkConnection;
-import base.network.ResponseCallback;
-import base.network.RetreiveHistoryListJson;
+import base.network.callback.EndPoint;
+import base.network.callback.NetworkClient;
+import base.network.callback.NetworkConnection;
+import base.network.callback.ResponseCallback;
+import base.network.callback.RetreiveHistoryListJson;
 
-import base.sqlite.DataMenuModel;
-import base.sqlite.FormData;
-import base.sqlite.Config;
-import base.sqlite.TasklistHistoryModel;
-import base.sqlite.Userdata;
+import base.sqlite.model.DataMenuModel;
+import base.sqlite.model.FormData;
+import base.sqlite.model.Config;
+import base.sqlite.model.TasklistHistoryModel;
+import base.sqlite.model.Userdata;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import id.sekarmas.mobile.application.R;
@@ -203,7 +203,7 @@ public class TaskListHistoryFragment extends Fragment{
             dialog(R.string.errorNoInternetConnection);
         } else {
             final RetreiveHistoryListJson.RetreiveRequest request = new RetreiveHistoryListJson().new RetreiveRequest();
-            request.setUserid(userdata.select().getUserid());
+            request.setUserid(userdata.select().getUsername());
             request.setTc("ALL");
 
             Call<RetreiveHistoryListJson.RetreiveCallback> callBack = endPoint.getDataHistory(userdata.select().getAccesstoken(), request);

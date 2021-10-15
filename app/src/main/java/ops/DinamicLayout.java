@@ -42,7 +42,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -57,20 +56,20 @@ import java.util.List;
 import java.util.Locale;
 
 import base.NumberSeparatorTextWatcher;
-import base.network.EndPoint;
-import base.network.NetworkClient;
-import base.network.NetworkConnection;
-import base.network.RetreiveCallbackJson;
-import base.network.RetreiveRequestJson;
-import base.network.SetDataJson;
-import base.sqlite.ContentModel;
-import base.sqlite.DataModel;
-import base.sqlite.FieldModel;
-import base.sqlite.FormData;
-import base.sqlite.ParameterModel;
-import base.sqlite.Config;
-import base.sqlite.Userdata;
-import base.utils.ParameterKey;
+import base.network.callback.EndPoint;
+import base.network.callback.NetworkClient;
+import base.network.callback.NetworkConnection;
+import base.network.callback.RetreiveCallbackJson;
+import base.network.callback.RetreiveRequestJson;
+import base.network.callback.SetDataJson;
+import base.sqlite.model.ContentModel;
+import base.sqlite.model.DataModel;
+import base.sqlite.model.FieldModel;
+import base.sqlite.model.FormData;
+import base.sqlite.model.ParameterModel;
+import base.sqlite.model.Config;
+import base.sqlite.model.Userdata;
+import base.utils.enm.ParameterKey;
 import id.sekarmas.mobile.application.R;
 import ops.screen.CameraActivity;
 import ops.screen.FormActivity;
@@ -281,7 +280,7 @@ public class DinamicLayout extends LinearLayout {
         } else {
             final RetreiveRequestJson requestForm = new RetreiveRequestJson();
             requestForm.setRegno(regno);
-            requestForm.setUserid(userdata.select().getUserid());
+            requestForm.setUserid(userdata.select().getUsername());
             requestForm.setTc(tc);
             requestForm.setFormname(type);
             requestForm.setSectionId(formName);
@@ -1292,9 +1291,9 @@ public class DinamicLayout extends LinearLayout {
 //                imageView.setText("pilih file".toUpperCase());
 //                imageView.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER);
 
-                Picasso.with(getContext()).load(R.mipmap.ic_add)// Place holder image from drawable folder
-                        .error(R.mipmap.ic_add)
-                        .into(imageView);
+//                Picasso.with(getContext()).load(R.mipmap.ic_add)// Place holder image from drawable folder
+//                        .error(R.mipmap.ic_add)
+//                        .into(imageView);
                 imageView.setLayoutParams(new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 1) {{
                     gravity = Gravity.CENTER;
                 }});
@@ -1315,9 +1314,9 @@ public class DinamicLayout extends LinearLayout {
 //                                layer2.addView(imageView);
 //                                imageviews.add(imageView);
                                 url = model.getFieldValue();
-                                Picasso.with(getContext()).load(model.getFieldValue()).placeholder(R.drawable.ic_person_white_24dp)// Place holder image from drawable folder
-                                        .error(R.drawable.ic_person_white_24dp)
-                                        .into(button);
+//                                Picasso.with(getContext()).load(model.getFieldValue()).placeholder(R.drawable.ic_person_white_24dp)// Place holder image from drawable folder
+//                                        .error(R.drawable.ic_person_white_24dp)
+//                                        .into(button);
 
 //                                if(model.getFieldFlagEnabled().equalsIgnoreCase("0")){
 //                                    button.setEnabled(false);
@@ -1443,9 +1442,9 @@ public class DinamicLayout extends LinearLayout {
 
                 imageView = new ImageView(this.context);
                 imageView.setTag("imageview"+explrObject.getString("fieldId" ));
-                Picasso.with(getContext()).load(R.drawable.ic_copy)// Place holder image from drawable folder
-                        .error(R.drawable.ic_copy).resize(80, 80).centerCrop()
-                        .into(imageView);
+//                Picasso.with(getContext()).load(R.drawable.ic_copy)// Place holder image from drawable folder
+//                        .error(R.drawable.ic_copy).resize(80, 80).centerCrop()
+//                        .into(imageView);
                 imageView.setLayoutParams(new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0.1f) {{
                     gravity = Gravity.CENTER;
                 }});
@@ -1805,7 +1804,7 @@ public class DinamicLayout extends LinearLayout {
             }
             final SetDataJson.SetDataRequest request = new SetDataJson().new SetDataRequest();
             request.setRegno(regno);
-            request.setUserid(userdata.select().getUserid());
+            request.setUserid(userdata.select().getUsername());
             request.setTc(tc);
             request.setFormname(form_name);
             request.setTableName(table_name);
@@ -1863,7 +1862,7 @@ public class DinamicLayout extends LinearLayout {
             }
             final SetDataJson.SetDataRequest request = new SetDataJson().new SetDataRequest();
             request.setRegno(regno);
-            request.setUserid(userdata.select().getUserid());
+            request.setUserid(userdata.select().getUsername());
             request.setTc(tc);
             request.setFormname(form_name);
             request.setTableName(table_name);
@@ -2272,19 +2271,19 @@ public class DinamicLayout extends LinearLayout {
         final ImageView _detailimage = (ImageView) dialogView.findViewById(R.id.detailimage);
         final Button _fotoUlangButton = (Button) dialogView.findViewById(R.id.fotoUlangButton);
         final Button _kembaliButton = (Button) dialogView.findViewById(R.id.kembaliButton);
-        Picasso.with(dialogView.getContext()).load(urldetail).placeholder(R.mipmap.ic_add)// Place holder image from drawable folder
-                                        .error(R.mipmap.ic_add)
-                .into(_detailimage, new com.squareup.picasso.Callback() {
-            @Override
-            public void onSuccess() {
-                dialog.dismiss();
-            }
-
-            @Override
-            public void onError() {
-                dialog.dismiss();
-            }
-        });
+//        Picasso.with(dialogView.getContext()).load(urldetail).placeholder(R.mipmap.ic_add)// Place holder image from drawable folder
+//                                        .error(R.mipmap.ic_add)
+//                .into(_detailimage, new com.squareup.picasso.Callback() {
+//            @Override
+//            public void onSuccess() {
+//                dialog.dismiss();
+//            }
+//
+//            @Override
+//            public void onError() {
+//                dialog.dismiss();
+//            }
+//        });
         dialogBuilder.setView(dialogView);
         dialog.dismiss();
         dialogBuilder.show();

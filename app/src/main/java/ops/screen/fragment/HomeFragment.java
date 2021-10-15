@@ -13,6 +13,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -30,36 +31,39 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.daimajia.slider.library.Animations.DescriptionAnimation;
-import com.daimajia.slider.library.SliderLayout;
-import com.daimajia.slider.library.SliderTypes.BaseSliderView;
-import com.daimajia.slider.library.SliderTypes.TextSliderView;
-import com.daimajia.slider.library.Tricks.ViewPagerEx;
+//import com.daimajia.slider.library.Animations.DescriptionAnimation;
+//import com.daimajia.slider.library.SliderLayout;
+//import com.daimajia.slider.library.SliderTypes.BaseSliderView;
+//import com.daimajia.slider.library.SliderTypes.TextSliderView;
+//import com.daimajia.slider.library.Tricks.ViewPagerEx;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import base.network.EndPoint;
-import base.network.LoginJson;
-import base.network.NetworkClient;
-import base.network.NetworkConnection;
-import base.network.ResponseCallback;
-import base.network.Slider;
-import base.network.TaskListJson;
-import base.sqlite.DataMenuModel;
-import base.sqlite.FormData;
-import base.sqlite.TaskListDetailModel;
-import base.sqlite.Userdata;
-import base.sqlite.Config;
-import base.sqlite.SliderSQL;
-import base.utils.ParameterKey;
+import base.data.laporan.DataLaporan;
+import base.data.laporan.LaporanJson;
+import base.network.callback.EndPoint;
+import base.network.callback.LoginJson;
+import base.network.callback.NetworkClient;
+import base.network.callback.NetworkConnection;
+import base.network.callback.ResponseCallback;
+import base.network.callback.Slider;
+import base.service.laporan.LaporanEndpoint;
+import base.sqlite.model.DataMenuModel;
+import base.sqlite.model.FormData;
+import base.sqlite.model.TaskListDetailModel;
+import base.sqlite.model.Userdata;
+import base.sqlite.model.Config;
+import base.sqlite.model.SliderSQL;
+import base.utils.enm.ParameterKey;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import id.sekarmas.mobile.application.R;
+import ops.screen.CreateLaporan;
 import ops.screen.MainActivityDashboard;
 import ops.screen.TaskListActivity;
-import ops.screen.TaskListAdapter;
+import ops.screen.adapter.LaporanAdapter;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -67,10 +71,10 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import user.login.LoginActivity;
 
-public class HomeFragment extends Fragment implements BaseSliderView.OnSliderClickListener, ViewPagerEx.OnPageChangeListener {
+public class HomeFragment extends Fragment  {
 
-    @BindView(R.id.slider)
-    SliderLayout sliderLayout;
+//    @BindView(R.id.slider)
+//    SliderLayout sliderLayout;
     @BindView(R.id.taskListRecycle)
     RecyclerView recyclerView;
     @BindView(R.id.txtSeeAll)
@@ -99,7 +103,13 @@ public class HomeFragment extends Fragment implements BaseSliderView.OnSliderCli
     @BindView(R.id.swiperefresh)
     SwipeRefreshLayout _swiperefresh;
 
-    TaskListAdapter taskListAdapter;
+    @BindView(R.id.create_post_button)
+    FloatingActionButton fbCreatePost;
+
+    LaporanAdapter laporanAdapter;
+
+    LaporanEndpoint laporanEndpoint;
+    ArrayList<DataLaporan> laporaArrayList;
 
     private TaskListFragment taskListFragment;
     private Config config;
@@ -141,18 +151,11 @@ public class HomeFragment extends Fragment implements BaseSliderView.OnSliderCli
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.dashboard_activity, container, false);
         ButterKnife.bind(this, view);
-//        linearmenu1.setVisibility(View.GONE);
-//        linearmenu2.setVisibility(View.GONE);
-//        linearmenu3.setVisibility(View.GONE);
-//        linearmenu4.setVisibility(View.GONE);
-        sliderLayout.setVisibility(View.GONE);
         baseDialogActivity = new MainActivityDashboard();
-//        baseDialogActivity.getLastLocation();
+        fbCreatePost.setAlpha(0.5f);
         initialisation();
-//        prepare();
-//        getMenuAccess();
-
-//        fillList();
+        prepare();
+        callTopAssign();
 
         if ((ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.INTERNET) != PackageManager.PERMISSION_GRANTED) ||
                 (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_NETWORK_STATE) != PackageManager.PERMISSION_GRANTED) ||
@@ -161,7 +164,7 @@ public class HomeFragment extends Fragment implements BaseSliderView.OnSliderCli
         }else {
             Integer slidesize = slidersql.count();
             Log.e("SLIDER SIZE " , " + "+ slidesize);
-            if (slidesize > 0) {
+          /*  if (slidesize > 0) {
                 sliderLayout.setBackgroundColor(getResources().getColor(R.color.white));
 
                 for (int i = 1; i <= slidesize; i++) {
@@ -193,7 +196,7 @@ public class HomeFragment extends Fragment implements BaseSliderView.OnSliderCli
                 sliderLayout.setCustomAnimation(new DescriptionAnimation());
                 sliderLayout.setDuration(6000);
                 sliderLayout.addOnPageChangeListener(HomeFragment.this);
-            }
+            }*/
         }
 
 
@@ -212,13 +215,40 @@ public class HomeFragment extends Fragment implements BaseSliderView.OnSliderCli
 
 
     private void callTopAssign() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            builder.setView(R.layout.progress_bar).setCancelable(false);
+        }
+        dialog = builder.create();
+        dialog.show();
         _swiperefresh.setRefreshing(true);
         if (!networkConnection.isNetworkConnected()) {
             _swiperefresh.setRefreshing(false);
             dialog.dismiss();
             dialog(R.string.errorNoInternetConnection);
         } else {
-            final TaskListJson.TasklistRequest request = new TaskListJson().new TasklistRequest();
+            laporanEndpoint.getListLaporan("Bearer " + userdata.select().getAccesstoken()).enqueue(new Callback<LaporanJson>() {
+                @Override
+                public void onResponse(Call<LaporanJson> call, Response<LaporanJson> response) {
+                    dialog.dismiss();
+                    _swiperefresh.setRefreshing(false);
+                    _linearRecycle.setVisibility(View.VISIBLE);
+                    if (response.isSuccessful()){
+                        laporaArrayList = new ArrayList<>();
+                        for(DataLaporan data : response.body().getData()) {
+                            laporaArrayList.add(data);
+                        }
+                        setAdapter();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<LaporanJson> call, Throwable t) {
+
+                }
+            });
+
+         /*   final TaskListJson.TasklistRequest request = new TaskListJson().new TasklistRequest();
             request.setUserid(userdata.select().getUserid());
             request.setType("topassigned");
             String token = userdata.select().getAccesstoken();
@@ -262,13 +292,13 @@ public class HomeFragment extends Fragment implements BaseSliderView.OnSliderCli
                                     taskListList.add(detailModel);
                                 }
                                 // set up the RecyclerView
-                               /* taskListAdapter = new TaskListAdapter(getActivity().getApplicationContext(), taskListList, "allassigned", new TaskListInterface() {
+                               *//* taskListAdapter = new TaskListAdapter(getActivity().getApplicationContext(), taskListList, "allassigned", new TaskListInterface() {
                                     @Override
                                     public void onListSelected(TaskListDetailModel list) {
 
                                     }
-                                });*/
-                                recyclerView.setAdapter(taskListAdapter);
+                                });*//*
+                                recyclerView.setAdapter(laporanAdapter);
                             }
                         }
                     }catch (Exception e){
@@ -281,8 +311,15 @@ public class HomeFragment extends Fragment implements BaseSliderView.OnSliderCli
                 public void onFailure(Call<TaskListJson.TasklistCallback> call, Throwable t) {
                     dialog.dismiss();
                 }
-            });
+            });*/
         }
+    }
+
+    private void setAdapter() {
+        laporanAdapter = new LaporanAdapter(getActivity().getApplicationContext(), laporaArrayList);
+        laporanAdapter.notifyDataSetChanged();
+        recyclerView.setAdapter(laporanAdapter);
+
     }
 
     protected void getMenuAccess(){
@@ -298,7 +335,7 @@ public class HomeFragment extends Fragment implements BaseSliderView.OnSliderCli
         }else{
 
             final LoginJson.LoginRequest request = new LoginJson().new LoginRequest();
-            request.setUserid(userdata.select().getUserid());
+            request.setUserid(userdata.select().getUsername());
             request.setLon(String.valueOf(baseDialogActivity.longitude));
             request.setLat(String.valueOf(baseDialogActivity.latitude));
             request.setAddr(baseDialogActivity.addres);
@@ -695,9 +732,12 @@ public class HomeFragment extends Fragment implements BaseSliderView.OnSliderCli
 
         networkConnection = new NetworkConnection(getActivity());
         menulist = new ArrayList<>();
+
+//        laporanEndpoint = LaporanUtils.getLaporanList();
+        laporanEndpoint =  retrofit.create(LaporanEndpoint.class);
     }
 
-    @Override
+   /* @Override
     public void onSliderClick(BaseSliderView slider) {
 
         String link = slider.getBundle().getString("extra");
@@ -730,7 +770,7 @@ public class HomeFragment extends Fragment implements BaseSliderView.OnSliderCli
     @Override
     public void onPageScrollStateChanged(int state) {
 
-    }
+    }*/
 
     @OnClick(R.id.txtSeeAll) public void seeAll(){
         taskListFragment = new TaskListFragment();
@@ -845,9 +885,11 @@ public class HomeFragment extends Fragment implements BaseSliderView.OnSliderCli
         }
     }
 
-//    @OnClick(R.id.linearmenu1)public void linearclick1(){
-//        gotolist("1.0");
-//    }
+    @OnClick(R.id.create_post_button)
+    public void createPost(){
+      Intent intent = new Intent(getActivity(), CreateLaporan.class);
+      startActivity(intent);
+    }
 
     public void gototask(String tc,String assignedType,String desc, String isAdd){
 

@@ -36,9 +36,9 @@ import java.util.Date;
 import java.util.HashMap;
 
 import base.endpoint.UploadImageJson;
-import base.network.ResponseCallback;
+import base.network.callback.ResponseCallback;
 import base.screen.BaseDialogActivity;
-import base.utils.ParameterKey;
+import base.utils.enm.ParameterKey;
 import id.sekarmas.mobile.application.R;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -380,7 +380,7 @@ public class CameraActivity extends BaseDialogActivity {
 
                 MultipartBody.Part body = MultipartBody.Part.createFormData("file", image.getName(), reqFile);
                 RequestBody regno = RequestBody.create(MediaType.parse("text/plain"), getIntent().getStringExtra("REGNO") == null ? "M111202002858537" : getIntent().getStringExtra("REGNO"));
-                RequestBody userid = RequestBody.create(MediaType.parse("text/plain"), userdata.select().getUserid());
+                RequestBody userid = RequestBody.create(MediaType.parse("text/plain"), userdata.select().getUsername());
                 RequestBody tc = RequestBody.create(MediaType.parse("text/plain"), getIntent().getStringExtra("TC"));
                 RequestBody uploadtype = RequestBody.create(MediaType.parse("text/plain"), getIntent().getStringExtra("UPLOAD_TYPE"));
                 RequestBody docid = RequestBody.create(MediaType.parse("text/plain"), getIntent().getStringExtra("DOC_ID") == null ? "12345" : getIntent().getStringExtra("DOC_ID").toUpperCase());
@@ -527,7 +527,7 @@ public class CameraActivity extends BaseDialogActivity {
                 .callback(new MaterialDialog.ButtonCallback() {
                     @Override
                     public void onPositive(MaterialDialog dialog) {
-                        userdata.updatelinkProfile(link, userdata.select().getUserid());
+                        userdata.updatelinkProfile(link, userdata.select().getUsername());
                         startActivity(new Intent(getApplicationContext(), MainActivityDashboard.class));
                         dialog.dismiss();
                     }

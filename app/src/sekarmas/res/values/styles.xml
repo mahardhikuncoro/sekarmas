@@ -52,7 +52,7 @@
         <!--title and message color-->
         <item name="android:textColorPrimary">@android:color/white</item>
         <!--dialog background-->
-        <item name="android:windowBackground">@color/primary_dark</item>
+        <item name="android:windowBackground">@color/colorAccent</item>
     </style>
 
 

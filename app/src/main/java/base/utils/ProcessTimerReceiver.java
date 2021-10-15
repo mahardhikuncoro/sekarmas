@@ -22,11 +22,11 @@ import com.google.android.gms.tasks.Task;
 import java.util.List;
 import java.util.Locale;
 
-import base.network.EndPoint;
-import base.network.NetworkClient;
-import base.network.SetDataJson;
-import base.sqlite.Config;
-import base.sqlite.Userdata;
+import base.network.callback.EndPoint;
+import base.network.callback.NetworkClient;
+import base.network.callback.SetDataJson;
+import base.sqlite.model.Config;
+import base.sqlite.model.Userdata;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -171,7 +171,7 @@ public class ProcessTimerReceiver extends BroadcastReceiver {
     private void updateLocation() {
 
         final SetDataJson.SetDataRequest request = new SetDataJson().new SetDataRequest();
-        request.setUserid(userdata.select().getUserid());
+        request.setUserid(userdata.select().getUsername());
         request.setTc("updatelocation");
         request.setLat(getLatitude());
         request.setLon(getLongitude());

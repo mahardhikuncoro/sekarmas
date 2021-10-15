@@ -15,21 +15,19 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import base.network.ResponseCallback;
-import base.network.RetreiveHistoryListJson;
+import base.network.callback.ResponseCallback;
+import base.network.callback.RetreiveHistoryListJson;
 import base.screen.BaseDialogActivity;
-import base.sqlite.TasklistHistoryModel;
-import base.utils.ParameterKey;
+import base.sqlite.model.TasklistHistoryModel;
+import base.utils.enm.ParameterKey;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import id.sekarmas.mobile.application.R;
 import ops.screen.MainActivityDashboard;
-import ops.screen.TaskListActivity;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;

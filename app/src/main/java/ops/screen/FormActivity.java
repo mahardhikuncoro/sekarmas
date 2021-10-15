@@ -20,31 +20,29 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import base.network.FormJson;
-import base.network.ResponseCallback;
-import base.network.RetreiveCallbackJson;
-import base.network.RetreiveJson;
-import base.network.RetreiveRequestJson;
+import base.network.callback.FormJson;
+import base.network.callback.ResponseCallback;
+import base.network.callback.RetreiveCallbackJson;
+import base.network.callback.RetreiveJson;
+import base.network.callback.RetreiveRequestJson;
 import base.screen.BaseDialogActivity;
-import base.sqlite.ContentModel;
-import base.sqlite.DataModel;
-import base.sqlite.FieldModel;
+import base.sqlite.model.ContentModel;
+import base.sqlite.model.DataModel;
+import base.sqlite.model.FieldModel;
 import base.utils.DataLevel;
-import base.utils.ParameterKey;
+import base.utils.enm.ParameterKey;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import id.sekarmas.mobile.application.BuildConfig;
 import id.sekarmas.mobile.application.R;
-import base.sqlite.TaskListDetailModel;
+import base.sqlite.model.TaskListDetailModel;
 import ops.DinamicLayout;
 import ops.screen.fragment.FullEntry;
 import ops.screen.fragment.FullEntryList;
@@ -142,7 +140,7 @@ public class FormActivity extends BaseDialogActivity {
 
         final RetreiveJson.RetreiveRequest request = new RetreiveJson().new RetreiveRequest();
         request.setRegno(getIntent().getExtras().getString("REGNO"));
-        request.setUserid(userdata.select().getUserid());
+        request.setUserid(userdata.select().getUsername());
         request.setTc(getIntent().getExtras().getString("TC"));
         request.setType(getIntent().getExtras().getString("TYPE"));
         if(getIntent().getStringExtra("IMAGEID")!= null && getIntent().getStringExtra("IMAGEID")!="") {
@@ -394,7 +392,7 @@ public class FormActivity extends BaseDialogActivity {
             final RetreiveRequestJson requestForm = new RetreiveRequestJson();
             requestForm.setRegno(getIntent().getStringExtra(
                     ParameterKey.REGNO));
-            requestForm.setUserid(userdata.select().getUserid());
+            requestForm.setUserid(userdata.select().getUsername());
             requestForm.setTc(getIntent().getStringExtra(ParameterKey.TC));
             requestForm.setFormname(getIntent().getStringExtra(ParameterKey.TYPE));
             requestForm.setSectionId(getIntent().getStringExtra(ParameterKey.FORM_NAME));
@@ -505,7 +503,7 @@ public class FormActivity extends BaseDialogActivity {
 
             final FormJson.RequestForm requestForm = new FormJson().new RequestForm();
             requestForm.setType("form");
-            requestForm.setUserid(userdata.select().getUserid());
+            requestForm.setUserid(userdata.select().getUsername());
             requestForm.setTc(getIntent().getStringExtra(ParameterKey.TC));
             requestForm.setRegno(getIntent().getStringExtra(ParameterKey.REGNO));
 //            String token = userdata.select().getAccesstoken();

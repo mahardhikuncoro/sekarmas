@@ -2,7 +2,6 @@ package ops.screen;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,19 +15,14 @@ import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import base.data.Visi;
-import base.data.VisiMisi;
-import base.network.EndPoint;
-import base.network.NetworkClient;
-import base.network.NetworkConnection;
-import base.sqlite.Config;
-import base.utils.ParameterKey;
+import base.data.visimisimodel.Visi;
+import base.network.callback.EndPoint;
+import base.network.callback.NetworkClient;
+import base.network.callback.NetworkConnection;
+import base.sqlite.model.Config;
 import id.sekarmas.mobile.application.R;
-import ops.screen.fragment.FullEntry;
-import base.sqlite.TaskListDetailModel;
 import ops.screen.fragment.TaskListInterface;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;

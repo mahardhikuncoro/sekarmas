@@ -11,32 +11,23 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.afollestad.materialdialogs.MaterialDialog;
-import com.google.gson.Gson;
-
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import base.network.FormJson;
-import base.network.ResponseCallback;
-import base.network.RetreiveJson;
-import base.network.RetreiveNewListJson;
-import base.network.SetDataJson;
+import base.network.callback.ResponseCallback;
+import base.network.callback.RetreiveNewListJson;
+import base.network.callback.SetDataJson;
 import base.screen.BaseDialogActivity;
-import base.sqlite.ContentModel;
-import base.sqlite.DataModel;
-import base.sqlite.TaskListDetailModel;
+import base.sqlite.model.ContentModel;
+import base.sqlite.model.TaskListDetailModel;
 import base.utils.DataLevel;
-import base.utils.ParameterKey;
+import base.utils.enm.ParameterKey;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -47,7 +38,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import user.changepassword.ChangePasswordActivity;
-import user.login.LoginActivity;
 
 public class FullEntryList extends BaseDialogActivity implements FullEntryCallback {
 
@@ -105,7 +95,7 @@ public class FullEntryList extends BaseDialogActivity implements FullEntryCallba
         } else {
             final RetreiveNewListJson.RetreiveRequest request = new RetreiveNewListJson().new RetreiveRequest();
             request.setRegno(regno);
-            request.setUserid(userdata.select().getUserid());
+            request.setUserid(userdata.select().getUsername());
             request.setTc(getIntent().getExtras().getString(ParameterKey.TC));
             request.setType(getIntent().getExtras().getString(ParameterKey.TYPE));
             request.setFormname(getIntent().getExtras().getString(ParameterKey.FORM_NAME));
@@ -271,7 +261,7 @@ public class FullEntryList extends BaseDialogActivity implements FullEntryCallba
         }else{
             final SetDataJson.SetDataRequest request = new SetDataJson().new SetDataRequest();
             request.setRegno(regnumb);
-            request.setUserid(userdata.select().getUserid());
+            request.setUserid(userdata.select().getUsername());
             request.setTc("5.0");
             request.setStatus("2");
             request.setLon(String.valueOf(getLongitude()));

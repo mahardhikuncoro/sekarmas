@@ -5,21 +5,16 @@ import android.content.Context;
 import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-
-import base.sqlite.NewsModel;
+import base.sqlite.model.NewsModel;
 import id.sekarmas.mobile.application.R;
 
 public class MyPagerAdapter extends FragmentStatePagerAdapter {
@@ -62,7 +57,8 @@ public class MyPagerAdapter extends FragmentStatePagerAdapter {
      */
     public void addPage(ArrayList<NewsModel> categoryId) {
         for(int i = 0; i<categoryId.size() ;i++)
-            pages.add(SimpleFragment.newInstance(categoryId.get(i).getNewsTitle()));
+            pages.add(SimpleFragment.newInstance(categoryId.get(i).getNewsTitle(),categoryId.get(i).getImageUrl(), categoryId.get(i).getNewsDesc(),i));
+
     }
 
     @Override
@@ -74,6 +70,25 @@ public class MyPagerAdapter extends FragmentStatePagerAdapter {
     public int getCount() {
         return pages.size();
     }
+
+//    @Override
+//    public Object instantiateItem(View collection, final int pos) { //have to make final so we can see it inside of onClick()
+//        LayoutInflater inflater = (LayoutInflater) collection.getContext()
+//                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+//
+//
+//        View page = inflater.inflate(R.layout.tasklist_fragment, null);
+//
+//        page.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Log.i("TAG", "This page was clicked: " + pos);
+//            }
+//        });
+//
+//        ((ViewPager) collection).addView(page, 0);
+//        return page;
+//    }
 
 }
 

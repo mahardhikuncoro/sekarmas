@@ -15,7 +15,7 @@ import android.widget.TextView;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.getkeepsafe.taptargetview.TapTargetSequence;
 
-import base.sqlite.Userdata;
+import base.sqlite.model.Userdata;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;

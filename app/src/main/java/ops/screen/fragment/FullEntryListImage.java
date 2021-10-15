@@ -16,21 +16,16 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.afollestad.materialdialogs.MaterialDialog;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import base.network.ResponseCallback;
-import base.network.RetreiveJson;
-import base.network.RetreiveNewListJson;
-import base.network.SetDataJson;
+import base.network.callback.ResponseCallback;
+import base.network.callback.SetDataJson;
 import base.screen.BaseDialogActivity;
-import base.sqlite.ContentModel;
-import base.sqlite.TaskListDetailModel;
-import base.utils.ParameterKey;
+import base.sqlite.model.ContentModel;
+import base.sqlite.model.TaskListDetailModel;
+import base.utils.enm.ParameterKey;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -194,7 +189,7 @@ public class FullEntryListImage extends BaseDialogActivity implements FullEntryC
         }else{
             final SetDataJson.SetDataRequest request = new SetDataJson().new SetDataRequest();
             request.setRegno(regnumb);
-            request.setUserid(userdata.select().getUserid());
+            request.setUserid(userdata.select().getUsername());
             request.setTc("5.0");
             request.setStatus("2");
             request.setLon(String.valueOf(getLongitude()));

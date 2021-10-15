@@ -9,8 +9,8 @@ import android.database.sqlite.SQLiteDatabase;
 import java.util.ArrayList;
 import java.util.List;
 
-import base.sqlite.SQLiteConfig;
-import base.sqlite.SQLiteHelper;
+import base.sqlite.model.SQLiteConfig;
+import base.sqlite.model.SQLiteHelper;
 
 
 public class LocationPoolData {

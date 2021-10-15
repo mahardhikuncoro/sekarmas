@@ -1,6 +1,6 @@
 package base.endpoint;
 
-import base.location.network.BaseNetworkCallback;
+import base.location.BaseNetworkCallback;
 
 public class UploadImageJson  {
     public class Callback extends BaseNetworkCallback {

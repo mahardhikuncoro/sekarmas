@@ -1,7 +1,7 @@
 package base.endpoint;
 
 
-import base.network.BaseResponseCode;
+import base.network.callback.BaseResponseCode;
 
 public class InActivatedJson {
 

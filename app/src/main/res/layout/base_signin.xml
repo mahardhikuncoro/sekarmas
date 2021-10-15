@@ -7,8 +7,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:scrollbarAlwaysDrawVerticalTrack="true"
     android:id="@+id/bc_login"
-    android:background="@drawable/gradation_red"
     android:windowSoftInputMode="adjustPan">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="220dp"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/red_line_new"/>
 
 
     <RelativeLayout
@@ -99,7 +104,7 @@
                     android:layout_height="wrap_content">
 
                     <RelativeLayout
-                        android:background="@drawable/shape_round_shadow_white"
+                        android:background="@drawable/shape_round_shadow_yellow"
                         android:id="@+id/layerInput"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
@@ -191,7 +196,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
                                 android:layout_marginTop="10dp"
-                                android:background="@drawable/rounded_orange"
+                                android:background="@drawable/shape_button_red"
                                 android:paddingLeft="30dp"
                                 android:paddingRight="30dp"
                                 android:text="@string/next"

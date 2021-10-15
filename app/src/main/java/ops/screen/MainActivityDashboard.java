@@ -1,5 +1,6 @@
 package ops.screen;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -11,6 +12,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.telephony.TelephonyManager;
@@ -22,24 +24,28 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.jakewharton.picasso.OkHttp3Downloader;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
-import base.network.PushNotificationJson;
-import base.network.Slider;
+import base.network.callback.NetworkClientNew;
+import base.network.callback.PushNotificationJson;
+import base.network.callback.Slider;
 import base.screen.BaseDialogActivity;
-import base.sqlite.Userdata;
-import base.sqlite.Config;
-import base.sqlite.SliderSQL;
-import base.utils.ParameterKey;
+import base.service.URL;
+import base.sqlite.model.Userdata;
+import base.sqlite.model.Config;
+import base.sqlite.model.SliderSQL;
+import base.utils.enm.ParameterKey;
 import base.utils.ServiceReceiver;
 import base.utils.UserTypeService;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import id.sekarmas.mobile.application.BuildConfig;
+import okhttp3.OkHttpClient;
 import ops.screen.fragment.ProfileFragment;
 import ops.screen.fragment.TaskListFragment;
 import ops.screen.fragment.HomeFragment;
@@ -87,6 +93,8 @@ public class MainActivityDashboard extends BaseDialogActivity implements Service
     ImageView imgprofile;
     @BindView(R.id.txtViewName) TextView txtviewname;
     @BindView(R.id.txtSlamat) TextView txtSlamat;
+    @BindView(R.id.fb_kontak)
+    FloatingActionButton fbKontak;
 
 
     @Override
@@ -106,7 +114,7 @@ public class MainActivityDashboard extends BaseDialogActivity implements Service
         latitude = getLatitude();
         addres = getAddress();
 //        setToolbarMenu(toolbar);
-//        callApiSlider();
+        callApiSlider();
         setNavigationbottom();
         // load the store fragment by default
         selectedItemId = R.id.navigation_home;
@@ -125,6 +133,9 @@ public class MainActivityDashboard extends BaseDialogActivity implements Service
         }else  if (intent.hasExtra(ParameterKey.SCREEN_HISTORY)) {
              selectedItemId = R.id.navigation_history;
              loadFragment(new TaskListHistoryFragment());
+        }else  if (intent.hasExtra(ParameterKey.SCREEN_TASK)) {
+            selectedItemId = R.id.navigation_task;
+            loadFragment(new HomeFragment());
         }else  if (intent.hasExtra(ParameterKey.SCREEN_PROFILE)) {
             selectedItemId = R.id.navigation_profile;
             loadFragment(new ProfileFragment());
@@ -165,6 +176,7 @@ public class MainActivityDashboard extends BaseDialogActivity implements Service
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
 
+        @SuppressLint("RestrictedApi")
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             Fragment fragment;
@@ -176,6 +188,7 @@ public class MainActivityDashboard extends BaseDialogActivity implements Service
                     bundle = new Bundle();
                     bundle.putString("ASSIGNED_TYPE", "2");
                     bundle.putString("ASSIGNED_TC", "5.0");
+                    fbKontak.setVisibility(View.GONE);
                     fragment = new TaskListFragment();
                     if(selectedItemId != R.id.navigation_home) {
 //                        startActivity(new Intent(getApplicationContext(),FormActivity.class));
@@ -202,6 +215,7 @@ public class MainActivityDashboard extends BaseDialogActivity implements Service
                     return true;
                 case R.id.navigation_profile:
                     fragment = new ProfileFragment();
+                    fbKontak.setVisibility(View.GONE);
                     if(selectedItemId != R.id.navigation_profile)
                         loadFragment(fragment);
                     selectedItemId = R.id.navigation_profile;
@@ -281,7 +295,7 @@ public class MainActivityDashboard extends BaseDialogActivity implements Service
                 .show();
 
         criteria1 = getString(R.string.app_name);
-        criteria2 = userdata.select().getUserid();
+        criteria2 = userdata.select().getUsername();
         criteria3 = UserImei;
 
         if (! networkConnection.isNetworkConnected()){
@@ -355,18 +369,31 @@ public class MainActivityDashboard extends BaseDialogActivity implements Service
 
     private void initToolbar(){
 
-        imgprofile.setVisibility(View.VISIBLE);
-//        String img_url = userdata.select().getPhotoprofile();
-//        String fullname = userdata.select().getFullname();
-        String img_url = "";
-        String fullname = "";
-        if (!img_url.equalsIgnoreCase(""))
-            Picasso.with(getApplicationContext()).load(img_url).placeholder(R.drawable.ic_person_white_24dp)// Place holder image from drawable folder
-                    .error(R.drawable.ic_person_white_24dp).
-                    resize(200, 200).
-                    centerCrop()
-//                    .rotate(90)
-                    .into(imgprofile);
+        String img_url = userdata.select().getPhotoprofile();
+        String fullname = userdata.select().getFullname();
+//        String img_url = "";
+//        String fullname = "";
+        if (img_url!=null){
+            Log.e("IMAGE URL"," : " + img_url);
+            OkHttpClient picassoClient = NetworkClientNew.getUnsafeOkHttpClient();
+            Picasso picasso = new Picasso.Builder(MainActivityDashboard.this).downloader(new OkHttp3Downloader(picassoClient)).build();
+            picasso.setLoggingEnabled(true);
+            picasso.load(URL.checkUrl()+img_url)
+                    .placeholder(R.drawable.ic_profile)// Place holder image from drawable folder
+                    .error(R.drawable.ic_profile) .resize(200, 200).rotate(90)
+                    .into(imgprofile, new com.squareup.picasso.Callback() {
+                        @Override
+                        public void onSuccess() {
+                            Log.e("SUKSES", " ");
+                        }
+
+                        @Override
+                        public void onError() {
+                            Log.e("ERROR", " ");
+
+                        }
+                    });
+        }
 
         txtviewname.setText(fullname.toUpperCase());
 

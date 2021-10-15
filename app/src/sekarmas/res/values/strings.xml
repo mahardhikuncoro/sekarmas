@@ -368,6 +368,9 @@
     <string name="askReverse">Anda yakin akan melakukan reverse data ?</string>
     <string name="reverse">Reverse</string>
     <string name="history">History</string>
+    <string name="errorJudul">Mohon isi judul laporan !</string>
+    <string name="errorDeskripsi">Mohon isi deskripsi laporan !</string>
+    <string name="errorIMage">Mohon ambil gambar untuk laporan !</string>
 
 
 

@@ -1,6 +1,6 @@
 package base.endpoint;
 
-import base.network.BaseResponseCode;
+import base.network.callback.BaseResponseCode;
 
 /**
  * Created by ADMINSMMF on 3/19/2018.

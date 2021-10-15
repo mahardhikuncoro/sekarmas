@@ -9,26 +9,14 @@ import android.graphics.BitmapFactory;
 import android.hardware.Camera;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
-import java.io.File;
-import java.util.HashMap;
-
-import base.network.ResponseStatus;
 import base.screen.BaseDialogActivity;
-import butterknife.BindView;
 import id.sekarmas.mobile.application.R;
-import okhttp3.MediaType;
-import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class MainActivityCamera extends BaseDialogActivity {
 

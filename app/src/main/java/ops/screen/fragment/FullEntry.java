@@ -24,34 +24,31 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
-import base.network.FormJson;
-import base.network.RetreiveJson;
-import base.network.SetDataJson;
+import base.network.callback.FormJson;
+import base.network.callback.RetreiveJson;
+import base.network.callback.SetDataJson;
 import base.screen.BaseDialogActivity;
-import base.sqlite.ContentModel;
-import base.sqlite.TaskListDetailModel;
+import base.sqlite.model.ContentModel;
+import base.sqlite.model.TaskListDetailModel;
 import base.utils.DataLevel;
-import base.utils.ParameterKey;
+import base.utils.enm.ParameterKey;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import id.sekarmas.mobile.application.R;
 import ops.screen.FormActivity;
 import ops.screen.MainActivityDashboard;
-import ops.screen.TaskListActivity;
 import ops.screen.offline.DokumenOfflineList;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import user.changepassword.ChangePasswordActivity;
-import user.login.LoginActivity;
 
 public class FullEntry extends BaseDialogActivity implements FullEntryCallback {
 
@@ -115,7 +112,7 @@ public class FullEntry extends BaseDialogActivity implements FullEntryCallback {
             if (regnumb.equalsIgnoreCase("")) {
                 final SetDataJson.SetDataRequest request = new SetDataJson().new SetDataRequest();
                 request.setRegno("mobile");
-                request.setUserid(userdata.select().getUserid());
+                request.setUserid(userdata.select().getUsername());
                 request.setTc(getIntent().getExtras().getString(ParameterKey.TC));
                 request.setStatus(getIntent().getExtras().getString(ParameterKey.STATUS));
                 request.setLon(String.valueOf(getLongitude()));
@@ -155,7 +152,7 @@ public class FullEntry extends BaseDialogActivity implements FullEntryCallback {
     public void retreiveData(final String regno){
         final RetreiveJson.RetreiveRequest request = new RetreiveJson().new RetreiveRequest();
         request.setRegno(regno);
-        request.setUserid(userdata.select().getUserid());
+        request.setUserid(userdata.select().getUsername());
         request.setTc(getIntent().getExtras().getString(ParameterKey.TC));
         request.setType(getIntent().getExtras().getString(ParameterKey.TYPE));
         request.setDataLevel(DataLevel.SECTION);
@@ -379,7 +376,7 @@ public class FullEntry extends BaseDialogActivity implements FullEntryCallback {
 
                 final SetDataJson.SetDataRequest request = new SetDataJson().new SetDataRequest();
                 request.setRegno(regnumb);
-                request.setUserid(userdata.select().getUserid());
+                request.setUserid(userdata.select().getUsername());
                 request.setTc(tc);
                 Log.e("TYPELIST", " : " + typelist);
                 Log.e("TC", " : " + tc);
@@ -560,7 +557,7 @@ public class FullEntry extends BaseDialogActivity implements FullEntryCallback {
         }else{
             final SetDataJson.SetDataRequest request = new SetDataJson().new SetDataRequest();
             request.setRegno(regnumb);
-            request.setUserid(userdata.select().getUserid());
+            request.setUserid(userdata.select().getUsername());
             request.setTc(tc);
             request.setStatus("2");
             request.setLon(String.valueOf(getLongitude()));
@@ -624,7 +621,7 @@ public class FullEntry extends BaseDialogActivity implements FullEntryCallback {
         }else{
             final SetDataJson.SetDataRequest request = new SetDataJson().new SetDataRequest();
             request.setRegno(regnumb);
-            request.setUserid(userdata.select().getUserid());
+            request.setUserid(userdata.select().getUsername());
             request.setTc(tc);
             request.setStatus("3");
             request.setRejectreason(reasonRejectId);

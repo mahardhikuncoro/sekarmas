@@ -1,6 +1,6 @@
 package ops.screen.fragment;
 
-import base.sqlite.TaskListDetailModel;
+import base.sqlite.model.TaskListDetailModel;
 
 public interface TaskListInterface {
 

@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,17 +31,20 @@ import com.jakewharton.picasso.OkHttp3Downloader;
 import com.squareup.picasso.Picasso;
 
 
-import base.network.EndPoint;
-import base.network.NetworkClient;
-import base.network.NetworkConnection;
-import base.network.ResponseStatus;
-import base.sqlite.Userdata;
-import base.sqlite.Config;
+import base.network.callback.EndPoint;
+import base.network.callback.NetworkClient;
+import base.network.callback.NetworkClientNew;
+import base.network.callback.NetworkConnection;
+import base.network.callback.ResponseStatus;
+import base.service.URL;
+import base.sqlite.model.Userdata;
+import base.sqlite.model.Config;
 import base.utils.ServiceReceiver;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import id.sekarmas.mobile.application.R;
+import okhttp3.OkHttpClient;
 import ops.screen.CameraActivity;
 import ops.screen.MainActivityDashboard;
 import retrofit2.Retrofit;
@@ -51,11 +55,17 @@ public class ProfileFragment extends Fragment implements ServiceReceiver.Receive
     @BindView(R.id.etDataNama)
     EditText etDataNama;
 
-    @BindView(R.id.etDataNoHp)
-    EditText etDataNoHp;
+    @BindView(R.id.tv_birth_date)
+    EditText tvBirthDate;
 
-    @BindView(R.id.etDataKTP)
-    EditText etDataKTP;
+    @BindView(R.id.tv_phone)
+    EditText tvPhone;
+
+    @BindView(R.id.tv_email)
+    EditText tvEmail;
+
+    @BindView(R.id.tv_gender)
+    EditText tvGender;
 
     @BindView(R.id.imgDataNama)
     ImageView imgDataNama;
@@ -67,8 +77,8 @@ public class ProfileFragment extends Fragment implements ServiceReceiver.Receive
     private Config config;
     private Userdata userdata;
     private String dataNama;
-    private String dataCabang;
-    private String dataGroup;
+    private String birthDate;
+    private String gender,email, phoneNumber;
     private Picasso picasso;
     private ChangePasswordFragment changePasswordFragment;
     private NetworkConnection networkConnection;
@@ -138,33 +148,57 @@ public class ProfileFragment extends Fragment implements ServiceReceiver.Receive
 
     private void loadIcon() {
         String img_url = userdata.select().getPhotoprofile();
-        if (!img_url.equalsIgnoreCase(""))
+        OkHttpClient picassoClient = NetworkClientNew.getUnsafeOkHttpClient();
+        Picasso picasso = new Picasso.Builder(getActivity()).downloader(new OkHttp3Downloader(picassoClient)).build();
+        picasso.setLoggingEnabled(true);
+        picasso.load(URL.checkUrl()+img_url)
+                .placeholder(R.drawable.ic_profile)// Place holder image from drawable folder
+                .error(R.drawable.ic_profile) .resize(200, 200).rotate(90)
+                .into(imgDataNama, new com.squareup.picasso.Callback() {
+                    @Override
+                    public void onSuccess() {
+                        Log.e("SUKSES", " ");
+                    }
+
+                    @Override
+                    public void onError() {
+                        Log.e("ERROR", " ");
+
+                    }
+                });
+       /* if (!img_url.equalsIgnoreCase(""))
             Picasso.with(getActivity()).load(img_url).placeholder(R.drawable.ic_person_white_24dp)// Place holder image from drawable folder
                     .error(R.drawable.ic_person_white_24dp)
                     .resize(200, 200)
 //                    .rotate(90)
                     .centerCrop()
-                    .into(imgDataNama);
+                    .into(imgDataNama);*/
 //        picasso.load(R.drawable.nama).fit().into(imgDataNama);
     }
 
     private void setProfile(){
 
         etDataNama.setText(dataNama);
-        etDataNoHp.setText(dataCabang);
-        etDataKTP.setText(dataGroup);
+        tvBirthDate.setText(birthDate);
+        tvEmail.setText(email);
+        tvGender.setText(gender);
+        tvPhone.setText(phoneNumber);
 
         etDataNama.setEnabled(false);
-        etDataNoHp.setEnabled(false);
-        etDataKTP.setEnabled(false);
+        tvBirthDate.setEnabled(false);
+        tvEmail.setEnabled(false);
+        tvGender.setEnabled(false);
+        tvPhone.setEnabled(false);
         textGantiPass.setVisibility(View.GONE);
 
     }
     private void getProfile(){
         userdata = new Userdata(getActivity());
         dataNama =  userdata.select().getFullname();
-        dataCabang = userdata.select().getBranchname();
-        dataGroup = userdata.select().getGroupname();
+        birthDate = userdata.select().getBirthDate();
+        gender = userdata.select().getGender();
+        email = userdata.select().getEmail();
+        phoneNumber = userdata.select().getPhoneNumber();
     }
 
 

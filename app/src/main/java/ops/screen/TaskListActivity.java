@@ -29,10 +29,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 
-import base.network.TaskListJson;
+import base.network.callback.TaskListJson;
 import base.screen.BaseDialogActivity;
-import base.sqlite.TaskListDetailModel;
-import base.utils.ParameterKey;
+import base.sqlite.model.TaskListDetailModel;
+import base.utils.enm.ParameterKey;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -62,7 +62,7 @@ public class TaskListActivity extends BaseDialogActivity {
     @BindView(R.id.linearTitleSwipe)
     LinearLayout _linearTitleSwipe;
 
-    @BindView(R.id.shortingFloatingButton)
+    @BindView(R.id.create_post_button)
     FloatingActionButton _sortFloatingButton;
 
     @BindView(R.id.etSearch)
@@ -137,7 +137,7 @@ public class TaskListActivity extends BaseDialogActivity {
 
         } else {
             final TaskListJson.TasklistRequest request = new TaskListJson().new TasklistRequest();
-            request.setUserid(userdata.select().getUserid());
+            request.setUserid(userdata.select().getUsername());
             request.setType(typeList);
             request.setTc(tc);
             String token = userdata.select().getAccesstoken();
@@ -299,78 +299,6 @@ public class TaskListActivity extends BaseDialogActivity {
         startActivity(intent);
     }
 
-    @OnClick(R.id.shortingFloatingButton)
-    public void sort(){
-        final AlertDialog dialogBuilder = new AlertDialog.Builder(TaskListActivity.this).create();
-        LayoutInflater inflater = TaskListActivity.this.getLayoutInflater();
-        View dialogView = inflater.inflate(R.layout.sorting_popup, null);
-        final Button _branchSaveButton = (Button) dialogView.findViewById(R.id.branchSaveButton);
-        final Button _branchCancelButton = (Button) dialogView.findViewById(R.id.branchCancelButton);
-        final RadioGroup _rbGroupSort = (RadioGroup) dialogView.findViewById(R.id.rbGroupSort);
-        final RadioButton _rbTerbaru = (RadioButton) dialogView.findViewById(R.id.rbTerbaru);
-        final RadioButton _rbTerlama= (RadioButton) dialogView.findViewById(R.id.rbTerlama);
-
-        dialogBuilder.setView(dialogView);
-        dialogBuilder.show();
-        if(isNew != null) {
-            _rbTerbaru.setChecked(isNew ? true : false);
-            _rbTerlama.setChecked(!isNew ? true : false);
-        }
-        _branchSaveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.e("VALUE "," RADIO BUTTON " + _rbGroupSort.getCheckedRadioButtonId());
-                if(_rbTerbaru.isChecked() == true){
-                    isNew = true;
-                }else{
-                    isNew = false;
-                }
-
-
-                ArrayList<TaskListDetailModel> arraylist = new ArrayList<>();
-                for(TaskListDetailModel model : taskListList){
-                    SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-                    try {
-                        TaskListDetailModel detailModel = new TaskListDetailModel();
-                        detailModel.setNamaNasabah(model.getNamaNasabah().toUpperCase());
-                        detailModel.setIdNasabah(model.getIdNasabah().toUpperCase());
-                        detailModel.setTrack_id(model.getTrack_id());
-                        detailModel.setCustomertype_id(model.getCustomertype_id());
-                        detailModel.setFormCode(model.getFormCode());
-                        detailModel.setIcon(model.getIcon());
-                        detailModel.setLast_track_date(model.getLast_track_date());
-                        Date date = dateFormat.parse(model.getLast_track_date());
-                        detailModel.setSort_date(date);
-                        arraylist.add(detailModel);
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
-                }
-                if(!isNew)
-                    Collections.sort(taskListList);
-                else
-                    Collections.sort(taskListList, Collections.reverseOrder());
-
-//                sortDate();
-                taskListAdapter = new TaskListActivityAdapter(TaskListActivity.this, taskListList, assignedType, new TaskListInterface() {
-                    @Override
-                    public void onListSelected(TaskListDetailModel list) {
-
-                    }
-                });
-                taskListAdapter.notifyDataSetChanged();
-                taskListRecycleAll.setAdapter(taskListAdapter);
-                dialogBuilder.cancel();
-            }
-        });
-
-        _branchCancelButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dialogBuilder.cancel();
-            }
-        });
-    }
 }
 
 

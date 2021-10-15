@@ -7,7 +7,6 @@ import android.media.MediaScannerConnection;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.ImageView;
 
@@ -19,8 +18,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 
 import base.endpoint.UploadImageJson;
-import base.network.ResponseCallback;
-import base.network.ResponseStatus;
+import base.network.callback.ResponseCallback;
 import base.screen.BaseDialogActivity;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -107,7 +105,7 @@ public class PictureActivity extends BaseDialogActivity {
 
             MultipartBody.Part body = MultipartBody.Part.createFormData("file", file.getName(), reqFile);
             RequestBody regno = RequestBody.create(MediaType.parse("text/plain"), getIntent().getStringExtra("REGNO"));
-            RequestBody userid = RequestBody.create(MediaType.parse("text/plain"), userdata.select().getUserid());
+            RequestBody userid = RequestBody.create(MediaType.parse("text/plain"), userdata.select().getUsername());
             RequestBody tc = RequestBody.create(MediaType.parse("text/plain"), getIntent().getStringExtra("TC"));
             RequestBody uploadtype = RequestBody.create(MediaType.parse("text/plain"), getIntent().getStringExtra("UPLOAD_TYPE"));
             RequestBody docid = RequestBody.create(MediaType.parse("text/plain"), "14");
@@ -139,7 +137,7 @@ public class PictureActivity extends BaseDialogActivity {
                                     String link = response.body().getPHOTO_PROFILE();
                                     Log.e("Ahh ", "HALO LINK" + link);
                                     startActivity(new Intent(getApplicationContext(), MainActivityDashboard.class));
-                                    userdata.updatelinkProfile(link, userdata.select().getUserid());
+                                    userdata.updatelinkProfile(link, userdata.select().getUsername());
                                 } else {
 
                                     if (response.body().getStatus().equalsIgnoreCase(ResponseCallback.OK)) {

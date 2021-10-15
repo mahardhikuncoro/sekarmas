@@ -8,12 +8,12 @@ android {
         }
     }
 
-    compileSdkVersion 29
+    compileSdkVersion 30
 //    buildToolsVersion "25.0.3"
     defaultConfig {
         applicationId "id"
         minSdkVersion 22
-        targetSdkVersion 29
+        targetSdkVersion 30
         versionCode 1
         versionName "0.0"
         multiDexEnabled true
@@ -48,14 +48,14 @@ android {
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            buildConfigField "String", "SERVER_URL", "\"https://sekarmas.com/\""
+            buildConfigField "String", "SERVER_URL", "\"https://sekarmas.com\""
             //  signingConfig signingConfigs.release
         }
         debug {
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            buildConfigField "String", "SERVER_URL", "\"https://sekarmas.com/\""
+            buildConfigField "String", "SERVER_URL", "\"https://dev.sekarmas.com\""
             //  signingConfig signingConfigs.release
         }
     }
@@ -82,6 +82,7 @@ buildscript {
 
         }
         maven { url "https://jitpack.io" }
+        maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
         google()
     }
     dependencies {
@@ -89,6 +90,7 @@ buildscript {
         classpath 'com.android.tools.build:gradle:4.0.0'
 //        classpath 'com.jakewharton:butterknife-gradle-plugin:9.0.0-SNAPSHOT'
         classpath 'com.google.gms:google-services:4.0.1'
+
     }
 }
 
@@ -138,6 +140,7 @@ dependencies {
     implementation 'com.google.android.gms:play-services-vision:15.0.2'
     implementation 'com.google.maps.android:android-maps-utils:0.4'
     implementation 'com.google.maps:google-maps-services:0.1.6'
+    implementation 'id.zelory:compressor:2.1.0'
 
     implementation 'com.jakewharton:butterknife:8.5.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
@@ -177,9 +180,6 @@ dependencies {
     implementation 'de.hdodenhof:circleimageview:3.0.0'
     implementation 'com.github.sembozdemir:ViewPagerArrowIndicator:1.0.0'
     implementation 'com.android.support:design:24.0.0'
-
-
-
 }
 
 apply plugin: 'com.google.gms.google-services'

@@ -14,10 +14,10 @@ import com.afollestad.materialdialogs.MaterialDialog;
 
 import java.util.List;
 
-import base.network.NetworkConnection;
-import base.sqlite.Config;
-import base.sqlite.TasklistHistoryModel;
-import base.utils.ParameterKey;
+import base.network.callback.NetworkConnection;
+import base.sqlite.model.Config;
+import base.sqlite.model.TasklistHistoryModel;
+import base.utils.enm.ParameterKey;
 import id.sekarmas.mobile.application.R;
 
 

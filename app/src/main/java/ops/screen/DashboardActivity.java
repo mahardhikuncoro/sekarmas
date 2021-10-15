@@ -16,24 +16,24 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.daimajia.slider.library.Animations.DescriptionAnimation;
-import com.daimajia.slider.library.SliderLayout;
-import com.daimajia.slider.library.SliderTypes.BaseSliderView;
-import com.daimajia.slider.library.SliderTypes.TextSliderView;
-import com.daimajia.slider.library.Tricks.ViewPagerEx;
+//import com.daimajia.slider.library.Animations.DescriptionAnimation;
+//import com.daimajia.slider.library.SliderLayout;
+//import com.daimajia.slider.library.SliderTypes.BaseSliderView;
+//import com.daimajia.slider.library.SliderTypes.TextSliderView;
+//import com.daimajia.slider.library.Tricks.ViewPagerEx;
 
 import java.util.List;
 
-import base.network.Slider;
-import base.sqlite.Config;
-import base.sqlite.SliderSQL;
+import base.network.callback.Slider;
+import base.sqlite.model.Config;
+import base.sqlite.model.SliderSQL;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import id.sekarmas.mobile.application.R;
-public class DashboardActivity extends AppCompatActivity implements BaseSliderView.OnSliderClickListener,ViewPagerEx.OnPageChangeListener{
+public class DashboardActivity extends AppCompatActivity {
 
-    @BindView(R.id.slider)
-    SliderLayout sliderLayout;
+//    @BindView(R.id.slider)
+//    SliderLayout sliderLayout;
     private Integer layout;
 
 
@@ -86,7 +86,7 @@ public class DashboardActivity extends AppCompatActivity implements BaseSliderVi
             loadFragment();
 
             Integer slidesize = slidersql.count();
-            if(slidesize > 0){
+          /*  if(slidesize > 0){
                 sliderLayout.setBackgroundColor(getResources().getColor(R.color.white));
 
                 for(int i = 1 ; i <= slidesize; i++){
@@ -118,7 +118,7 @@ public class DashboardActivity extends AppCompatActivity implements BaseSliderVi
                 sliderLayout.setCustomAnimation(new DescriptionAnimation());
                 sliderLayout.setDuration(6000);
                 sliderLayout.addOnPageChangeListener(DashboardActivity.this);
-            }
+            }*/
         }
 
     }
@@ -138,7 +138,7 @@ public class DashboardActivity extends AppCompatActivity implements BaseSliderVi
         fragmentTransaction.commit();
     }
 
-    @Override
+ /*   @Override
     public void onSliderClick(BaseSliderView slider) {
 
         //BIKIN WEB ACTION DISINI
@@ -173,7 +173,7 @@ public class DashboardActivity extends AppCompatActivity implements BaseSliderVi
     public void onPageScrollStateChanged(int state) {
 
     }
-
+*/
     @Override
     public void onBackPressed() {
 

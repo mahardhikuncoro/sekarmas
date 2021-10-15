@@ -3,15 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingRight="10dp"
-    android:paddingLeft="10dp"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
         android:id="@+id/linearImgProfile"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="20dp"
         android:padding="10dp"
         android:layout_marginBottom="5dp"
         android:background="@drawable/half_rounded_grey"
@@ -24,6 +22,7 @@
             android:layout_alignTop="@+id/linearImgProfile"
             android:layout_gravity="center"
             android:paddingBottom="20dp"
+            android:src="@drawable/ic_person_white_24dp"
             android:padding="5dp" />
 
         <LinearLayout
@@ -39,6 +38,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="Tap to edit"
+                android:visibility="gone"
                 android:textColor="@color/black"
                 android:textStyle="bold" />
 
@@ -122,7 +122,7 @@
                 android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "
                 android:hint="@string/hintNama"
                 android:inputType="text"
-                android:nextFocusDown="@+id/etDataNoHp"
+                android:nextFocusDown="@+id/tv_birth_date"
                 android:paddingLeft="10dp"
                 android:textSize="14sp" />
 
@@ -164,21 +164,20 @@
                 android:layout_marginRight="10dp"
                 android:gravity="center_vertical"
                 android:paddingLeft="10dp"
-                android:text="@string/titleBranchName"
+                android:text="Tanggal Lahir"
                 android:textAllCaps="false"
                 android:textSize="14sp"
                 android:textStyle="bold"
                 android:typeface="sans" />
 
             <EditText
-                android:id="@+id/etDataNoHp"
+                android:id="@+id/tv_birth_date"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_below="@+id/titleDataNobranch"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="10dp"
-                android:hint="@string/hintNoHp"
-                android:inputType="number"
+                android:hint="DD-MM-YYY"
                 android:paddingLeft="10dp"
                 android:textSize="14sp" />
 
@@ -189,7 +188,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/linearoutgroup"
-                android:visibility="gone"
                 android:layout_below="@+id/linearoutcabang"
                 android:layout_margin="5dp"
                 android:layout_marginLeft="10dp"
@@ -220,21 +218,122 @@
                 android:layout_marginRight="10dp"
                 android:gravity="center_vertical"
                 android:paddingLeft="10dp"
-                android:text="@string/titleGroupname"
+                android:text="Nomer Handphone"
                 android:textAllCaps="false"
                 android:textSize="14sp"
                 android:textStyle="bold"
                 android:typeface="sans" />
 
             <EditText
-                android:id="@+id/etDataKTP"
+                android:id="@+id/tv_phone"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_below="@+id/titleDataNoKTP"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="10dp"
                 android:hint="@string/hintNoHp"
-                android:inputType="number"
+                android:paddingLeft="10dp"
+                android:textSize="14sp" />
+
+            </LinearLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/linearoutgender"
+                android:layout_below="@+id/linearoutgroup"
+                android:layout_margin="5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+                android:tint="@color/blue_end"
+                android:src="@drawable/ic_profile_group"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/lineargender"
+                android:layout_below="@+id/textGantiPass"
+                android:orientation="vertical">
+
+
+            <TextView
+                android:id="@+id/tv_title_gender"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="10dp"
+                android:gravity="center_vertical"
+                android:paddingLeft="10dp"
+                android:text="Gender"
+                android:textAllCaps="false"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:typeface="sans" />
+
+            <EditText
+                android:id="@+id/tv_gender"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="10dp"
+                android:hint="Laki-laki"
+                android:paddingLeft="10dp"
+                android:textSize="14sp" />
+
+            </LinearLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/linearoutemail"
+                android:layout_below="@+id/linearoutgender"
+                android:layout_margin="5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+                android:tint="@color/blue_end"
+                android:src="@drawable/ic_profile_group"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/linearemail"
+                android:layout_below="@+id/textGantiPass"
+                android:orientation="vertical">
+
+
+            <TextView
+                android:id="@+id/tv_title_email"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="10dp"
+                android:gravity="center_vertical"
+                android:paddingLeft="10dp"
+                android:text="E-mail"
+                android:textAllCaps="false"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:typeface="sans" />
+
+            <EditText
+                android:id="@+id/tv_email"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="10dp"
+                android:hint="@string/hintEmail"
                 android:paddingLeft="10dp"
                 android:textSize="14sp" />
 
