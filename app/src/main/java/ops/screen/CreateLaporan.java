@@ -18,9 +18,11 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.StrictMode;
 import android.provider.MediaStore;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.content.FileProvider;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.content.FileProvider;
+
+
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -70,6 +72,9 @@ public class CreateLaporan extends BaseDialogActivity {
     @BindView(R.id.btn_upload_image_bar)
     LinearLayout btnUploadImage;
 
+    @BindView(R.id.btn_image_bar_loc)
+    LinearLayout btnLocation;
+
     @BindView(R.id.img_upload)
     ImageView imgUpload;
 
@@ -103,8 +108,14 @@ public class CreateLaporan extends BaseDialogActivity {
     LaporanEndpoint laporanEndpoint;
     private Userdata userdata;
     private String selectedIdCategory;
+    private int selectedPosition;
     ArrayList<String> categoryNames;
     ArrayList<CategoryJson> categories;
+    boolean isImageGalery;
+    double lat = 0.0;
+    double lng = 0.0;
+    String alamat = "";
+    String kabupaten = "";
 
     int PERMISSION_ALL = 1;
 
@@ -115,7 +126,6 @@ public class CreateLaporan extends BaseDialogActivity {
         ButterKnife.bind(this);
         initiateApiData();
         getLastLocation();
-        Log.e("CITY NAME "," "+ getCityName());
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(config.getServer())
                 .addConverterFactory(GsonConverterFactory.create())
@@ -128,6 +138,20 @@ public class CreateLaporan extends BaseDialogActivity {
         laporanEndpoint = retrofit.create(LaporanEndpoint.class);
         layoutVideoTitle.setVisibility(View.GONE);
         getCategory();
+        if(getIntent().getExtras() != null){
+            setValueFromMap();
+        }
+    }
+
+    private void setValueFromMap(){
+        tvTitle.setText(getIntent().getStringExtra("LAPORAN_TITLE"));
+        tvPost.setText(getIntent().getStringExtra("LAPORAN_DESC"));
+        spinnerCategory.setSelection(getIntent().getIntExtra("LAPORAN_KATEGORI",0));
+        mCurrentPhotoPath = getIntent().getStringExtra("LAPORAN_FOTO");
+        lng = getIntent().getDoubleExtra("LONGITUDE",0.0);
+        lat = getIntent().getDoubleExtra("LATITUDE",0.0);
+        kabupaten = getIntent().getStringExtra("KABUPATEN");
+        setImageFromGalery();
     }
 
     private void getCategory() {
@@ -164,11 +188,13 @@ public class CreateLaporan extends BaseDialogActivity {
     private void setadapterCategory(){
         SpinnerCostumeAdapter spinnerCostumeAdapter = new SpinnerCostumeAdapter(CreateLaporan.this, categoryNames);
         spinnerCategory.setAdapter(spinnerCostumeAdapter);
+        spinnerCategory.setSelection(getIntent().getIntExtra("LAPORAN_KATEGORI",0));
         spinnerCategory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 selectedIdCategory = categories.get(position).getId();
-                Log.e("SELECTED ", "ID : " + selectedIdCategory);
+                selectedPosition = position;
+                Log.e("SELECTED ", "ID : " + selectedPosition);
             }
 
             @Override
@@ -176,6 +202,8 @@ public class CreateLaporan extends BaseDialogActivity {
 
             }
         });
+        spinnerCategory.setSelection(getIntent().getIntExtra("LAPORAN_KATEGORI",0));
+        Log.e("SELECTED ", "INTENT  : " + getIntent().getIntExtra("LAPORAN_KATEGORI",0));
     }
 
     @OnClick(R.id.btn_post)
@@ -190,20 +218,29 @@ public class CreateLaporan extends BaseDialogActivity {
         } else if(tvPost.getText().toString().equals("")){
             progressBar.setVisibility(View.INVISIBLE);
             dialog(R.string.errorDeskripsi);
-        }
-        else if(fileToUpload==null){
+        }else if(fileToUpload==null){
             progressBar.setVisibility(View.INVISIBLE);
             dialog(R.string.errorIMage);
-        } else {
+        }else if(lng==0.0){
+            progressBar.setVisibility(View.INVISIBLE);
+            dialog(R.string.errorLokasi);
+        }else if(lat==0.0){
+            progressBar.setVisibility(View.INVISIBLE);
+            dialog(R.string.errorLokasi);
+        }else if(kabupaten.equals("")){
+            progressBar.setVisibility(View.INVISIBLE);
+            dialog(R.string.errorLokasi);
+        }
+         else {
 //            MultipartBody.Part body = MultipartBody.Part.createFormData("post_image",file , fileToUpload);
             RequestBody userId = RequestBody.create(MediaType.parse("text/plain"), userdata.select().getId());
             RequestBody title = RequestBody.create(MediaType.parse("text/plain"), tvTitle.getText().toString());
             RequestBody description = RequestBody.create(MediaType.parse("text/plain"), tvPost.getText().toString());
             RequestBody categoryId = RequestBody.create(MediaType.parse("text/plain"), selectedIdCategory);
-            RequestBody kabupaten_kota = RequestBody.create(MediaType.parse("text/plain"), getCityName());
+            RequestBody kabupaten_kota = RequestBody.create(MediaType.parse("text/plain"), kabupaten);
             RequestBody is_public = RequestBody.create(MediaType.parse("text/plain"), "1");
-            RequestBody latitude = RequestBody.create(MediaType.parse("text/plain"), String.valueOf(getLatitude()));
-            RequestBody longitude = RequestBody.create(MediaType.parse("text/plain"), String.valueOf(getLongitude()));
+            RequestBody latitude = RequestBody.create(MediaType.parse("text/plain"), String.valueOf(lat));
+            RequestBody longitude = RequestBody.create(MediaType.parse("text/plain"), String.valueOf(lng));
 
             HashMap<String, RequestBody> map = new HashMap<>();
             map.put("user_id", userId);
@@ -281,6 +318,32 @@ public class CreateLaporan extends BaseDialogActivity {
         }
     }
 
+    @OnClick(R.id.btn_image_bar_loc)
+    public void openMap(){
+        Dialog choose = new AlertDialog.Builder(CreateLaporan.this, AlertDialog.THEME_HOLO_LIGHT)
+                .setTitle("Choose Upload Method")
+                .setNegativeButton("Cancel", null)
+                .setItems(new String[]{"Lokasi Sekarang", "Pilih dari peta"}, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (which == 0) {
+                            lng = getLongitude();
+                            lat = getLatitude();
+                            kabupaten = getCityName();
+                        } else if (which == 1) {
+                            Intent openMap = new Intent(CreateLaporan.this, MapsActivity.class);
+                            openMap.putExtra("LAPORAN_TITLE",tvTitle.getText().toString());
+                            openMap.putExtra("LAPORAN_DESC",tvPost.getText().toString());
+                            openMap.putExtra("LAPORAN_KATEGORI",selectedPosition);
+                            openMap.putExtra("LAPORAN_FOTO",mCurrentPhotoPath);
+                            openMap.putExtra("IS_IMAGE_GALERY",isImageGalery);
+                            startActivity(openMap);
+                        }
+                    }
+                }).create();
+        choose.show();
+    }
+
     private File createImageFile() throws IOException {
         // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
@@ -302,11 +365,12 @@ public class CreateLaporan extends BaseDialogActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode != RESULT_CANCELED) {
+            isImageGalery = true;
             if (requestCode == REQUEST_GALLERY_CODE && resultCode == Activity.RESULT_OK) {
                 uri = data.getData();
                 String mimeType = "";
-                String filePath = getRealPathFromURIPath(uri, CreateLaporan.this);
-                File file = new File(filePath);
+                mCurrentPhotoPath = getRealPathFromURIPath(uri, CreateLaporan.this);
+                File file = new File(mCurrentPhotoPath);
                 try {
                     mimeType = file.toURL().openConnection().getContentType();
                 } catch (IOException e) {
@@ -316,7 +380,6 @@ public class CreateLaporan extends BaseDialogActivity {
                 String formatType = type[0];
                 if (formatType.equals("image")) {
                     try {
-                        ExifInterface exifInterface = new ExifInterface(file.getAbsolutePath());
                         Matrix matrix = new Matrix();
                         matrix.postRotate(getCameraPhotoOrientation(this, uri, file));
                         File fileCompress = new Compressor(this).compressToFile(file);
@@ -339,22 +402,7 @@ public class CreateLaporan extends BaseDialogActivity {
                     fileToUpload = MultipartBody.Part.createFormData("post_image", file.getName(), mFile);
                 }
             } else if (requestCode == REQUEST_CAMERA_CODE && resultCode == Activity.RESULT_OK) {
-                Uri imagePath = Uri.parse(mCurrentPhotoPath);
-                try {
-                    File fileCameraRaw = new File(getRealPathFromURIPath(imagePath, this));
-                    ExifInterface exifInterface = new ExifInterface(fileCameraRaw.getAbsolutePath());
-                    Matrix matrix = new Matrix();
-                    matrix.postRotate(getCameraPhotoOrientation(this, imagePath, fileCameraRaw));
-                    File fileCompress = new Compressor(this).compressToFile(fileCameraRaw);
-                    Bitmap bitmapCompress = new Compressor(this).compressToBitmap(fileCompress);
-                    Bitmap newBitmap = Bitmap.createBitmap(bitmapCompress, 0, 0, bitmapCompress.getWidth(),
-                            bitmapCompress.getHeight(), matrix, true);
-                    imgUpload.setImageBitmap(newBitmap);
-                    RequestBody mFile = RequestBody.create(MediaType.parse("image/jpeg"), fileCompress);
-                    fileToUpload = MultipartBody.Part.createFormData("post_image", fileCompress.getName(), mFile);
-                } catch (IOException e) {
-                    Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
-                }
+                setImageFromCameraToView();
             }
         }
     }
@@ -368,6 +416,62 @@ public class CreateLaporan extends BaseDialogActivity {
             cursor.moveToFirst();
             int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
             return cursor.getString(idx);
+        }
+    }
+    private void setImageFromCameraToView(){
+        Uri imagePath = Uri.parse(mCurrentPhotoPath);
+        try {
+            File fileCameraRaw = new File(getRealPathFromURIPath(imagePath, this));
+            Matrix matrix = new Matrix();
+            matrix.postRotate(getCameraPhotoOrientation(this, imagePath, fileCameraRaw));
+            File fileCompress = new Compressor(this).compressToFile(fileCameraRaw);
+            Bitmap bitmapCompress = new Compressor(this).compressToBitmap(fileCompress);
+            Bitmap newBitmap = Bitmap.createBitmap(bitmapCompress, 0, 0, bitmapCompress.getWidth(),
+                    bitmapCompress.getHeight(), matrix, true);
+            imgUpload.setImageBitmap(newBitmap);
+            RequestBody mFile = RequestBody.create(MediaType.parse("image/jpeg"), fileCompress);
+            fileToUpload = MultipartBody.Part.createFormData("post_image", fileCompress.getName(), mFile);
+        } catch (IOException e) {
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void setImageFromGalery(){
+
+        String mimeType = "";
+        Uri imagePath = Uri.parse(mCurrentPhotoPath);
+        File fileCameraRaw = new File(getRealPathFromURIPath(imagePath, this));
+        try {
+            fileCameraRaw = new File(getRealPathFromURIPath(imagePath, this));
+            mimeType = fileCameraRaw.toURL().openConnection().getContentType();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        String[] type = mimeType.split("/");
+        String formatType = type[0];
+        if (formatType.equals("image")) {
+            try {
+                fileCameraRaw = new File(getRealPathFromURIPath(imagePath, this));
+                Matrix matrix = new Matrix();
+                matrix.postRotate(getCameraPhotoOrientation(this, imagePath, fileCameraRaw));
+                File fileCompress = new Compressor(this).compressToFile(fileCameraRaw);
+                Bitmap imageCompress = new Compressor(this).compressToBitmap(fileCameraRaw);
+                Bitmap newBitmap = Bitmap.createBitmap(imageCompress, 0, 0, imageCompress.getWidth(),
+                        imageCompress.getHeight(), matrix, true);
+                imgUpload.setVisibility(View.VISIBLE);
+                imgUpload.setImageBitmap(newBitmap);
+                layoutVideoTitle.setVisibility(View.GONE);
+                RequestBody mFile = RequestBody.create(MediaType.parse(mimeType), fileCompress);
+                fileToUpload = MultipartBody.Part.createFormData("post_image", fileCompress.getName(), mFile);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else if (formatType.equals("video")) {
+            layoutVideoTitle.setVisibility(View.VISIBLE);
+            imgUpload.setVisibility(View.GONE);
+            tvVideoTitle.setText(fileCameraRaw.getName());
+            RequestBody mFile = RequestBody.create(MediaType.parse(mimeType), fileCameraRaw);
+            fileToUpload = MultipartBody.Part.createFormData("post_image", fileCameraRaw.getName(), mFile);
         }
     }
 

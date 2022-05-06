@@ -8,12 +8,13 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.hardware.Camera;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
+
+import androidx.core.content.ContextCompat;
 
 import base.screen.BaseDialogActivity;
 import id.sekarmas.mobile.application.R;

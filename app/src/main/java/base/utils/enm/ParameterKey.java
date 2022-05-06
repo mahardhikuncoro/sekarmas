@@ -21,9 +21,10 @@ public class ParameterKey {
     public static final String ASSIGNED_TC      = "ASSIGNED_TC";
     public static final String MENU_DESC        = "MENU_DESC";
     public static final String SCREEN_TASK      = "SCREEN_TASK";
-    public static final String SCREEN_HISTORY   = "SCREEN_HISTORY";
+    public static final String SCREEN_UMKM      = "SCREEN_HISTORY";
     public static final String SCREEN_PROFILE   = "SCREEN_PROFILE";
     public static final String IS_ADD           = "IS_ADD";
     public static final String TAB_TUGASKU      = "TAB_TUGASKU";
     public static final String SETDATA_TYPE     = "SETDATA_TYPE";
+    public static final String ID_UMKM          = "ID_UMKM";
 }

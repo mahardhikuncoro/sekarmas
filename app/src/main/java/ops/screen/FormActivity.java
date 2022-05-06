@@ -9,10 +9,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,6 +16,11 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toolbar;
+
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.google.gson.Gson;
 
@@ -107,12 +108,6 @@ public class FormActivity extends BaseDialogActivity {
         }else{
             callRetreiveData();
         }
-    }
-    private void initViews() {
-        setSupportActionBar(toolbar);
-        if(getIntent().getExtras() != null)
-            getSupportActionBar().setTitle(getIntent().getStringExtra("SECTION_NAME"));
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     public Dialog showProgressDialog(Context context, String message){
@@ -293,7 +288,9 @@ public class FormActivity extends BaseDialogActivity {
 
     private void setToolbar(){
         titletxtform.setText(getIntent().getStringExtra("SECTION_NAME"));
-        toolbar.setOverflowIcon(ContextCompat.getDrawable(this, R.drawable.ic_menu));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            toolbar.setOverflowIcon(ContextCompat.getDrawable(this, R.drawable.ic_menu));
+        }
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {

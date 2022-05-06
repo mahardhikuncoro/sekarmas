@@ -9,17 +9,16 @@
         android:title="Beranda" />
 
     <item
-        android:id="@+id/navigation_history"
-        android:icon="@drawable/ic_history"
-        android:iconTint="@color/colorPrimaryDark"
-        android:visible="false"
-        android:title="Riwayat" />
-
-    <item
         android:id="@+id/navigation_task"
         android:icon="@drawable/ic_task_navigation"
         android:iconTint="@color/colorPrimaryDark"
         android:title="Laporan" />
+
+    <item
+        android:id="@+id/navigation_umkm"
+        android:icon="@drawable/ic_umkm"
+        android:iconTint="@color/colorPrimaryDark"
+        android:title="UMKM" />
 
     <item
         android:id="@+id/navigation_profile"

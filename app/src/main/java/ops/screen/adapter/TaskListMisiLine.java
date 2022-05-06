@@ -13,7 +13,7 @@ import ops.screen.adapter.TaskListMisiAdapter;
 
 public class TaskListMisiLine extends TaskListMisiAdapter.ViewHolder {
 
-    @BindView(R.id.txt_username)
+    @BindView(R.id.namaNasabah)
     TextView namaNasabah;
     @BindView(R.id.idNasabah)
     TextView idNasabah;

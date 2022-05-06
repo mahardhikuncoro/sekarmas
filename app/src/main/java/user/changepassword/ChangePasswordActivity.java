@@ -4,7 +4,7 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.design.widget.TextInputLayout;
+import com.google.android.material.textfield.TextInputLayout;
 import android.util.Log;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -39,7 +39,7 @@ public class ChangePasswordActivity extends BaseDialogActivity {
         setContentView(R.layout.change_password);
         ButterKnife.bind(this);
         initiateApiData();
-        getLastLocation();
+//        getLastLocation();
         setToolbar();
     }
 

@@ -10,11 +10,10 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.NonNull;
-import android.support.design.widget.BottomNavigationView;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.Toolbar;
+import androidx.annotation.NonNull;
+
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.Menu;
@@ -24,6 +23,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.getbase.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.jakewharton.picasso.OkHttp3Downloader;
 import com.squareup.picasso.Picasso;
 
@@ -50,7 +51,7 @@ import ops.screen.fragment.ProfileFragment;
 import ops.screen.fragment.TaskListFragment;
 import ops.screen.fragment.HomeFragment;
 import id.sekarmas.mobile.application.R;
-import ops.screen.fragment.TaskListHistoryFragment;
+import ops.screen.fragment.UmkmFragment;
 import ops.screen.offline.DokumenOfflineList;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -88,7 +89,8 @@ public class MainActivityDashboard extends BaseDialogActivity implements Service
     private ArrayList<Slider> sliderDataList;
     SliderSQL sliderdql;
     private ArrayList<String> sliderList;
-    @BindView(R.id.toolbar) Toolbar toolbar;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
     @BindView(R.id.imgprofile)
     ImageView imgprofile;
     @BindView(R.id.txtViewName) TextView txtviewname;
@@ -99,20 +101,20 @@ public class MainActivityDashboard extends BaseDialogActivity implements Service
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        transparentStatusbar();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.bottom_navigation_view);
         ButterKnife.bind(this);
+        transparentStatusbar();
         toolbar.inflateMenu(R.menu.menu_actionbar);
         sliderdql = new SliderSQL(this);
         userdata = new Userdata(this);
         initToolbar();
         setToolbar();
         initiateApiData();
-        getLastLocation();
-        longitude = getLongitude();
-        latitude = getLatitude();
-        addres = getAddress();
+//        getLastLocation();
+//        longitude = getLongitude();
+//        latitude = getLatitude();
+//        addres = getAddress();
 //        setToolbarMenu(toolbar);
         callApiSlider();
         setNavigationbottom();
@@ -130,9 +132,9 @@ public class MainActivityDashboard extends BaseDialogActivity implements Service
             bundle.putString("ASSIGNED_TC", intent.getStringExtra("ASSIGNED_TC") == null ? "" : intent.getStringExtra("ASSIGNED_TC"));
             selectedItemId = R.id.navigation_task;
             loadFragment(new HomeFragment());
-        }else  if (intent.hasExtra(ParameterKey.SCREEN_HISTORY)) {
-             selectedItemId = R.id.navigation_history;
-             loadFragment(new TaskListHistoryFragment());
+        }else  if (intent.hasExtra(ParameterKey.SCREEN_UMKM)) {
+            selectedItemId = R.id.navigation_umkm;
+            loadFragment(new UmkmFragment());
         }else  if (intent.hasExtra(ParameterKey.SCREEN_TASK)) {
             selectedItemId = R.id.navigation_task;
             loadFragment(new HomeFragment());
@@ -149,11 +151,11 @@ public class MainActivityDashboard extends BaseDialogActivity implements Service
 
         bottomNavigationView = (BottomNavigationView) findViewById(R.id.navigation);
         bottomNavigationView.getMenu().add(Menu.NONE, R.id.navigation_home, Menu.NONE, "Beranda").setIcon(R.drawable.ic_home);
-//        bottomNavigationView.getMenu().add(Menu.NONE, R.id.navigation_history, Menu.NONE, "Riwayat").setIcon(R.drawable.ic_history);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
             bottomNavigationView.getMenu().add(Menu.NONE, R.id.navigation_task, Menu.NONE, "Laporan").setIcon(R.drawable.ic_task_navigation);
         else
             bottomNavigationView.getMenu().add(Menu.NONE, R.id.navigation_task, Menu.NONE, "Laporan").setIcon(R.drawable.ic_task_navigation);
+        bottomNavigationView.getMenu().add(Menu.NONE, R.id.navigation_umkm, Menu.NONE, "Sidebaru").setIcon(R.drawable.ic_umkm);
         bottomNavigationView.getMenu().add(Menu.NONE, R.id.navigation_profile, Menu.NONE, "Profil").setIcon(R.drawable.ic_profile);
 
         bottomNavigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
@@ -166,9 +168,9 @@ public class MainActivityDashboard extends BaseDialogActivity implements Service
         }else if(intent.hasExtra(ParameterKey.SCREEN_TASK)){
             selectedItemId = R.id.navigation_task;
             bottomNavigationView.setSelectedItemId(R.id.navigation_task);
-        }else if(intent.hasExtra(ParameterKey.SCREEN_HISTORY)){
-            selectedItemId = R.id.navigation_history;
-            bottomNavigationView.setSelectedItemId(R.id.navigation_history);
+        }else if(intent.hasExtra(ParameterKey.SCREEN_UMKM)){
+            selectedItemId = R.id.navigation_umkm;
+            bottomNavigationView.setSelectedItemId(R.id.navigation_umkm);
         }
     }
 
@@ -196,22 +198,19 @@ public class MainActivityDashboard extends BaseDialogActivity implements Service
                     }
                     selectedItemId = R.id.navigation_home;
                     return true;
-                case R.id.navigation_history:
-                    bundle = new Bundle();
-                    bundle.putString("ASSIGNED_TYPE", "2");
-                    bundle.putString("ASSIGNED_TC", "5.0");
-                    fragment = new TaskListHistoryFragment();
-                    if(selectedItemId != R.id.navigation_history) {
-//                        startActivity(new Intent(getApplicationContext(),FormActivity.class));
-                        loadFragment(fragment);
-                    }
-                    selectedItemId = R.id.navigation_history;
-                    return true;
+
                 case R.id.navigation_task:
                     fragment = new HomeFragment();
                     if(selectedItemId != R.id.navigation_task)
                         loadFragment(fragment);
                     selectedItemId = R.id.navigation_task;
+                    return true;
+
+                case R.id.navigation_umkm:
+                    fragment = new UmkmFragment();
+                    if(selectedItemId != R.id.navigation_umkm)
+                        loadFragment(fragment);
+                    selectedItemId = R.id.navigation_umkm;
                     return true;
                 case R.id.navigation_profile:
                     fragment = new ProfileFragment();

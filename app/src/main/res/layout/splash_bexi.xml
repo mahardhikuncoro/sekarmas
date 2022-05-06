@@ -9,13 +9,13 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="220dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="100dp"
         android:background="@drawable/red_line_new"/>
 
     <ImageView
         android:id="@+id/img_icon"
         android:layout_width="match_parent"
-        android:layout_height="120dp"
+        android:layout_height="200dp"
         android:gravity="center"
-        android:src="@mipmap/ic_logo"/>
+        android:src="@drawable/ic_logo_big"/>
 </RelativeLayout>

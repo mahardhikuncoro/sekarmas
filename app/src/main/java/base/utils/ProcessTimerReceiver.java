@@ -8,7 +8,7 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.os.Looper;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.util.Log;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -51,7 +51,7 @@ public class ProcessTimerReceiver extends BroadcastReceiver {
         this.context = context;
         initiateApiData();
         Log.e("TIMER", " TIMERRRR ONFINISH " + text);
-        getLastLocation();
+//        getLastLocation();
     }
 
     private void initiateApiData(){

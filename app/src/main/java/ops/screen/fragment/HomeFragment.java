@@ -13,11 +13,12 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.core.content.ContextCompat;
+
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -31,6 +32,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.getbase.floatingactionbutton.FloatingActionButton;
 //import com.daimajia.slider.library.Animations.DescriptionAnimation;
 //import com.daimajia.slider.library.SliderLayout;
 //import com.daimajia.slider.library.SliderTypes.BaseSliderView;
@@ -152,7 +154,6 @@ public class HomeFragment extends Fragment  {
         View view = inflater.inflate(R.layout.dashboard_activity, container, false);
         ButterKnife.bind(this, view);
         baseDialogActivity = new MainActivityDashboard();
-        fbCreatePost.setAlpha(0.5f);
         initialisation();
         prepare();
         callTopAssign();
@@ -244,7 +245,7 @@ public class HomeFragment extends Fragment  {
 
                 @Override
                 public void onFailure(Call<LaporanJson> call, Throwable t) {
-
+                    dialog.dismiss();
                 }
             });
 

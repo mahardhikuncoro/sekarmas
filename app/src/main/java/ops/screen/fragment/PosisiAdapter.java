@@ -3,7 +3,7 @@ package ops.screen.fragment;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -61,7 +61,7 @@ public class PosisiAdapter extends RecyclerView.Adapter<PosisiAdapter.ViewHolder
             @Override
             public void onClick(View view) {
                 String appnumber = list.get(position).getAppnumber();
-                Intent intent = new Intent(context, HistoryListDetail.class);
+                Intent intent = new Intent(context, UmkmDetailActivity.class);
                 intent.putExtra(ParameterKey.REGNO, appnumber);
                 context.startActivity(intent);
             }

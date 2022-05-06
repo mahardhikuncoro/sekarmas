@@ -4,13 +4,14 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <android.support.v7.widget.CardView
+    <androidx.cardview.widget.CardView
         android:id="@+id/coorLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/grey"
         android:elevation="5dp"
         app:cardCornerRadius="15dp"
+
         android:layout_below="@+id/appBar">
 
 
@@ -30,6 +31,6 @@
             android:background="@color/toolbarTransparent"
             app:unselected_color="@color/primary_light" />
 
-    </android.support.v7.widget.CardView>
+    </androidx.cardview.widget.CardView>
 
 </LinearLayout>

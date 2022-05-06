@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyC6CpV51hO5WmU5RjvYKsh-D4T74lTsYxE</string>
     <string name="app">Sekarmas</string>
     <string name="app_name">Sekarmas</string>
     <string name="companyName">Sekarmas</string>
@@ -26,6 +27,7 @@
     <string name="titleSummaryKredit">Summary Kredit</string>
     <string name="titleDataPribadi">Data Pribadi</string>
     <string name="titleNama">Nama</string>
+    <string name="titleNamaSedebar">Nama sidebaru</string>
 
     <string name="titleGender">Jenis Kelamin</string>
     <string name="titleEmail">Email</string>
@@ -371,6 +373,12 @@
     <string name="errorJudul">Mohon isi judul laporan !</string>
     <string name="errorDeskripsi">Mohon isi deskripsi laporan !</string>
     <string name="errorIMage">Mohon ambil gambar untuk laporan !</string>
+    <string name="errorLokasi">Mohon tentukan lokasi laporan !</string>
+    <string name="errorNamasidebaru">Mohon isi nama sidebaru !</string>
+    <string name="errorAlamatsidebaru">Mohon isi alamat sidebaru !</string>
+    <string name="errorEmailsidebaru">Mohon isi e-mail sidebaru !</string>
+    <string name="errorImagesidebaru">Mohon pilih foto profil sidebaru !</string>
+    <string name="errorApi"> Terjadi Kesalahan mohon ulangi beberapa saat lagi !</string>
 
 
 

@@ -52,7 +52,7 @@
             android:value="GlideModule" />
 
         <provider
-            android:name="android.support.v4.content.FileProvider"
+            android:name="androidx.core.content.FileProvider"
             android:authorities="id.sekarmas.mobile.application.fileProvider"
             android:exported="false"
             android:grantUriPermissions="true">
@@ -102,6 +102,11 @@
 <!--            android:name="ops.DinamicLayout"-->
 <!--            android:windowSoftInputMode="adjustPan"-->
 <!--            android:screenOrientation="portrait"></activity>-->
+        <activity
+            android:name="user.DashboardActivity"
+            android:windowSoftInputMode="stateHidden"
+            android:screenOrientation="portrait">
+        </activity>
 
         <activity
             android:name="ops.screen.camera.MainActivityCamera"
@@ -136,7 +141,8 @@
         </activity>
 
         <activity
-            android:name="ops.screen.fragment.HistoryListDetail"
+            android:name="ops.screen.fragment.UmkmDetailActivity"
+            android:windowSoftInputMode="stateHidden"
             android:screenOrientation="portrait">
         </activity>
 

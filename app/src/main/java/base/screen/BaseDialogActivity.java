@@ -17,11 +17,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Looper;
 import android.provider.Settings;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.MenuItem;
@@ -30,6 +25,12 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
+import android.widget.Toolbar;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -56,6 +57,7 @@ import base.network.callback.NetworkClient;
 import base.network.callback.NetworkConnection;
 import base.service.login.EndpointLogin;
 import base.service.information.InformationEndpoint;
+import base.service.umkm.UmkmEndpoint;
 import base.sqlite.model.FormData;
 import base.sqlite.model.SQLiteConfig;
 import base.sqlite.model.Config;
@@ -80,6 +82,7 @@ public class BaseDialogActivity extends AppCompatActivity {
     protected NetworkConnection networkConnection;
     protected EndPoint endPoint;
     protected EndpointLogin newEndPoint;
+    protected UmkmEndpoint umkmEndpoint;
     protected InformationEndpoint informationEndpoint;
     protected TelephonyManager telephonyManager;
     protected String UserImei = "";
@@ -127,9 +130,8 @@ public class BaseDialogActivity extends AppCompatActivity {
 
 //        newEndPoint = LoginUtils.getLogin();
         newEndPoint = retrofit.create(EndpointLogin.class);
+        umkmEndpoint = retrofit.create(UmkmEndpoint.class);
 
-
-        TelephonyManager telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
     }
 
     protected void transparentStatusbar(){
@@ -286,7 +288,9 @@ public class BaseDialogActivity extends AppCompatActivity {
     }
 
     protected void setToolbarMenu(Toolbar toolbar) {
-        toolbar.setOverflowIcon(ContextCompat.getDrawable(this, R.drawable.ic_menu));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            toolbar.setOverflowIcon(ContextCompat.getDrawable(this, R.drawable.ic_menu));
+        }
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
@@ -415,8 +419,8 @@ public class BaseDialogActivity extends AppCompatActivity {
                                 } else {
                                     setLatitude(location.getLatitude());
                                     setLongitude(location.getLongitude());
-                                    Log.e("","LONGITUDE " + getLongitude());
-                                    Log.e("","LATITUDE " + getLatitude());
+                                    Log.e("LONGITUDE","LONGITUDE :" + getLongitude());
+                                    Log.e("LONGITUDE","LATITUDE : " + getLatitude());
                                     if(networkConnection.isNetworkConnected()) {
                                         setAddress(getCompleteAddressString(location.getLatitude(), location.getLongitude()));
                                         setCityName(getCityNameString(location.getLatitude(),location.getLongitude()));

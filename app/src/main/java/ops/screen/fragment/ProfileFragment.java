@@ -2,6 +2,7 @@ package ops.screen.fragment;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -10,9 +11,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -262,7 +262,7 @@ public class ProfileFragment extends Fragment implements ServiceReceiver.Receive
             intentprofile.putExtra("REGNO","11");
             intentprofile.putExtra("TC","5.0");
             intentprofile.putExtra("UPLOAD_TYPE","profile");
-            startActivity(intentprofile);
+//            startActivity(intentprofile);
         }
 //        intentChooser(null,"HALLO");
     }

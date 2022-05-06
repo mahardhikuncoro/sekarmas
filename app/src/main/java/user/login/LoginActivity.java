@@ -5,7 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.design.widget.TextInputLayout;
+import com.google.android.material.textfield.TextInputLayout;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -32,6 +32,7 @@ import butterknife.OnClick;
 import id.sekarmas.mobile.application.R;
 import ops.screen.MainActivityDashboard;
 import ops.screen.offline.DokumenOfflineList;
+import user.DashboardActivity;
 
 public class LoginActivity extends LoginAcitivityApiData {
 
@@ -64,7 +65,7 @@ public class LoginActivity extends LoginAcitivityApiData {
         transparentStatusbar();
         initiateApiData();
         if(userdata.count()>0){
-            Intent intent = new Intent(getApplicationContext(),MainActivityDashboard.class);
+            Intent intent = new Intent(getApplicationContext(), DashboardActivity.class);
             startActivity(intent);
         } else{
             try {
@@ -74,7 +75,7 @@ public class LoginActivity extends LoginAcitivityApiData {
             }
         }
         sliderdql = new SliderSQL(this);
-        getLastLocation();
+//        getLastLocation();
     }
 
     private void prepare() throws IOException {

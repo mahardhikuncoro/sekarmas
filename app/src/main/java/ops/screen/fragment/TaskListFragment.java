@@ -12,13 +12,14 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.TextInputEditText;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.view.ViewPager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import com.getbase.floatingactionbutton.FloatingActionButton;
+
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,6 +39,7 @@ import com.daimajia.slider.library.Indicators.PagerIndicator;
 import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.daimajia.slider.library.Tricks.ViewPagerEx;
+import com.google.android.material.textfield.TextInputEditText;
 import com.sembozdemir.viewpagerarrowindicator.library.ViewPagerArrowIndicator;
 
 import java.util.ArrayList;
@@ -157,7 +159,6 @@ public class TaskListFragment extends Fragment implements TaskListInterface, Bas
 //        showMenu();
 //        searchList();
         loadSlider();
-        fbKontak.setAlpha(0.5f);;
         viewPager.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -638,8 +639,8 @@ public class TaskListFragment extends Fragment implements TaskListInterface, Bas
         taskListRecycleAll.setAdapter(taskListAdapter);
 
         taskListAdapterMisi = new TaskListMisiAdapter(getActivity().getApplicationContext(), taskListListMisi);
-        taskListAdapter.notifyDataSetChanged();
-        taskListRecycleMisi.setAdapter(taskListAdapter);
+        taskListAdapterMisi.notifyDataSetChanged();
+        taskListRecycleMisi.setAdapter(taskListAdapterMisi);
     }
 }
 

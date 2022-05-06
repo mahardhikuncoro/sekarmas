@@ -6,10 +6,12 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
+
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
+
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -41,7 +43,8 @@ import user.changepassword.ChangePasswordActivity;
 
 public class FullEntryList extends BaseDialogActivity implements FullEntryCallback {
 
-    @BindView(R.id.toolbar) Toolbar toolbar;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
     @BindView(R.id.titleList) TextView titleList;
     @BindView(R.id.btnback_toolbar) ImageView btnback_toolbar;
     @BindView(R.id.recycleMenuEntry) RecyclerView recyclerView;
@@ -65,7 +68,7 @@ public class FullEntryList extends BaseDialogActivity implements FullEntryCallba
         initiateApiData();
         toolbar.inflateMenu(R.menu.menu_actionbar);
         setToolbar();
-        getLastLocation();
+//        getLastLocation();
         taskListList = new ArrayList<>();
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);

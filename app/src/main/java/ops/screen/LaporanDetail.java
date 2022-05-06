@@ -1,10 +1,11 @@
 package ops.screen;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -23,17 +24,13 @@ import base.network.callback.NetworkClientNew;
 import base.screen.BaseDialogActivity;
 import base.service.URL;
 import base.service.comment.CommentEndpoint;
-import base.service.comment.CommentUtils;
-import base.service.laporan.LaporanEndpoint;
-import base.service.laporan.LaporanUtils;
-import base.service.login.EndpointLogin;
+import base.utils.enm.ParameterKey;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import id.sekarmas.mobile.application.R;
 import okhttp3.OkHttpClient;
 import ops.screen.adapter.CommentAdapter;
-import ops.screen.adapter.LaporanItem;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -71,7 +68,7 @@ public class LaporanDetail extends BaseDialogActivity {
 
     LinearLayout linearLayout;
 
-    String idComment;
+    String idLaporan;
     CommentEndpoint commentEndpoint;
 
     @Override
@@ -81,7 +78,7 @@ public class LaporanDetail extends BaseDialogActivity {
         ButterKnife.bind(this);
 
         initiateApiData();
-        idComment = getIntent().getStringExtra("id_laporan");
+        idLaporan = getIntent().getStringExtra("id_laporan");
 //        commentEndpoint = CommentUtils.getCommentUrl();
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(config.getServer())
@@ -96,7 +93,7 @@ public class LaporanDetail extends BaseDialogActivity {
     }
     private  void getDetailPost(){
         progressBar.setVisibility(View.VISIBLE);
-        commentEndpoint.getDetailComment("Bearer " + userdata.select().getAccesstoken(), idComment).enqueue(new Callback<CommentJson>() {
+        commentEndpoint.getDetailComment("Bearer " + userdata.select().getAccesstoken(), idLaporan).enqueue(new Callback<CommentJson>() {
             @Override
             public void onResponse(Call<CommentJson> call, Response<CommentJson> response) {
                 if(response.isSuccessful()){
@@ -189,7 +186,7 @@ public class LaporanDetail extends BaseDialogActivity {
     public void sendComment(){
         if(etComment.length()>0) {
             hideKeyboard();
-            commentEndpoint.postComment("Bearer " + userdata.select().getAccesstoken(), idComment, etComment.getText().toString()).enqueue(new Callback<CommentJson>() {
+            commentEndpoint.postComment("Bearer " + userdata.select().getAccesstoken(), idLaporan, etComment.getText().toString()).enqueue(new Callback<CommentJson>() {
                 @Override
                 public void onResponse(Call<CommentJson> call, Response<CommentJson> response) {
                     if (response.isSuccessful()){
@@ -206,6 +203,15 @@ public class LaporanDetail extends BaseDialogActivity {
     }
     @OnClick(R.id.btnback_toolbar)
     public void clickBack(){
-        finish();
+        Intent intent = new Intent(LaporanDetail.this, MainActivityDashboard.class);
+        intent.putExtra(ParameterKey.SCREEN_UMKM, true);
+        startActivity(intent);
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(LaporanDetail.this, MainActivityDashboard.class);
+        intent.putExtra(ParameterKey.SCREEN_UMKM, true);
+        startActivity(intent);
     }
 }

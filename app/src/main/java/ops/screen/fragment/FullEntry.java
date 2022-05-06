@@ -7,11 +7,12 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.design.widget.TextInputEditText;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
+
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
+
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -26,6 +27,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -52,7 +54,8 @@ import user.changepassword.ChangePasswordActivity;
 
 public class FullEntry extends BaseDialogActivity implements FullEntryCallback {
 
-    @BindView(R.id.toolbar) Toolbar toolbar;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
     @BindView(R.id.btnback_toolbar) ImageView btnback_toolbar;
     @BindView(R.id.recycleMenuEntry) RecyclerView recyclerView;
     @BindView(R.id.txtFullname) TextView txtFullname;
@@ -77,7 +80,7 @@ public class FullEntry extends BaseDialogActivity implements FullEntryCallback {
         setContentView(R.layout.fullentry_fragment);
         ButterKnife.bind(this);
         initiateApiData();
-        getLastLocation();
+//        getLastLocation();
         toolbar.inflateMenu(R.menu.menu_actionbar);
         setToolbar();
         taskListList = new ArrayList<>();
