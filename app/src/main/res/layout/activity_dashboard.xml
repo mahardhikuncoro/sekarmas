@@ -15,13 +15,13 @@
             android:id="@+id/txtViewName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/white"
-            android:gravity="center"
             android:layout_centerVertical="true"
+            android:gravity="center"
             android:singleLine="false"
-            android:textStyle="bold"
+            android:text="Kasir Indomaret"
+            android:textColor="@color/white"
             android:textSize="24dp"
-            android:text="Kasir Indomaret"/>
+            android:textStyle="bold" />
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/imgprofile"
@@ -42,39 +42,88 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
-            android:elevation="10dp"
+            android:elevation="5dp"
             android:id="@+id/layoutSlider"
+            android:background="@drawable/shape_rounded_grey_corner"
             android:orientation="vertical">
-            <include
-                layout="@layout/slider"/>
+
+            <include layout="@layout/slider" />
         </RelativeLayout>
 
         <LinearLayout
             android:id="@+id/dash1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="150dp"
+            android:layout_marginTop="100dp"
+            android:paddingTop="100dp"
             android:background="@color/white"
             android:gravity="center"
             android:padding="5dp"
             android:orientation="vertical">
 
-            <base.utils.ExpandableHeightGridView
-                android:id="@+id/gridView"
-                android:layout_marginTop="150dp"
-                android:padding="5dp"
+
+            <androidx.core.widget.NestedScrollView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:columnWidth="110dp"
-                android:drawSelectorOnTop="true"
-                android:gravity="center"
-                android:numColumns="auto_fit"
-                android:stretchMode="columnWidth"
-                android:verticalSpacing="5dp"
-                android:focusable="true"
-                android:clickable="true"
-                android:horizontalSpacing="5dp"
-                />
+                android:layout_marginTop="120dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/txt_title_menu"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp"
+                        android:text="MENU"
+                        android:textStyle="bold"/>
+
+                    <base.utils.ExpandableHeightGridView
+                        android:layout_below="@+id/txt_title_menu"
+                        android:id="@+id/gridView"
+                        android:padding="5dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:columnWidth="110dp"
+                        android:drawSelectorOnTop="true"
+                        android:gravity="center"
+                        android:numColumns="auto_fit"
+                        android:stretchMode="columnWidth"
+                        android:verticalSpacing="5dp"
+                        android:focusable="true"
+                        android:clickable="true"
+                        android:horizontalSpacing="5dp" />
+
+                    <TextView
+                        android:layout_below="@+id/gridView"
+                        android:id="@+id/txt_title_menu_lain"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp"
+                        android:text="Lain-Lain"
+                        android:textStyle="bold"/>
+
+                    <base.utils.ExpandableHeightGridView
+                        android:layout_below="@+id/txt_title_menu_lain"
+                        android:id="@+id/gridView_lain"
+                        android:padding="5dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:columnWidth="110dp"
+                        android:drawSelectorOnTop="true"
+                        android:gravity="center"
+                        android:numColumns="auto_fit"
+                        android:stretchMode="columnWidth"
+                        android:verticalSpacing="5dp"
+                        android:focusable="true"
+                        android:clickable="true"
+                        android:horizontalSpacing="5dp"
+                        />
+
+                </RelativeLayout>
+
+            </androidx.core.widget.NestedScrollView>
 
 
         </LinearLayout>

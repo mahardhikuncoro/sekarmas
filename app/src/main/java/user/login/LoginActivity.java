@@ -45,12 +45,7 @@ public class LoginActivity extends LoginAcitivityApiData {
 //    @BindView(R.id.txtRegister) TextView txtReg;
     @BindView(R.id.buttonLogin) Button btnLogin;
     @BindView(R.id.bc_login) RelativeLayout bc_login;
-    @BindView(R.id.compName) TextView companyName;
     @BindView(R.id.compnameBelow) TextView compnameBelow;
-    @BindView(R.id.imagePropic) ImageView imagePropic;
-    @BindView(R.id.txtViewUsername) TextView txtviewusername;
-    @BindView(R.id.imageOffline) ImageView _imageOffline;
-    @BindView(R.id.img_icon) ImageView img_icon;
     private Boolean doubleBackToExitPressedOnce = false;
 
     @BindString(R.string.buildName) String buildName;
@@ -58,7 +53,6 @@ public class LoginActivity extends LoginAcitivityApiData {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-//        transparentStatusbar();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.base_signin);
         ButterKnife.bind(this);
@@ -84,7 +78,6 @@ public class LoginActivity extends LoginAcitivityApiData {
             layoutInputPassword.setVisibility(View.VISIBLE);
             inputPassword.setVisibility(View.VISIBLE);
             txtLupaPass.setVisibility(View.VISIBLE);
-            companyName.setText(" ");
             btnLogin.setText("Login");
     }
 
@@ -227,9 +220,6 @@ public class LoginActivity extends LoginAcitivityApiData {
 //        }
     }
 
-    @OnClick(R.id.imageOffline)public void goOffline(){
-        startActivity(new Intent(LoginActivity.this,DokumenOfflineList.class));
-    }
 
 
 

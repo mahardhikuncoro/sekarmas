@@ -12,7 +12,7 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import id.sekarmas.mobile.application.R;
-import ops.screen.InformationDetail;
+import user.informasi.InformasiDetail;
 
 public class SimpleFragment extends Fragment {
 
@@ -40,7 +40,7 @@ public class SimpleFragment extends Fragment {
         frame.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity().getApplicationContext(), InformationDetail.class);
+                Intent intent = new Intent(getActivity().getApplicationContext(), InformasiDetail.class);
                 intent.putExtra(KEY_MESSAGE,  getArguments().getString(KEY_MESSAGE));
                 intent.putExtra(KEY_IMAGE,  getArguments().getString(KEY_IMAGE));
                 intent.putExtra(KEY_DESC,  getArguments().getString(KEY_DESC));

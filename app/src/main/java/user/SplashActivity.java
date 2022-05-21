@@ -40,7 +40,7 @@ public class SplashActivity extends AppCompatActivity {
                 .build();
         Fabric.with(fabric);
 
-        if(!isRooted()) {
+//        if(!isRooted()) {
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -52,9 +52,9 @@ public class SplashActivity extends AppCompatActivity {
                     }
                 }
             }, SPLASH_TIME);
-        }else{
-            popUpMessage(getResources().getString(R.string.rootedDevice));
-        }
+//        }else{
+//            popUpMessage(getResources().getString(R.string.rootedDevice));
+//        }
     }
 
     private static boolean isRooted() {

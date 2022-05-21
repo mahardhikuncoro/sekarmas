@@ -55,9 +55,11 @@ import base.network.callback.EndPoint;
 import base.network.callback.LoginJson;
 import base.network.callback.NetworkClient;
 import base.network.callback.NetworkConnection;
+import base.service.kontak.KontakEndpoint;
 import base.service.login.EndpointLogin;
 import base.service.information.InformationEndpoint;
 import base.service.umkm.UmkmEndpoint;
+import base.service.visimisi.VisiMisiEndpoint;
 import base.sqlite.model.FormData;
 import base.sqlite.model.SQLiteConfig;
 import base.sqlite.model.Config;
@@ -84,6 +86,8 @@ public class BaseDialogActivity extends AppCompatActivity {
     protected EndpointLogin newEndPoint;
     protected UmkmEndpoint umkmEndpoint;
     protected InformationEndpoint informationEndpoint;
+    protected VisiMisiEndpoint visiMisiEndpoint;
+    protected KontakEndpoint kontakEndpoint;
     protected TelephonyManager telephonyManager;
     protected String UserImei = "";
     protected Userdata userdata;
@@ -128,9 +132,11 @@ public class BaseDialogActivity extends AppCompatActivity {
 
         telephonyManager = (TelephonyManager) getApplicationContext().getSystemService(Context.TELEPHONY_SERVICE);
 
-//        newEndPoint = LoginUtils.getLogin();
         newEndPoint = retrofit.create(EndpointLogin.class);
         umkmEndpoint = retrofit.create(UmkmEndpoint.class);
+        informationEndpoint =retrofit.create(InformationEndpoint.class);
+        visiMisiEndpoint = retrofit.create(VisiMisiEndpoint.class);
+        kontakEndpoint = retrofit.create(KontakEndpoint.class);
 
     }
 
@@ -523,6 +529,7 @@ public class BaseDialogActivity extends AppCompatActivity {
     }
 
     protected void  callLogout(){
+        networkConnection = new NetworkConnection(this);
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             builder.setView(R.layout.progress_bar).setCancelable(false);

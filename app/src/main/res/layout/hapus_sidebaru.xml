@@ -14,7 +14,7 @@
         android:elevation="7dp"
         android:id="@+id/selectbranchLayout"
         android:orientation="vertical"
-        android:background="@color/colorAccent"
+        android:background="@color/blue_background"
         android:layout_weight="0.05">
 
         <TextView
@@ -86,8 +86,9 @@
             android:layout_height="wrap_content"
             android:layout_weight="0.5"
             android:text="TIDAK"
+            android:layout_marginRight="2dp"
             android:textColor="@color/white"
-            android:background="@color/orange_light"/>
+            android:background="@color/red"/>
         <Button
             android:id="@+id/fotoUlangButton"
             android:layout_width="0dp"

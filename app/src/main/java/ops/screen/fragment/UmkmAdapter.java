@@ -20,6 +20,7 @@ import base.data.umkmmodel.UmkmModel;
 import base.sqlite.model.Config;
 import base.utils.enm.ParameterKey;
 import id.sekarmas.mobile.application.R;
+import user.sidebaru.DetailSidebaruActivity;
 
 
 public class UmkmAdapter extends RecyclerView.Adapter<UmkmAdapter.ViewHolder> {
@@ -63,7 +64,7 @@ public class UmkmAdapter extends RecyclerView.Adapter<UmkmAdapter.ViewHolder> {
             @Override
             public void onClick(View view) {
                 String idUmkm = String.valueOf(list.get(position).getId());
-                Intent intent = new Intent(context, UmkmDetailActivity.class);
+                Intent intent = new Intent(context, DetailSidebaruActivity.class);
                 intent.putExtra(ParameterKey.ID_UMKM, idUmkm);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);

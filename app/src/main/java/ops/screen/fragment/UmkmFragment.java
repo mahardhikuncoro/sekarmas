@@ -41,7 +41,7 @@ import id.sekarmas.mobile.application.R;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import ops.screen.CreateUmkm;
+import user.sidebaru.CreateSidebaru;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -285,7 +285,7 @@ public class UmkmFragment extends Fragment{
     }
     @OnClick(R.id.create_umkm_button)
     public void createUmkmClick(){
-        Intent intent = new Intent(getActivity().getApplicationContext(), CreateUmkm.class);
+        Intent intent = new Intent(getActivity().getApplicationContext(), CreateSidebaru.class);
         startActivity(intent);
     }
 

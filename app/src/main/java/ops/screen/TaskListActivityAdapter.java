@@ -44,7 +44,6 @@ public class TaskListActivityAdapter extends RecyclerView.Adapter<TaskListActivi
         this.typelist = typeList;
         this.listFiltered = list;
         this.listener = listener;
-
     }
 
 

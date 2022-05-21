@@ -19,6 +19,7 @@ import base.sqlite.model.Config;
 import base.sqlite.model.TasklistHistoryModel;
 import base.utils.enm.ParameterKey;
 import id.sekarmas.mobile.application.R;
+import user.sidebaru.DetailSidebaruActivity;
 
 
 public class PosisiAdapter extends RecyclerView.Adapter<PosisiAdapter.ViewHolder> {
@@ -61,7 +62,7 @@ public class PosisiAdapter extends RecyclerView.Adapter<PosisiAdapter.ViewHolder
             @Override
             public void onClick(View view) {
                 String appnumber = list.get(position).getAppnumber();
-                Intent intent = new Intent(context, UmkmDetailActivity.class);
+                Intent intent = new Intent(context, DetailSidebaruActivity.class);
                 intent.putExtra(ParameterKey.REGNO, appnumber);
                 context.startActivity(intent);
             }

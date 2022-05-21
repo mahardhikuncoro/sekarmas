@@ -142,34 +142,34 @@
         </activity>
 
         <activity
-            android:name="ops.screen.fragment.UmkmDetailActivity"
+            android:name="user.sidebaru.DetailSidebaruActivity"
             android:windowSoftInputMode="stateHidden"
             android:screenOrientation="portrait">
         </activity>
         <activity
-            android:name="ops.screen.LaporanDetail"
+            android:name="user.laporan.LaporanDetail"
             android:windowSoftInputMode="stateHidden"
             android:screenOrientation="portrait">
         </activity>
         <activity
-            android:name="ops.screen.CreateLaporan"
-            android:windowSoftInputMode="stateHidden"
-            android:screenOrientation="portrait">
-        </activity>
-
-        <activity
-            android:name="ops.screen.CreateUmkm"
-            android:windowSoftInputMode="stateHidden"
-            android:screenOrientation="portrait">
-        </activity>
-        <activity
-            android:name="ops.screen.UpdateUmkm"
+            android:name="user.laporan.CreateLaporan"
             android:windowSoftInputMode="stateHidden"
             android:screenOrientation="portrait">
         </activity>
 
         <activity
-            android:name="ops.screen.InformationDetail"
+            android:name="user.sidebaru.CreateSidebaru"
+            android:windowSoftInputMode="stateHidden"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity
+            android:name="user.sidebaru.UpdateSidebaru"
+            android:windowSoftInputMode="stateHidden"
+            android:screenOrientation="portrait">
+        </activity>
+
+        <activity
+            android:name="user.informasi.InformasiDetail"
             android:windowSoftInputMode="stateHidden"
             android:screenOrientation="portrait">
         </activity>
@@ -179,7 +179,37 @@
             android:screenOrientation="portrait">
         </activity>
         <activity
-            android:name="Dash"
+            android:name="user.laporan.LaporanActivity"
+            android:windowSoftInputMode="stateHidden"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity
+            android:name="user.sidebaru.SidebaruActivity"
+            android:windowSoftInputMode="stateHidden"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity
+            android:name="user.informasi.InformasiActivity"
+            android:windowSoftInputMode="stateHidden"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity
+            android:name="user.visimisi.VisiMisiActivity"
+            android:windowSoftInputMode="stateHidden"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity
+            android:name="user.kontakdarurat.KontakDaruratActivity"
+            android:windowSoftInputMode="stateHidden"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity
+            android:name="user.pengaturan.ProfileActivity"
+            android:windowSoftInputMode="stateHidden"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity
+            android:name="user.pengaturan.PengaturanActivity"
             android:windowSoftInputMode="stateHidden"
             android:screenOrientation="portrait">
         </activity>

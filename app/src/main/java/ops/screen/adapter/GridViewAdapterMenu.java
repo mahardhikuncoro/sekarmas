@@ -1,5 +1,6 @@
 package ops.screen.adapter;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.text.Html;
@@ -41,6 +42,7 @@ public class GridViewAdapterMenu extends ArrayAdapter<DataMenuModel> {
         notifyDataSetChanged();
     }
 
+    @SuppressLint("ResourceAsColor")
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View row = convertView;
@@ -52,6 +54,22 @@ public class GridViewAdapterMenu extends ArrayAdapter<DataMenuModel> {
             holder = new ViewHolder();
             holder.titleTextView = (TextView) row.findViewById(R.id.grid_item_title);
             holder.imageView = (ImageView) row.findViewById(R.id.grid_item_image);
+            if(mGridData.get(position).getMenudesc().equals("Laporan")) {
+                holder.imageView.setImageResource(R.mipmap.ic_menu_laporan);
+            }else if(mGridData.get(position).getMenudesc().equals("Sidebaru")) {
+                holder.imageView.setImageResource(R.mipmap.ic_menu_sidebaru);
+            }else if(mGridData.get(position).getMenudesc().equals("Pariwisata")) {
+                holder.imageView.setImageResource(R.mipmap.ic_menu_pariwisata);
+            }else if(mGridData.get(position).getMenudesc().equals("Kontak Darurat")) {
+                holder.imageView.setImageResource(R.mipmap.ic_menu_kontak_darurat);
+            }else if(mGridData.get(position).getMenudesc().equals("Informasi")) {
+                holder.imageView.setImageResource(R.mipmap.ic_menu_informasi);
+            }else if(mGridData.get(position).getMenudesc().equals("Visi & Misi")) {
+                holder.imageView.setImageResource(R.mipmap.ic_menu_visi_misi);
+            }else{
+                holder.imageView.setImageResource(R.mipmap.ic_menu_setting);
+            }
+
             row.setTag(holder);
         } else {
             holder = (ViewHolder) row.getTag();
@@ -60,21 +78,21 @@ public class GridViewAdapterMenu extends ArrayAdapter<DataMenuModel> {
         DataMenuModel item = mGridData.get(position);
         holder.titleTextView.setText(Html.fromHtml(item.getMenudesc()));
 
-        if (mGridData.get(position).getIcon().equalsIgnoreCase("ic_suitcase")) {
-            holder.imageView.setImageResource(R.mipmap.ic_launcher);
-        } else if (mGridData.get(position).getIcon().equalsIgnoreCase("ic_building")) {
-            holder.imageView.setImageResource(R.mipmap.ic_launcher);
-        } else if (mGridData.get(position).getIcon().equalsIgnoreCase("ic_document")) {
-            holder.imageView.setImageResource(R.mipmap.ic_launcher);
-        } else if (mGridData.get(position).getIcon().equalsIgnoreCase("ic_new_pengajuan")) {
-            holder.imageView.setImageResource(R.mipmap.ic_launcher);
-        } else if (mGridData.get(position).getIcon().equalsIgnoreCase("ic_information")) {
-            holder.imageView.setImageResource(R.mipmap.ic_launcher);
-        }else if (mGridData.get(position).getIcon().equalsIgnoreCase("ic_simulasi")) {
-            holder.imageView.setImageResource(R.mipmap.ic_launcher);
-        } else {
-            holder.imageView.setImageResource(R.mipmap.ic_launcher);
-        }
+//        if (mGridData.get(position).getIcon().equalsIgnoreCase("ic_suitcase")) {
+//            holder.imageView.setImageResource(R.mipmap.ic_launcher);
+//        } else if (mGridData.get(position).getIcon().equalsIgnoreCase("ic_building")) {
+//            holder.imageView.setImageResource(R.mipmap.ic_launcher);
+//        } else if (mGridData.get(position).getIcon().equalsIgnoreCase("ic_document")) {
+//            holder.imageView.setImageResource(R.mipmap.ic_launcher);
+//        } else if (mGridData.get(position).getIcon().equalsIgnoreCase("ic_new_pengajuan")) {
+//            holder.imageView.setImageResource(R.mipmap.ic_launcher);
+//        } else if (mGridData.get(position).getIcon().equalsIgnoreCase("ic_information")) {
+//            holder.imageView.setImageResource(R.mipmap.ic_launcher);
+//        }else if (mGridData.get(position).getIcon().equalsIgnoreCase("ic_simulasi")) {
+//            holder.imageView.setImageResource(R.mipmap.ic_launcher);
+//        } else {
+//            holder.imageView.setImageResource(R.mipmap.ic_launcher);
+//        }
 
 //        holder.imageView.setImageResource(R.mipmap.ic_newdoc_foreground);
 //        Picasso.with(mContext).load(item.getImage()).into(holder.imageView);

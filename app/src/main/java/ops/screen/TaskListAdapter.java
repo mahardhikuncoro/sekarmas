@@ -71,63 +71,6 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.ViewHo
     @Override
     public void onBindViewHolder(final TaskListAdapter.ViewHolder holder, @SuppressLint("RecyclerView") final int position) {
             ((TaskListLine) holder).namaNasabah.setText("" + list.get(position).getContent());
-           /* ((TaskListLine) holder).idNasabah.setText("" + list.get(position).getIdNasabah());
-            ((TaskListLine) holder).date.setVisibility(View.GONE);
-            ((TaskListLine) holder).date.setText("" + list.get(position).getLast_track_date());
-
-            if(list.get(position).getIcon() != null) {
-                if (list.get(position).getIcon().equalsIgnoreCase("pengajuanawal")
-                        || list.get(position).getIcon().equalsIgnoreCase("dokumen")) {
-                    ((TaskListLine) holder)._iconlist.setImageResource(R.mipmap.ic_short_entry_blue);
-                }
-                if (list.get(position).getIcon().equalsIgnoreCase("surveypekerjaan")
-                        || list.get(position).getIcon().equalsIgnoreCase("bisnis")) {
-                    ((TaskListLine) holder)._iconlist.setImageResource(R.drawable.ic_surveypekerjaan);
-                }
-                if (list.get(position).getIcon().equalsIgnoreCase("surveytempattinggal")) {
-                    ((TaskListLine) holder)._iconlist.setImageResource(R.drawable.ic_tempattinggal);
-                }
-                if (list.get(position).getIcon().equalsIgnoreCase("inputfinancial")
-                        || list.get(position).getIcon().equalsIgnoreCase("income")
-                        || list.get(position).getIcon().equalsIgnoreCase("biaya")) {
-                    ((TaskListLine) holder)._iconlist.setImageResource(R.drawable.ic_financial);
-                }
-                if (list.get(position).getIcon().equalsIgnoreCase("pasangan")
-                        || list.get(position).getIcon().equalsIgnoreCase("customer")) {
-                    ((TaskListLine) holder)._iconlist.setImageResource(R.drawable.ic_customer);
-                }
-                if (list.get(position).getIcon().equalsIgnoreCase("emergencycontact")) {
-                    ((TaskListLine) holder)._iconlist.setImageResource(R.drawable.ic_contact);
-                }
-                if (list.get(position).getIcon().equalsIgnoreCase("aset")) {
-                    ((TaskListLine) holder)._iconlist.setImageResource(R.drawable.ic_asset);
-                }
-                if (list.get(position).getIcon().equalsIgnoreCase("creditfac")) {
-                    ((TaskListLine) holder)._iconlist.setImageResource(R.drawable.ic_balance);
-                }
-                if (list.get(position).getIcon().equalsIgnoreCase("asuransi")) {
-                    ((TaskListLine) holder)._iconlist.setImageResource(R.drawable.ic_asuransi);
-                }
-                if (list.get(position).getIcon().equalsIgnoreCase("decision")) {
-                    ((TaskListLine) holder)._iconlist.setImageResource(R.drawable.ic_ask);
-                }
-            }
-
-        setAnimation(holder.itemView, position);
-
-        ((TaskListLine) holder).rentalLinear.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(context, FullEntry.class);
-                intent.putExtra(ParameterKey.NAMA_NASABAH,list.get(position).getNamaNasabah());
-                intent.putExtra(ParameterKey.REGNO,list.get(position).getIdNasabah());
-                intent.putExtra(ParameterKey.TC,list.get(position).getTrack_id());
-                intent.putExtra(ParameterKey.TYPE,list.get(position).getFormCode());
-                intent.putExtra(ParameterKey.TYPELIST,typelist);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                context.startActivity(intent);
-            }
-        });*/
 
     }
 

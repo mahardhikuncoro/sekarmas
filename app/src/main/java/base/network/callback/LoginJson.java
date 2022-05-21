@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import base.sqlite.model.DataMenuModel;
-import base.sqlite.model.NewsModel;
+import base.sqlite.model.InformasiModel;
 
 public class LoginJson {
     public class UserVerifyCallback {
@@ -242,7 +242,7 @@ public class LoginJson {
     public class getmenuCallback{
         private String status, message;
         private ArrayList<DataMenuModel> data;
-        private ArrayList<NewsModel> news;
+        private ArrayList<InformasiModel> news;
 
         public String getStatus() {
             return status;
@@ -263,11 +263,11 @@ public class LoginJson {
         public ArrayList<DataMenuModel> getData() {
             return data;
         }
-        public ArrayList<NewsModel> getNews() {
+        public ArrayList<InformasiModel> getNews() {
             return news;
         }
 
-        public void setNews(ArrayList<NewsModel> news) {
+        public void setNews(ArrayList<InformasiModel> news) {
             this.news = news;
         }
 

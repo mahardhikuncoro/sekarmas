@@ -2,22 +2,21 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:elevation="10dp"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/coorLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/grey"
-        android:elevation="5dp"
+        android:elevation="10dp"
         app:cardCornerRadius="15dp"
-
         android:layout_below="@+id/appBar">
+
 
 
         <com.daimajia.slider.library.SliderLayout
             android:id="@+id/slider"
-            android:onClick="null"
             android:layout_width="match_parent"
             android:layout_height="220dp" />
 
@@ -25,11 +24,11 @@
             android:id="@+id/banner_slider_indicator"
             android:layout_width="match_parent"
             android:layout_height="30dp"
-            app:selected_color="@color/primary_dark"
+            app:selected_color="@color/blue_start"
             android:gravity="center"
             android:layout_marginTop="170dp"
             android:background="@color/toolbarTransparent"
-            app:unselected_color="@color/primary_light" />
+            app:unselected_color="@color/blue_background" />
 
     </androidx.cardview.widget.CardView>
 

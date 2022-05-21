@@ -4,41 +4,76 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/blue_background"
     android:orientation="vertical">
 
-    <androidx.appcompat.widget.Toolbar
+    <RelativeLayout
         android:id="@+id/topPanel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fitsSystemWindows="true"
-        android:background="@drawable/half_rounded_orange"
-        app:titleTextColor="@color/white">
+
+        android:paddingStart="15dp"
+        android:paddingEnd="15dp">
 
         <ImageView
             android:id="@+id/btnback_toolbar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/ic_back"
-            android:backgroundTint="@color/white"/>
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:src="@drawable/ic_back" />
 
         <TextView
+            android:id="@+id/txtViewName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@+id/btnback_toolbar"
+            android:gravity="center"
+            android:singleLine="false"
             android:text="Laporan Baru"
             android:textColor="@color/white"
-            android:id="@+id/titleList"
-            android:textAlignment="center"
-            android:gravity="center"
-            android:textSize="20dp"
+            android:textSize="24dp"
             android:textStyle="bold" />
-    </androidx.appcompat.widget.Toolbar>
 
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/btn_post"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentEnd="true"
+            android:src="@drawable/ic_send" />
 
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_half_round"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/topPanel"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/half_rounded"
+        android:paddingBottom="20dp"/>
 
 
     <RelativeLayout
-        android:layout_below="@+id/topPanel"
+        android:background="@color/white"
+        android:layout_below="@+id/rl_half_round"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ProgressBar
+            android:id="@+id/post_progress_bar"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:indeterminateOnly="true"
+            android:progressTint="@color/colorPrimaryDark" />
+
+
+        <RelativeLayout
+
         android:id="@+id/relative_laoyout_id"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -95,57 +130,57 @@
             android:textStyle="bold" />
     </ScrollView>
 
-    <androidx.core.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/line_top"
-        android:layout_below="@+id/frame_text_view_post">
-
-        <RelativeLayout
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent"
+            android:layout_above="@+id/line_top"
+            android:layout_below="@+id/frame_text_view_post">
 
-            <EditText
-                android:id="@+id/et_post_title"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:layout_marginTop="20dp"
-                android:background="@android:color/transparent"
-                android:gravity="top"
-                android:hint="Judul Laporan"
-                android:maxLength="5000"
-                android:maxLines="8" />
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/et_post_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginRight="16dp"
+                    android:background="@android:color/transparent"
+                    android:gravity="top"
+                    android:hint="Judul Laporan"
+                    android:maxLength="5000"
+                    android:maxLines="8" />
 
 
-            <EditText
-                android:id="@+id/et_post_write"
-                android:layout_below="@+id/et_post_title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:layout_marginTop="20dp"
-                android:background="@android:color/transparent"
-                android:gravity="top"
-                android:hint="Deskripsi"
-                android:maxLength="5000"
-                android:maxLines="8" />
+                <EditText
+                    android:id="@+id/et_post_write"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/et_post_title"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginRight="16dp"
+                    android:background="@android:color/transparent"
+                    android:gravity="top"
+                    android:hint="Deskripsi"
+                    android:maxLength="5000"
+                    android:maxLines="8" />
 
-            <ImageView
-                android:id="@+id/img_upload"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/et_post_write"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="16dp"
-                android:contentDescription="TODO"
-                android:adjustViewBounds="true"
-                android:scaleType="centerCrop"
-                tools:ignore="ContentDescription" />
-        </RelativeLayout>
-    </androidx.core.widget.NestedScrollView>
+                <ImageView
+                    android:id="@+id/img_upload"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/et_post_write"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="16dp"
+                    android:adjustViewBounds="true"
+                    android:contentDescription="TODO"
+                    android:scaleType="centerCrop"
+                    tools:ignore="ContentDescription" />
+            </RelativeLayout>
+        </androidx.core.widget.NestedScrollView>
 
     <LinearLayout
         android:id="@+id/layout_video_title"
@@ -174,15 +209,6 @@
             android:text="Video Title" />
     </LinearLayout>
 
-    <ProgressBar
-        android:id="@+id/post_progress_bar"
-        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/topPanel"
-        android:progressTint="@color/colorPrimaryDark"
-        android:layout_centerVertical="true"
-        android:indeterminateOnly="true" />
 
     <View
         android:id="@+id/line_top_location"
@@ -197,7 +223,7 @@
         style="@style/Base.Widget.AppCompat.Button.Borderless"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:layout_above="@+id/btn_post"
+        android:layout_alignParentBottom="true"
         android:layout_marginBottom="2dp">
 
         <ImageView
@@ -246,35 +272,7 @@
             android:text="UPLOAD MEDIA" />
     </LinearLayout>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_above="@id/btn_post"
-        android:background="@color/grey"
-        android:visibility="visible" />
-
-    <LinearLayout
-        android:id="@+id/btn_post"
-        style="@style/Base.Widget.AppCompat.Button.Borderless"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:layout_alignParentBottom="true"
-        android:textColor="@color/white">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:tint="@color/colorAccent"
-            android:src="@drawable/ic_send"  />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginRight="48dp"
-            android:gravity="center_horizontal|center_vertical"
-            android:text="POST" />
-    </LinearLayout>
+    </RelativeLayout>
 
 
 

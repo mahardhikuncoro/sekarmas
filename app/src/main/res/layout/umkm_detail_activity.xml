@@ -3,57 +3,58 @@
     android:id="@+id/bckgroundEntryFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/blue_background"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:fab="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-
-    <androidx.appcompat.widget.Toolbar
+    <RelativeLayout
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fitsSystemWindows="true"
-        android:layout_marginBottom="10dp"
-        android:background="@drawable/half_rounded_orange"
-        app:titleTextColor="@color/white">
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp">
 
         <ImageView
             android:id="@+id/btnback_toolbar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/ic_back"
-            android:backgroundTint="@color/white"/>
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:src="@drawable/ic_back" />
 
         <TextView
+            android:id="@+id/tv_title_sidebaru"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="Detail UMKM"
-            android:textColor="@color/white"
-            android:id="@+id/titleList"
-            android:textAlignment="center"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@+id/btnback_toolbar"
             android:gravity="center"
-            android:textSize="20dp"
+            android:singleLine="false"
+            android:text="Sidebaru"
+            android:textColor="@color/white"
+            android:textSize="24dp"
             android:textStyle="bold" />
-    </androidx.appcompat.widget.Toolbar>
 
-    <ProgressBar
-        android:id="@+id/post_progress_bar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/toolbar"
-        android:indeterminateOnly="true"
-        style="@style/Widget.AppCompat.ProgressBar.Horizontal"/>
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/btn_post"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentEnd="true"
+            android:visibility="invisible"
+            android:src="@drawable/ic_send" />
+
+    </RelativeLayout>
 
 
     <ScrollView
         android:id="@+id/layoutScrollPribadi"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="0dp"
-        android:layout_above="@+id/line_top_location"
-        android:background="@drawable/half_rounded"
-        android:layout_below="@+id/post_progress_bar">
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/toolbar">
 
         <RelativeLayout
             android:id="@+id/form_data_pribadi"
@@ -64,110 +65,122 @@
                 android:id="@+id/ln_img_profil"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:padding="10dp"
-                android:layout_marginBottom="5dp"
                 android:orientation="vertical">
 
-                <androidx.cardview.widget.CardView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:cardCornerRadius="250dp"
-                    android:layout_gravity="center">
-                <ImageView
-                    android:id="@+id/iv_profile_sidebaru"
-                    android:layout_width="150dp"
-                    android:layout_height="150dp"
-                    android:scaleType="centerCrop"
-                    android:layout_alignTop="@+id/ln_img_profil"
-                    android:background="@drawable/shape_circle_image"
-                    android:layout_gravity="center"
-                    android:src="@drawable/ic_profile" />
-                </androidx.cardview.widget.CardView>
+                <FrameLayout
+                    android:id="@+id/rootview"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/cv_img_post"
+                        android:layout_marginBottom="-15dp"
+                        app:cardCornerRadius="15dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <!--The child view inside the cardview should have extra padding,so that negative margin will not affect the bottom padding of its child.Here normally we have 16dp bottom padding for child + margin bottom of the parent is 3dp=19dp comes.-->
+
+                        <FrameLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:paddingBottom="15dp">
+
+                            <RelativeLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent" >
+
+                                <ImageView
+                                    android:id="@+id/iv_profile_sidebaru"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="220dp"
+                                    android:scaleType="fitXY"
+                                    android:src="@drawable/defaultslide" />
+
+                                <TextView
+                                    android:id="@+id/tv_nama_sidebaru"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_above="@+id/etAlamatsidebaru"
+                                    android:layout_alignParentBottom="true"
+                                    android:layout_centerHorizontal="true"
+                                    android:paddingLeft="20dp"
+                                    android:paddingBottom="50dp"
+                                    android:text="LALALALALAL"
+                                    android:textColor="@color/white"
+                                    android:textSize="20dp"
+                                    android:textStyle="bold" />
+
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentBottom="true"
+                                    android:layout_marginLeft="15dp"
+                                    android:paddingBottom="20dp"
+                                    android:tint="@color/white"
+                                    android:src="@drawable/ic_location" />
+
+                                <TextView
+                                    android:id="@+id/etAlamatsidebaru"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentBottom="true"
+                                    android:layout_marginLeft="40dp"
+                                    android:layout_marginRight="120dp"
+                                    android:paddingBottom="22dp"
+                                    android:text="LALALALALALAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+                                    android:textColor="@color/white"
+                                    android:textSize="9dp"
+                                    android:textStyle="bold" />
+
+                                <LinearLayout
+                                    android:id="@+id/btn_image_bar_loc"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_alignParentBottom="true"
+                                    android:layout_toLeftOf="@+id/etAlamatsidebaru"
+                                    android:padding="10dp">
+
+                                    <Button
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginBottom="10dp"
+                                        android:background="@drawable/shape_round_shadow_white"
+                                        android:text="Lokasi" />
+                                </LinearLayout>
+                                <ProgressBar
+                                    android:id="@+id/post_progress_bar"
+                                    style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@+id/tv_nama_sidebaru"
+                                    android:layout_alignParentBottom="true"
+                                    android:layout_marginBottom="20dp"
+                                    android:indeterminateOnly="true" />
+
+                            </RelativeLayout>
+
+                        </FrameLayout>
+                    </androidx.cardview.widget.CardView>
+                </FrameLayout>
 
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="-40dp"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="Tap to edit"
-                        android:visibility="gone"
-                        android:textColor="@color/black"
-                        android:textStyle="bold" />
-
-
-                </LinearLayout>
             </LinearLayout>
 
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/ln_nama"
                 android:layout_below="@+id/ln_img_profil"
-                android:layout_margin="5dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:orientation="horizontal">
+                android:background="@color/white">
 
-                <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_gravity="center"
-                    android:tint="@color/blue_end"
-                    android:src="@drawable/ic_profile_name"/>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/linearnama"
-                    android:layout_below="@+id/textGantiPass"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/titleDataNama"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="10dp"
-                        android:gravity="center_vertical"
-                        android:paddingLeft="10dp"
-                        android:text="@string/titleNamaSedebar"
-                        android:textAllCaps="false"
-                        android:textSize="14sp"
-                        android:textStyle="bold"
-                        android:typeface="sans" />
-
-                    <EditText
-                        android:id="@+id/etDataNamasidebaru"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/titleDataNama"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="10dp"
-                        android:hint=""
-                        android:enabled="false"
-                        android:nextFocusDown="@+id/tv_birth_date"
-                        android:paddingLeft="10dp"
-                        android:textSize="14sp" />
-
-                </LinearLayout>
-
-            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/ln_sektor"
-                android:layout_below="@+id/ln_nama"
                 android:layout_margin="5dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
@@ -246,7 +259,7 @@
                         android:id="@+id/titlehandphone"
                         android:layout_width="match_parent"
                         android:layout_height="30dp"
-                        android:layout_below="@+id/ln_alamat"
+                        android:layout_below="@+id/ln_kodepos"
                         android:layout_marginLeft="5dp"
                         android:layout_marginRight="10dp"
                         android:gravity="center_vertical"
@@ -357,7 +370,7 @@
                         android:id="@+id/titleDataNoKTP"
                         android:layout_width="match_parent"
                         android:layout_height="30dp"
-                        android:layout_below="@+id/ln_alamat"
+                        android:layout_below="@+id/ln_kodepos"
                         android:layout_marginLeft="5dp"
                         android:layout_marginRight="10dp"
                         android:gravity="center_vertical"
@@ -413,7 +426,7 @@
                         android:id="@+id/title_produk_utama"
                         android:layout_width="match_parent"
                         android:layout_height="30dp"
-                        android:layout_below="@+id/ln_alamat"
+                        android:layout_below="@+id/ln_kodepos"
                         android:layout_marginLeft="5dp"
                         android:layout_marginRight="10dp"
                         android:gravity="center_vertical"
@@ -714,61 +727,6 @@
                 </LinearLayout>
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/ln_alamat"
-                android:layout_below="@+id/ln_kodepos"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_margin="5dp"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_gravity="center"
-                    android:tint="@color/blue_end"
-                    android:src="@drawable/ic_profile_cabang"/>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/linearcabang"
-                    android:layout_below="@+id/textGantiPass"
-                    android:orientation="vertical">
-
-
-                    <TextView
-                        android:id="@+id/titleDataNobranch"
-                        android:layout_width="match_parent"
-                        android:layout_height="30dp"
-                        android:layout_below="@+id/ln_nama"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="10dp"
-                        android:gravity="center_vertical"
-                        android:paddingLeft="10dp"
-                        android:text="Alamat sidebaru"
-                        android:textAllCaps="false"
-                        android:textSize="14sp"
-                        android:textStyle="bold"
-                        android:typeface="sans" />
-
-                    <EditText
-                        android:id="@+id/etAlamatsidebaru"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/titleDataNobranch"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="10dp"
-                        android:hint=""
-                        android:enabled="false"
-                        android:paddingLeft="10dp"
-                        android:textSize="14sp" />
-
-                </LinearLayout>
-            </LinearLayout>
-
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -881,7 +839,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/ln_deskripsi"
-                android:layout_below="@+id/ln_alamat"
+                android:layout_below="@+id/ln_kodepos"
                 android:layout_margin="5dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
@@ -937,68 +895,9 @@
 
 
         </RelativeLayout>
+
+        </RelativeLayout>
     </ScrollView>
-
-    <View
-        android:id="@+id/line_top_location"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_above="@id/btn_image_bar_loc"
-        android:background="@color/grey"
-        android:visibility="visible" />
-
-    <LinearLayout
-        android:id="@+id/btn_image_bar_loc"
-        style="@style/Base.Widget.AppCompat.Button.Borderless"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:layout_above="@+id/btntutupDetail"
-        android:layout_marginBottom="2dp">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:tint="@color/colorAccent"
-            android:src="@drawable/ic_location" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginRight="48dp"
-            android:gravity="center_horizontal|center_vertical"
-            android:text="LIHAT LOKASI" />
-
-    </LinearLayout>
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_above="@id/btntutupDetail"
-        android:background="@color/grey"
-        android:visibility="visible" />
-
-    <LinearLayout
-        android:id="@+id/btntutupDetail"
-        style="@style/Base.Widget.AppCompat.Button.Borderless"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:layout_alignParentBottom="true"
-        android:textColor="@color/white">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:tint="@color/colorAccent"
-            android:src="@drawable/ic_send"  />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginRight="48dp"
-            android:gravity="center_horizontal|center_vertical"
-            android:text="TUTUP" />
-    </LinearLayout>
 
 
     <com.getbase.floatingactionbutton.FloatingActionsMenu
@@ -1008,8 +907,8 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        fab:fab_addButtonColorNormal="@color/orange_dark"
-        fab:fab_addButtonColorPressed="@color/orange_light"
+        fab:fab_addButtonColorNormal="@color/blue_background"
+        fab:fab_addButtonColorPressed="@color/blue_end"
         fab:fab_addButtonPlusIconColor="@color/white"
         fab:fab_labelStyle="@style/menu_labels_style"
         android:layout_marginBottom="120dp"

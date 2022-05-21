@@ -2,14 +2,14 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginTop="5dp"
-    android:background="@drawable/grid_color_selector"
-    android:orientation="vertical"
-    android:padding="5dp">
+    android:orientation="vertical">
+
 
     <ImageView
         android:id="@+id/grid_item_image"
         android:layout_width="100dp"
         android:scaleType="fitCenter"
+        android:src="@drawable/v5_icon_popup_close_100px"
         android:layout_height="100dp" />
 
     <TextView

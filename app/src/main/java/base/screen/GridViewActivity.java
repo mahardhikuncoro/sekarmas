@@ -13,9 +13,7 @@ import java.util.HashMap;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -31,7 +29,6 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -40,7 +37,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 
 import org.apache.http.HttpResponse;
@@ -64,14 +60,12 @@ import id.zelory.compressor.Compressor;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
-import ops.screen.CreateLaporan;
 import ops.screen.MainActivityDashboard;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-import retrofit2.http.Multipart;
 
 public class GridViewActivity extends BaseDialogActivity {
 
@@ -469,17 +463,13 @@ public class GridViewActivity extends BaseDialogActivity {
 
     @OnClick(R.id.btnback_toolbar)
     public void clickBack(){
-        Intent intent = new Intent(getApplicationContext(), MainActivityDashboard.class);
-        intent.putExtra(ParameterKey.SCREEN_UMKM, true);
-        startActivity(intent);
+        finish();
     }
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent intent = new Intent(getApplicationContext(), MainActivityDashboard.class);
-        intent.putExtra(ParameterKey.SCREEN_UMKM, true);
-        startActivity(intent);
+        finish();
     }
 
     private void sendImageProduk(Integer idUmkm, String descUmkm,MultipartBody.Part file,  int i) {

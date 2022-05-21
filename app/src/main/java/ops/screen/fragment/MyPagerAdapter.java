@@ -1,6 +1,5 @@
 package ops.screen.fragment;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -8,20 +7,16 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import base.sqlite.model.NewsModel;
-import id.sekarmas.mobile.application.R;
+import base.sqlite.model.InformasiModel;
 
 public class MyPagerAdapter extends FragmentStatePagerAdapter {
 
     private List<Fragment> pages;
     public Context myContext;
-    public MyPagerAdapter(FragmentManager fm, ArrayList<NewsModel> list, Context myContext) {
+    public MyPagerAdapter(FragmentManager fm, ArrayList<InformasiModel> list, Context myContext) {
         super(fm);
         this.myContext = myContext;
         notifyDataSetChanged();
@@ -55,7 +50,7 @@ public class MyPagerAdapter extends FragmentStatePagerAdapter {
      * @param categoryId
      *            - the category id
      */
-    public void addPage(ArrayList<NewsModel> categoryId) {
+    public void addPage(ArrayList<InformasiModel> categoryId) {
         for(int i = 0; i<categoryId.size() ;i++)
             pages.add(SimpleFragment.newInstance(categoryId.get(i).getNewsTitle(),categoryId.get(i).getImageUrl(), categoryId.get(i).getNewsDesc(),i));
 

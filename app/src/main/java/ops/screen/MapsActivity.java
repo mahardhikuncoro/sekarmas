@@ -1,26 +1,16 @@
 package ops.screen;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Point;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
-import android.location.LocationManager;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.SystemClock;
-import android.provider.Settings;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
-import android.view.animation.Interpolator;
-import android.view.animation.LinearInterpolator;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -33,19 +23,12 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationCallback;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.LocationSource;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.Projection;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -58,11 +41,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import base.network.callback.NetworkConnection;
-import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import id.sekarmas.mobile.application.R;
+import user.laporan.CreateLaporan;
+import user.sidebaru.CreateSidebaru;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback{
 
@@ -128,7 +111,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Log.e("CLICK HERE "," YAA ");
         Intent openMap;
         if(getIntent().getBooleanExtra("IS_UMKM",false)) {
-            openMap = new Intent(MapsActivity.this, CreateUmkm.class);
+            openMap = new Intent(MapsActivity.this, CreateSidebaru.class);
             openMap.putExtra("LAPORAN_KATEGORI",getIntent().getExtras().getInt("LAPORAN_KATEGORI"));
             openMap.putExtra("LAPORAN_FOTO",getIntent().getExtras().getString("LAPORAN_FOTO"));
             openMap.putExtra("IS_IMAGE_GALERY",getIntent().getExtras().getString("IS_IMAGE_GALERY"));

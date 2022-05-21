@@ -58,7 +58,7 @@ import base.service.kontak.KontakEndpoint;
 import base.service.visimisi.VisiMisiEndpoint;
 import base.sqlite.model.DataMenuModel;
 import base.sqlite.model.FormData;
-import base.sqlite.model.NewsModel;
+import base.sqlite.model.InformasiModel;
 import base.sqlite.model.Config;
 import base.sqlite.model.SliderSQL;
 import base.sqlite.model.TaskListDetailModel;
@@ -130,7 +130,7 @@ public class TaskListFragment extends Fragment implements TaskListInterface, Bas
     public Dialog dialogmaterial;
     private Userdata userdata;
     private ArrayList<String> menulist;
-    private ArrayList<NewsModel> news;
+    private ArrayList<InformasiModel> listInfo;
     private ArrayList<DataMenuModel> dataModels;
     private String assignedType ="allassigned", tc = "5.0";
     private Dialog dialog;
@@ -257,7 +257,7 @@ public class TaskListFragment extends Fragment implements TaskListInterface, Bas
 //        informationEndpoint = InformationUtils.getInformation();
 //        visiMisiEndpoint = VisiMisiUtils.getVisiMisi();
 
-        informationEndpoint =retrofit.create(InformationEndpoint.class);;
+        informationEndpoint =retrofit.create(InformationEndpoint.class);
         visiMisiEndpoint = retrofit.create(VisiMisiEndpoint.class);
         ((View)viewPager.getParent()).requestLayout();
     }
@@ -293,7 +293,7 @@ public class TaskListFragment extends Fragment implements TaskListInterface, Bas
     }
     private void showMenu() {
 //        fillList(assignedType);
-        showNews(news);
+        showNews(listInfo);
     }
 
 
@@ -301,10 +301,9 @@ public class TaskListFragment extends Fragment implements TaskListInterface, Bas
     public void showKontak(){
         final AlertDialog dialogBuilder = new AlertDialog.Builder(getActivity()).create();
         LayoutInflater inflater = getActivity().getLayoutInflater();
-        View dialogView = inflater.inflate(R.layout.kontak_popup, null);
+        View dialogView = inflater.inflate(R.layout.activity_kontak_darurat, null);
         final RecyclerView rvKontak = (RecyclerView)dialogView.findViewById(R.id.rv_kotak);
         final ProgressBar pbKontak = (ProgressBar)dialogView.findViewById(R.id.pb_kontak);
-        final ImageView ivCLose = (ImageView) dialogView.findViewById(R.id.iv_close);
         final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
 
         kontakEndpoint.getKontak("Bearer " + userdata.select().getAccesstoken()).enqueue(new Callback<List<Kontak>>() {
@@ -330,12 +329,12 @@ public class TaskListFragment extends Fragment implements TaskListInterface, Bas
             }
         });
 
-        ivCLose.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialogBuilder.dismiss();
-            }
-        });
+//        ivCLose.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                dialogBuilder.dismiss();
+//            }
+//        });
         dialogBuilder.setView(dialogView);
         dialogBuilder.show();
 
@@ -444,7 +443,7 @@ public class TaskListFragment extends Fragment implements TaskListInterface, Bas
         return false;
     }
 
-    private void showNews(ArrayList<NewsModel> news) {
+    private void showNews(ArrayList<InformasiModel> news) {
 
         FragmentManager fragManager = myContext.getSupportFragmentManager();
         viewPager.setAdapter(new MyPagerAdapter(fragManager, news, getActivity().getApplicationContext()));
@@ -527,7 +526,7 @@ public class TaskListFragment extends Fragment implements TaskListInterface, Bas
 //        final TextView textAll =(TextView)dialogView.findViewById(R.id.txt_news);
 
         List<TextView> textInputEditTextCopies = new ArrayList<>();
-        for (NewsModel newsModel : news) {
+        for (InformasiModel newsModel : listInfo) {
             TextView textInputEditText = new TextInputEditText(myContext);
             textInputEditText.setEnabled(false);
             textInputEditText.setTag("news_"+newsModel.getNewsId());
@@ -562,17 +561,17 @@ public class TaskListFragment extends Fragment implements TaskListInterface, Bas
                 public void onResponse(Call<List<Information>> call, Response<List<Information>> response) {
                     if(response.isSuccessful()){
                         dialog.dismiss();
-                        news = new ArrayList<>();
+                        listInfo = new ArrayList<>();
                         for(int i = 0; i<response.body().size() ;i++){
-                            NewsModel newsmod = new NewsModel();
+                            InformasiModel newsmod = new InformasiModel();
                             newsmod.setNewsId(response.body().get(i).getId());
                             newsmod.setNewsTitle(response.body().get(i).getTitle());
                             newsmod.setNewsDesc(response.body().get(i).getDescription());
                             newsmod.setActive(response.body().get(i).getTitle());
                             newsmod.setImageUrl(response.body().get(i).getImageUrl());
-                            news.add(newsmod);
+                            listInfo.add(newsmod);
                         }
-                        showNews(news);
+                        showNews(listInfo);
                     }else {
                         dialog.dismiss();
                     }

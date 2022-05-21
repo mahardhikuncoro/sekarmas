@@ -3,11 +3,8 @@ package ops.screen.adapter;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
-import android.os.StrictMode;
+
 import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,34 +18,14 @@ import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.jakewharton.picasso.OkHttp3Downloader;
-import com.squareup.okhttp.Protocol;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.security.cert.CertificateException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSession;
-import javax.net.ssl.SSLSocketFactory;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
-
-import base.data.UserData;
 import base.data.laporan.DataLaporan;
-import base.network.callback.EndPoint;
 import base.network.callback.NetworkClient;
 import base.network.callback.NetworkClientNew;
 import base.network.callback.NetworkConnection;
@@ -57,8 +34,7 @@ import base.sqlite.model.Config;
 import base.sqlite.model.Userdata;
 import id.sekarmas.mobile.application.R;
 import okhttp3.OkHttpClient;
-import ops.screen.LaporanDetail;
-import ops.screen.MainActivityDashboard;
+import user.laporan.LaporanDetail;
 import ops.screen.fragment.TaskListInterface;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;

@@ -1,27 +1,17 @@
 package ops.screen;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
-import android.location.LocationManager;
-import android.media.Image;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.provider.Settings;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
-import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -30,11 +20,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationCallback;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -47,17 +33,15 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import base.network.callback.NetworkConnection;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import id.sekarmas.mobile.application.R;
-import ops.screen.fragment.UmkmDetailActivity;
+import user.sidebaru.DetailSidebaruActivity;
+import user.sidebaru.UpdateSidebaru;
 
 public class MapsDetailUmkmActivity extends FragmentActivity implements OnMapReadyCallback{
 
@@ -129,7 +113,7 @@ public class MapsDetailUmkmActivity extends FragmentActivity implements OnMapRea
         Log.e("CLICK HERE "," YAA ");
         Intent openMap;
         if(getIntent().getBooleanExtra("IS_UPDATE",false)) {
-            openMap = new Intent(MapsDetailUmkmActivity.this, UpdateUmkm.class);
+            openMap = new Intent(MapsDetailUmkmActivity.this, UpdateSidebaru.class);
             openMap.putExtra("ID_UMKM",getIntent().getStringExtra("ID_UMKM"));
             openMap.putExtra("SEKTOR_POSITION",getIntent().getExtras().getInt("SEKTOR_POSITION"));
             openMap.putExtra("LAPORAN_FOTO",getIntent().getExtras().getString("LAPORAN_FOTO"));
@@ -149,7 +133,7 @@ public class MapsDetailUmkmActivity extends FragmentActivity implements OnMapRea
             openMap.putExtra("LONGITUDE", lng);
             openMap.putExtra("LATITUDE", lat);
         }else {
-            openMap = new Intent(MapsDetailUmkmActivity.this, UmkmDetailActivity.class);
+            openMap = new Intent(MapsDetailUmkmActivity.this, DetailSidebaruActivity.class);
             openMap.putExtra("ID_UMKM",getIntent().getStringExtra("ID_UMKM"));
             openMap.putExtra("SEKTOR_POSITION",getIntent().getExtras().getInt("SEKTOR_POSITION"));
             openMap.putExtra("LAPORAN_FOTO",getIntent().getExtras().getString("LAPORAN_FOTO"));

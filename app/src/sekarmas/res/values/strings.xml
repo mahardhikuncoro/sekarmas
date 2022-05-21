@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyC6CpV51hO5WmU5RjvYKsh-D4T74lTsYxE</string>
-    <string name="app">Sekarmas</string>
-    <string name="app_name">Sekarmas</string>
-    <string name="companyName">Sekarmas</string>
+    <string name="app">Sekar Pinter</string>
+    <string name="app_name">Sekar Pinter</string>
+    <string name="companyName">Sekar Pinter</string>
 
-    <string name="buildName">sekarmas</string>
+    <string name="buildName">sekar</string>
 
     <string name="loading">Harap Menunggu</string>
     <string name="requesting">Requesting</string>
 
     <string name="aboutVersion">Sekarmas Mobile Versi 1.0.0</string>
-    <string name="aboutCopyright">©2021 Sekarmas</string>
+    <string name="aboutCopyright">©2021 Sekar Pinter</string>
     
     <string name="titleDana">Masukkan pendanaan yang anda inginkan</string>
     <string name="pilihAgunan">Pilih Agunan</string>

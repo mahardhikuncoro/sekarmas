@@ -3,41 +3,69 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:background="@color/blue_background"
     android:layout_height="wrap_content">
 
-    <androidx.appcompat.widget.Toolbar
+    <RelativeLayout
         android:id="@+id/topPanel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fitsSystemWindows="true"
-        android:background="@drawable/half_rounded_orange"
-        app:titleTextColor="@color/white">
+        android:paddingStart="15dp"
+        android:paddingEnd="15dp">
 
         <ImageView
             android:id="@+id/btnback_toolbar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/ic_back"
-            android:backgroundTint="@color/white"/>
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:src="@drawable/ic_back" />
 
         <TextView
+            android:id="@+id/txtViewName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@+id/btnback_toolbar"
+            android:gravity="center"
+            android:singleLine="false"
             android:text="Detail Laporan"
             android:textColor="@color/white"
-            android:id="@+id/titleList"
-            android:textAlignment="center"
-            android:gravity="center"
-            android:textSize="20dp"
+            android:textSize="24dp"
             android:textStyle="bold" />
-    </androidx.appcompat.widget.Toolbar>
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/btn_post"
+            android:visibility="invisible"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentEnd="true"
+            android:src="@drawable/ic_send" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_half_round"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/topPanel"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/half_rounded"
+        android:paddingBottom="20dp">
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:background="@color/white"
+        android:layout_below="@+id/rl_half_round"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
     <ProgressBar
         android:id="@+id/post_progress_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/topPanel"
         android:indeterminateOnly="true"
         style="@style/Widget.AppCompat.ProgressBar.Horizontal"/>
 
@@ -306,5 +334,7 @@
             android:src="@drawable/ic_send" />
 
     </LinearLayout>
+
+    </RelativeLayout>
 
 </RelativeLayout>

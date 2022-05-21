@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/blue_background">
+
+        <RelativeLayout
+            android:id="@+id/rl_titlebar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp">
+
+            <ImageView
+                android:id="@+id/iv_backbutton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:gravity="center"
+                android:src="@drawable/ic_back" />
+
+            <TextView
+                android:id="@+id/txtViewName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:layout_toRightOf="@+id/iv_backbutton"
+                android:gravity="center"
+                android:singleLine="false"
+                android:text="Informasi"
+                android:textColor="@color/white"
+                android:textSize="24dp"
+                android:textStyle="bold" />
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/create_post_button"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:visibility="invisible"
+                android:layout_alignParentEnd="true"
+                android:src="@drawable/ic_add_laporan" />
+
+        </RelativeLayout>
+
+
+        <LinearLayout
+            android:layout_below="@+id/rl_titlebar"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/coorLayout2"
+            android:background="@drawable/half_rounded"
+            android:layout_marginTop="10dp"
+            android:paddingBottom="20dp"
+            android:id="@+id/successLayout">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/success1"
+                android:text="Terima kasih atas pengajuan kredit bersama kami, \n aplikasi anda sedang di proses."
+                android:textStyle="bold"
+                android:typeface="sans"
+                android:visibility="gone"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                android:gravity="center" />
+
+
+            <LinearLayout
+                android:id="@+id/dash1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/success1"
+                android:gravity="center"
+                android:orientation="vertical"></LinearLayout>
+
+        </RelativeLayout>
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/layoutLatestTask"
+            android:layout_marginTop="-15dp"
+            android:orientation="horizontal">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:background="@color/white"
+                android:id="@+id/linearTitleSwipe"
+                android:orientation="horizontal">
+                <ImageView
+                    android:layout_width="15dp"
+                    android:layout_height="20dp"
+                    android:tint="@color/black"
+                    android:src="@drawable/ic_refresh"></ImageView>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:textSize="10dp"
+                    android:textColor="@color/black"
+                    android:text="pull down to refresh"/>
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!--FRAME UNTUK DASHBOARD LIST-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:id="@+id/linearRecycle"
+            android:orientation="vertical">
+                <FrameLayout
+                    android:id="@+id/frameLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                        xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:id="@+id/swiperefresh"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/taskListRecycle"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="100dp"
+                        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                        android:background="@color/white"/>
+                    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+                </FrameLayout>
+        </LinearLayout>
+            <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        </LinearLayout>
+        </LinearLayout>
+
+
+    </RelativeLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
