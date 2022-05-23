@@ -10,12 +10,10 @@ import android.view.WindowManager;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.crashlytics.android.Crashlytics;
 
 import java.io.File;
 
 import id.sekarmas.mobile.application.R;
-import io.fabric.sdk.android.Fabric;
 import ops.screen.MainActivityDashboard;
 import user.login.LoginActivity;
 
@@ -34,11 +32,11 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.splash_bexi);
 
 
-        final Fabric fabric = new Fabric.Builder(this)
-                .kits(new Crashlytics())
-                .debuggable(true)
-                .build();
-        Fabric.with(fabric);
+//        final Fabric fabric = new Fabric.Builder(this)
+//                .kits(new Crashlytics())
+//                .debuggable(true)
+//                .build();
+//        Fabric.with(fabric);
 
 //        if(!isRooted()) {
             new Handler().postDelayed(new Runnable() {

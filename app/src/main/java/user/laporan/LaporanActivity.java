@@ -12,7 +12,6 @@ import android.provider.Settings;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.core.content.ContextCompat;
@@ -26,7 +25,6 @@ import java.util.ArrayList;
 
 import base.data.laporan.DataLaporan;
 import base.data.laporan.LaporanJson;
-import base.network.callback.EndPoint;
 import base.network.callback.NetworkClient;
 import base.network.callback.NetworkConnection;
 import base.screen.BaseDialogActivity;
@@ -52,16 +50,6 @@ public class LaporanActivity extends BaseDialogActivity {
     @BindView(R.id.taskListRecycle)
     RecyclerView recyclerView;
 
-    @BindView(R.id.txtSeeAll)
-    TextView txtSeeAll;
-
-    @BindView(R.id.dash1)
-    LinearLayout _dashboard;
-    @BindView(R.id.layoutLatestTask)
-    LinearLayout _layoutLatestTask;
-
-    @BindView(R.id.linearTitleSwipe)
-    LinearLayout _linearTitleSwipe;
     @BindView(R.id.linearRecycle)
     LinearLayout _linearRecycle;
 
@@ -70,28 +58,22 @@ public class LaporanActivity extends BaseDialogActivity {
 
     LaporanAdapter laporanAdapter;
 
-    LaporanEndpoint laporanEndpoint;
     ArrayList<DataLaporan> laporaArrayList;
 
-    private Config config;
-    private Userdata userdata;
-    private EndPoint endPoint;
-    private NetworkConnection networkConnection;
     private Dialog dialog;
-
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_laporan);
         ButterKnife.bind(this);
+        initiateApiData();
         if ((ContextCompat.checkSelfPermission(this, Manifest.permission.INTERNET) != PackageManager.PERMISSION_GRANTED) ||
                 (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_NETWORK_STATE) != PackageManager.PERMISSION_GRANTED) ||
                 (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_WIFI_STATE) != PackageManager.PERMISSION_GRANTED)) {
             dialogPermission();
         }else {
-            initialisation();
+            initView();
             prepare();
             callListLaporan();
         }
@@ -152,23 +134,11 @@ public class LaporanActivity extends BaseDialogActivity {
 
     }
 
-    private void initialisation() {
-        userdata = new Userdata(this);
-        formData = new FormData(this);
-
+    private void initView() {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(LaporanActivity.this, LinearLayoutManager.VERTICAL,false);
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setHasFixedSize(true);
 
-        config = new Config(this);
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(config.getServer())
-                .addConverterFactory(GsonConverterFactory.create())
-                .client(NetworkClient.getUnsafeOkHttpClient())
-                .build();
-
-        networkConnection = new NetworkConnection(this);
-        laporanEndpoint =  retrofit.create(LaporanEndpoint.class);
     }
 
     protected void dialogPermission() {

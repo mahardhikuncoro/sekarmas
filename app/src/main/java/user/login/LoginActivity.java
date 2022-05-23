@@ -33,6 +33,7 @@ import id.sekarmas.mobile.application.R;
 import ops.screen.MainActivityDashboard;
 import ops.screen.offline.DokumenOfflineList;
 import user.DashboardActivity;
+import user.registrasi.Registrasi;
 
 public class LoginActivity extends LoginAcitivityApiData {
 
@@ -134,10 +135,11 @@ public class LoginActivity extends LoginAcitivityApiData {
         String noUser = inputUser.getText().toString();
     }
 
-//    @OnClick(R.id.txtRegister)
-//    public void registerNewUser(){
-////        registNewUser();
-//    }
+    @OnClick(R.id.tv_register)
+    public void registerNewUser(){
+        Intent intent = new Intent(LoginActivity.this, Registrasi.class);
+        startActivity(intent);
+    }
 
     private void validate(){
         if (inputUser.getText().toString().length() > 0 && inputPassword.getText().toString().length() > 0){

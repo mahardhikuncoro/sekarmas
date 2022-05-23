@@ -28,7 +28,7 @@
             android:layout_toRightOf="@+id/iv_backbutton"
             android:gravity="center"
             android:singleLine="false"
-            android:text="Laporan"
+            android:text="Pengaturan"
             android:textColor="@color/white"
             android:textSize="24dp"
             android:textStyle="bold" />

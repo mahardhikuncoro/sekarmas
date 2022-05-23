@@ -56,12 +56,14 @@ public class VisiMisiActivity extends BaseDialogActivity {
         taskListRecycleAll.setHasFixedSize(true);
         taskListRecycleAll.smoothScrollToPosition(10);
 
+
         LinearLayoutManager linearLayoutManagermisi = new LinearLayoutManager(this);
         linearLayoutManagermisi.setOrientation(LinearLayoutManager.VERTICAL);
 
         taskListRecycleMisi.setLayoutManager(linearLayoutManagermisi);
         taskListRecycleMisi.setHasFixedSize(true);
         taskListRecycleMisi.smoothScrollToPosition(10);
+        taskListRecycleMisi.setNestedScrollingEnabled(false);
 
         getVisiDanMisi();
 

@@ -10,8 +10,7 @@
         android:id="@+id/rentalLinear"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:background="@drawable/border_only_bottom_linearlayout">
+        android:orientation="horizontal">
 
         <ImageView
             android:layout_width="25dp"

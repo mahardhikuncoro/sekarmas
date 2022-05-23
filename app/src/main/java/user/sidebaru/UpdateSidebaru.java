@@ -71,6 +71,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import user.DashboardActivity;
 
 public class UpdateSidebaru extends BaseDialogActivity {
 
@@ -152,7 +153,7 @@ public class UpdateSidebaru extends BaseDialogActivity {
         userdata = new Userdata(UpdateSidebaru.this);
         idUmkm= getIntent().getStringExtra(ParameterKey.ID_UMKM);
 
-        tvTitleForm.setText("Update Sidebaru");
+        tvTitleForm.setText("Update Umkm");
         lnProfile.setVisibility(View.GONE);
         umkmEndpoint = retrofit.create(UmkmEndpoint.class);
 
@@ -394,7 +395,7 @@ public class UpdateSidebaru extends BaseDialogActivity {
                             progressBar.setVisibility(View.INVISIBLE);
                             Toast.makeText(UpdateSidebaru.this, "Data berhasil diperbaharui !", Toast.LENGTH_SHORT)
                                     .show();
-                            Intent intent = new Intent(getApplicationContext(), MainActivityDashboard.class);
+                            Intent intent = new Intent(getApplicationContext(), DashboardActivity.class);
                             intent.putExtra(ParameterKey.SCREEN_UMKM, true);
                             startActivity(intent);
                         }else{

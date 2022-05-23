@@ -158,7 +158,6 @@ public class UmkmFragment extends Fragment{
     protected void dialogMessage(String rString) {
         new MaterialDialog.Builder(getActivity())
                 .title(rString).icon(getResources().getDrawable(R.mipmap.ic_launcher))
-                .content(rString)
                 .positiveText(R.string.buttonClose)
                 .callback(new MaterialDialog.ButtonCallback() {
                     @Override

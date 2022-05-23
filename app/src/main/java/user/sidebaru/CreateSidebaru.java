@@ -294,9 +294,9 @@ public class CreateSidebaru extends BaseDialogActivity {
                     if(response.isSuccessful()){
                         if(response.body().getData() != null) {
                             progressBar.setVisibility(View.INVISIBLE);
-                            Intent intent = new Intent(getApplicationContext(), GridViewActivity.class);
+                            Intent intent = new Intent(CreateSidebaru.this, GridViewActivity.class);
                             intent.putExtra(ParameterKey.ID_UMKM, response.body().getData());
-                            Toast.makeText(CreateSidebaru.this, "Data Berhasil diinput, silahkan input gambar !", Toast.LENGTH_SHORT)
+                            Toast.makeText(CreateSidebaru.this, "Data Berhasil diinput, silahkan input gambar !", Toast.LENGTH_LONG)
                                     .show();
                             startActivity(intent);
                         }else{

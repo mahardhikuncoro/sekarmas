@@ -11,13 +11,12 @@
         android:id="@+id/topPanel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="15dp"
-        android:layout_marginEnd="15dp">
+        android:layout_margin="15dp">
 
         <ImageView
             android:id="@+id/btnback_toolbar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_centerVertical="true"
             android:gravity="center"
             android:src="@drawable/ic_back" />
@@ -37,9 +36,9 @@
             android:textStyle="bold" />
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/btn_post"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:id="@+id/btn_post_umkm"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_alignParentEnd="true"
             android:src="@drawable/ic_send" />
 
@@ -85,60 +84,31 @@
 
     <LinearLayout
         android:id="@+id/btn_upload_image"
-        style="@style/Base.Widget.AppCompat.Button.Borderless"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:layout_above="@+id/iv_btn_upload"
-        android:background="@color/white">
+        android:gravity="center"
+        android:layout_alignParentBottom="true"
+        android:background="@color/md_orange_900">
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
-            android:tint="@color/colorAccent"
-            android:src="@drawable/ic_camera" />
+            android:src="@drawable/ic_camera"
+            app:tint="@color/white" />
 
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginRight="48dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:padding="5dp"
             android:gravity="center_horizontal|center_vertical"
             android:text="TAMBAH GAMBAR" />
     </LinearLayout>
 
 
-    <View
-        android:id="@+id/iv_btn_upload"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_above="@id/btn_post_umkm"
-        android:background="@color/grey"
-        android:visibility="visible" />
 
-    <LinearLayout
-        android:id="@+id/btn_post_umkm"
-        style="@style/Base.Widget.AppCompat.Button.Borderless"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:background="@color/white"
-        android:layout_alignParentBottom="true"
-        android:textColor="@color/white">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:tint="@color/colorAccent"
-            android:src="@drawable/ic_send"  />
-
-        <TextView
-            android:id="@+id/tv_post"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginRight="48dp"
-            android:gravity="center_horizontal|center_vertical"
-            android:text="LEWATI" />
-    </LinearLayout>
 
 
 

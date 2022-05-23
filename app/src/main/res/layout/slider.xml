@@ -13,12 +13,10 @@
         app:cardCornerRadius="15dp"
         android:layout_below="@+id/appBar">
 
-
-
         <com.daimajia.slider.library.SliderLayout
             android:id="@+id/slider"
             android:layout_width="match_parent"
-            android:layout_height="220dp" />
+            android:layout_height="200dp" />
 
         <com.daimajia.slider.library.Indicators.PagerIndicator
             android:id="@+id/banner_slider_indicator"

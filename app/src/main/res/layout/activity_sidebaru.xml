@@ -16,13 +16,12 @@
             android:id="@+id/rl_titlebar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="15dp"
-            android:layout_marginEnd="15dp">
+            android:layout_margin="15dp">
 
             <ImageView
                 android:id="@+id/iv_backbutton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:layout_centerVertical="true"
                 android:gravity="center"
                 android:src="@drawable/ic_back" />
@@ -36,15 +35,15 @@
                 android:layout_toRightOf="@+id/iv_backbutton"
                 android:gravity="center"
                 android:singleLine="false"
-                android:text="Sidebaru"
+                android:text="E-Umkm"
                 android:textColor="@color/white"
                 android:textSize="24dp"
                 android:textStyle="bold" />
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/create_umkm_button"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:layout_alignParentEnd="true"
                 android:src="@drawable/ic_add_laporan" />
 
@@ -58,36 +57,11 @@
             android:orientation="vertical"
             android:weightSum="4">
 
-            <LinearLayout
-                android:id="@+id/linearTitleSwipe"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/half_rounded"
-                android:gravity="center"
-                android:layout_marginTop="10dp"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="15dp"
-                    android:layout_height="20dp"
-                    android:src="@drawable/ic_refresh"
-                    android:tint="@color/grey"></ImageView>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="pull down to refresh"
-                    android:textColor="@color/grey"
-                    android:textSize="10dp"
-                    android:textStyle="bold" />
-            </LinearLayout>
-
 
             <LinearLayout
                 android:id="@+id/layoutRecycler"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_below="@+id/linearTop"
                 android:layout_weight="4"
                 android:background="@color/white">
 
@@ -100,8 +74,9 @@
                         android:id="@+id/recycleMenuEntry"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="@color/white"
-                        app:layout_behavior="@string/appbar_scrolling_view_behavior"></androidx.recyclerview.widget.RecyclerView>
+                        android:background="@color/white">
+
+                    </androidx.recyclerview.widget.RecyclerView>
 
                 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
             </LinearLayout>

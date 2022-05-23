@@ -54,9 +54,9 @@ public class GridViewAdapterMenu extends ArrayAdapter<DataMenuModel> {
             holder = new ViewHolder();
             holder.titleTextView = (TextView) row.findViewById(R.id.grid_item_title);
             holder.imageView = (ImageView) row.findViewById(R.id.grid_item_image);
-            if(mGridData.get(position).getMenudesc().equals("Laporan")) {
+            if(mGridData.get(position).getMenudesc().equals("E-Pengaduan")) {
                 holder.imageView.setImageResource(R.mipmap.ic_menu_laporan);
-            }else if(mGridData.get(position).getMenudesc().equals("Sidebaru")) {
+            }else if(mGridData.get(position).getMenudesc().equals("E-Umkm")) {
                 holder.imageView.setImageResource(R.mipmap.ic_menu_sidebaru);
             }else if(mGridData.get(position).getMenudesc().equals("Pariwisata")) {
                 holder.imageView.setImageResource(R.mipmap.ic_menu_pariwisata);

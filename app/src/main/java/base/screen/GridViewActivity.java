@@ -66,6 +66,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import user.DashboardActivity;
 
 public class GridViewActivity extends BaseDialogActivity {
 
@@ -83,9 +84,7 @@ public class GridViewActivity extends BaseDialogActivity {
     MultipartBody.Part fileToUpload;
     UmkmEndpoint umkmEndpoint;
 
-    @BindView(R.id.tv_post)
-    TextView tvPost;
-    LinearLayout btnPost;
+    ImageView btnPost;
     Integer idUmkm=0;
 
     @Override
@@ -96,7 +95,7 @@ public class GridViewActivity extends BaseDialogActivity {
 
         mGridView = (GridView) findViewById(R.id.gridView);
         mProgressBar = (ProgressBar) findViewById(R.id.post_progress_bar);
-        btnPost = (LinearLayout) findViewById(R.id.btn_post_umkm);
+        btnPost = (ImageView) findViewById(R.id.btn_post_umkm);
         mProgressBar.setVisibility(View.GONE);
         idUmkm = getIntent().getIntExtra(ParameterKey.ID_UMKM,0);
         Log.e("ID UMKM ",": "+idUmkm);
@@ -123,11 +122,6 @@ public class GridViewActivity extends BaseDialogActivity {
         btnPost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(tvPost.getText().toString().equalsIgnoreCase("LEWATI")){
-                    Intent intent = new Intent(getApplicationContext(), MainActivityDashboard.class);
-                    intent.putExtra(ParameterKey.SCREEN_UMKM, true);
-                    startActivity(intent);
-                }else{
                     AlertDialog.Builder builder = new AlertDialog.Builder(GridViewActivity.this);
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                         builder.setView(R.layout.progress_bar).setCancelable(false);
@@ -137,11 +131,10 @@ public class GridViewActivity extends BaseDialogActivity {
                     for (int i=0;i<mGridData.size();i++) {
                         sendImageProduk(mGridData.get(i).getId(), mGridData.get(i).getDesc(), mGridData.get(i).getFileToUpload(), i);
                     }
-                    Intent intent = new Intent(getApplicationContext(), MainActivityDashboard.class);
+                    Intent intent = new Intent(getApplicationContext(), DashboardActivity.class);
                     intent.putExtra(ParameterKey.SCREEN_UMKM, true);
                     startActivity(intent);
                     dialog.dismiss();
-                }
             }
         });
         //Grid view click event
@@ -389,11 +382,11 @@ public class GridViewActivity extends BaseDialogActivity {
                 setImageFromCameraToView();
             }
         }
-        if(mGridData.size()>0){
-            tvPost.setText("UPLOAD");
-        }else{
-            tvPost.setText("LEWATI");
-        }
+//        if(mGridData.size()>0){
+//            tvPost.setText("UPLOAD");
+//        }else{
+//            tvPost.setText("LEWATI");
+//        }
 
     }
 

@@ -142,7 +142,6 @@ public class SidebaruActivity extends BaseDialogActivity {
     protected void dialogMessage(String rString) {
         new MaterialDialog.Builder(this)
                 .title(rString).icon(getResources().getDrawable(R.mipmap.ic_launcher))
-                .content(rString)
                 .positiveText(R.string.buttonClose)
                 .callback(new MaterialDialog.ButtonCallback() {
                     @Override
@@ -183,6 +182,7 @@ public class SidebaruActivity extends BaseDialogActivity {
                                 model.setAlamat(umkmModel.getAlamat());
                                 model.setSektorId(umkmModel.getSektorId());
                                 model.setStatus(umkmModel.getStatus());
+                                model.setProfilePicture(umkmModel.getProfilePicture());
                                 umkmList.add(model);
                             }
                             setAdapter();

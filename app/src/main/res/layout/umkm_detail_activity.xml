@@ -33,7 +33,7 @@
             android:layout_toRightOf="@+id/btnback_toolbar"
             android:gravity="center"
             android:singleLine="false"
-            android:text="Sidebaru"
+            android:text="E-Umkm"
             android:textColor="@color/white"
             android:textSize="24dp"
             android:textStyle="bold" />
@@ -94,8 +94,8 @@
                                     android:id="@+id/iv_profile_sidebaru"
                                     android:layout_width="match_parent"
                                     android:layout_height="220dp"
-                                    android:scaleType="fitXY"
-                                    android:src="@drawable/defaultslide" />
+                                    android:scaleType="centerCrop"
+                                    android:src="@drawable/img_default" />
 
                                 <TextView
                                     android:id="@+id/tv_nama_sidebaru"
@@ -146,7 +146,8 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_marginBottom="10dp"
-                                        android:background="@drawable/shape_round_shadow_white"
+                                        android:background="@drawable/button_orange_selector"
+                                        android:visibility="gone"
                                         android:text="Lokasi" />
                                 </LinearLayout>
                                 <ProgressBar

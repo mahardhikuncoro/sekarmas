@@ -36,7 +36,7 @@ public class ChangePasswordActivity extends BaseDialogActivity {
     public void onCreate(Bundle savedInstanceState) {
         transparentStatusbar();
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.change_password);
+        setContentView(R.layout.activity_change_password);
         ButterKnife.bind(this);
         initiateApiData();
 //        getLastLocation();

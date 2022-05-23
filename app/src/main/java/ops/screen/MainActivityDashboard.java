@@ -121,10 +121,6 @@ public class MainActivityDashboard extends BaseDialogActivity implements Service
         // load the store fragment by default
         selectedItemId = R.id.navigation_home;
 
-        if(BuildConfig.FLAVOR.equalsIgnoreCase("bpdbali")){
-            startService(invokeLoginService(getResources().getString(R.string.criteria_app_name), "081231810928019",UserImei));
-        }
-
         Intent intent = getIntent();
         if (intent.hasExtra("FLAG_SUBMIT")) {
             bundle = new Bundle();

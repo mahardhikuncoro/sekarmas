@@ -84,6 +84,10 @@ public class DashboardActivity extends BaseDialogActivity implements BaseSliderV
     private ArrayList<GridItem> mGridDataMenuLain;
     private ArrayList<DataMenuModel> dataModelMenuLain;
 
+    private ArrayList<Slider> sliderDataList;
+    SliderSQL sliderdql;
+    private ArrayList<String> sliderList;
+
     private SliderSQL slidersql;
 
     @Override
@@ -93,8 +97,32 @@ public class DashboardActivity extends BaseDialogActivity implements BaseSliderV
         ButterKnife.bind(this);
         initiateApiData();
         initview();
+        callApiSlider();
         loadSlider();
         menuGridview();
+    }
+
+    private void callApiSlider() {
+
+        sliderdql = new SliderSQL(this);
+        sliderDataList = new ArrayList<Slider>();
+        sliderList = new ArrayList<String>();
+        sliderdql.deleteAll();
+        for (int i=0;i<=5 ;i++) {
+
+            Log.e("SLIDER SIZE INPUT " , " + "+ i);
+            Slider slider = new Slider();
+            slider.setId(Long.parseLong(String.valueOf(i)));
+            slider.setName("slider" +i);
+            slider.setImage( "https://www.trainingperbankan.com/wp-content/uploads/2018/05/logo-bank-kalbar.jpg");
+            slider.setLink("");
+            slider.setPublish("Y");
+            slider.setPackage_name("");
+
+            sliderDataList.add(slider);
+            sliderdql.save(Long.parseLong(String.valueOf(i)), getResources().getString(R.string.companyName),"https://www.trainingperbankan.com/wp-content/uploads/2018/05/logo-bank-kalbar.jpg",
+                    "", "Y", "");
+        }
     }
 
     private void initview() {
@@ -122,7 +150,6 @@ public class DashboardActivity extends BaseDialogActivity implements BaseSliderV
                         @Override
                         public void onError() {
                             Log.e("ERROR", " ");
-
                         }
                     });
         }
@@ -207,7 +234,7 @@ public class DashboardActivity extends BaseDialogActivity implements BaseSliderV
         dataModelLaporan.setBranchname("00");
         dataModelLaporan.setTypeid("00");
         dataModelLaporan.setMenuid("00");
-        dataModelLaporan.setMenudesc("Laporan");
+        dataModelLaporan.setMenudesc("E-Pengaduan");
         dataModelLaporan.setAssigned("00");
         dataModelLaporan.setTrack("00");
         dataModelLaporan.setIs_add("00");
@@ -225,7 +252,7 @@ public class DashboardActivity extends BaseDialogActivity implements BaseSliderV
         dataModelSidebaru.setBranchname("00");
         dataModelSidebaru.setTypeid("00");
         dataModelSidebaru.setMenuid("01");
-        dataModelSidebaru.setMenudesc("Sidebaru");
+        dataModelSidebaru.setMenudesc("E-Umkm");
         dataModelSidebaru.setAssigned("00");
         dataModelSidebaru.setTrack("00");
         dataModelSidebaru.setIs_add("00");
@@ -296,10 +323,10 @@ public class DashboardActivity extends BaseDialogActivity implements BaseSliderV
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
                 //Get item at position
                 DataMenuModel datamenu = (DataMenuModel) parent.getItemAtPosition(position);
-                if(datamenu.getMenudesc().equals("Laporan")){
+                if(datamenu.getMenudesc().equals("E-Pengaduan")){
                     Intent intent = new Intent(DashboardActivity.this, LaporanActivity.class);
                     startActivity(intent);
-                }else if(datamenu.getMenudesc().equals("Sidebaru")){
+                }else if(datamenu.getMenudesc().equals("E-Umkm")){
                     Intent intent = new Intent(DashboardActivity.this, SidebaruActivity.class);
                     startActivity(intent);
                 }else if(datamenu.getMenudesc().equals("Informasi")){

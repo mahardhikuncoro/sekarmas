@@ -22,6 +22,8 @@ public class UmkmListItem extends UmkmAdapter.ViewHolder {
     ImageView _iconlist;
     @BindView(R.id.iv_status)
     ImageView ivSatus;
+    @BindView(R.id.iv_list)
+    ImageView ivList;
 
 
     public UmkmListItem(View view) {

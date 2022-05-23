@@ -1,9 +1,7 @@
 package user.pengaturan;
 
 import android.Manifest;
-import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.DialogInterface;
@@ -11,11 +9,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -30,26 +25,18 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.jakewharton.picasso.OkHttp3Downloader;
 import com.squareup.picasso.Picasso;
 
-import base.network.callback.EndPoint;
 import base.network.callback.NetworkClient;
 import base.network.callback.NetworkClientNew;
-import base.network.callback.NetworkConnection;
 import base.network.callback.ResponseStatus;
 import base.screen.BaseDialogActivity;
 import base.service.URL;
-import base.sqlite.model.Config;
 import base.sqlite.model.Userdata;
-import base.utils.ServiceReceiver;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import id.sekarmas.mobile.application.R;
 import okhttp3.OkHttpClient;
 import ops.screen.CameraActivity;
-import ops.screen.MainActivityDashboard;
-import ops.screen.fragment.ChangePasswordFragment;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ProfileActivity extends BaseDialogActivity{
 
@@ -75,16 +62,11 @@ public class ProfileActivity extends BaseDialogActivity{
     TextView textGantiPass;
     Switch switchNotification;
 
-    private Config config;
-    private Userdata userdata;
     private String dataNama;
     private String birthDate;
     private String gender,email, phoneNumber;
     private Picasso picasso;
-    private ChangePasswordFragment changePasswordFragment;
-    private NetworkConnection networkConnection;
-    private EndPoint endPoint;
-    public MainActivityDashboard activity;
+
 
     SharedPreferences sharedpreferences;
     public static final String usernotif = "usernotif";
@@ -97,18 +79,13 @@ public class ProfileActivity extends BaseDialogActivity{
     private String categoryGroup;
     private String category;
 
-    public ProfileActivity() {
-        // Required empty public constructor
-    }
-
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.profile_user);
+        setContentView(R.layout.activity_profile);
         ButterKnife.bind(this);
         initiateApiData();
-        changePasswordFragment = new ChangePasswordFragment();
         getProfile();
     }
 
@@ -191,20 +168,9 @@ public class ProfileActivity extends BaseDialogActivity{
         FragmentManager fm = getFragmentManager();
         FragmentTransaction fragmentTransaction = fm.beginTransaction();
         fragmentTransaction.setCustomAnimations(R.animator.animation_enter, R.animator.animation_out, R.animator.animation_back_left, R.animator.animation_back_right);
-        fragmentTransaction.replace(R.id.frame_container, changePasswordFragment).addToBackStack(null).commit();
     }
 
 
-    protected void initiateApiData(){
-        config = new Config(this);
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(config.getServer())
-                .addConverterFactory(GsonConverterFactory.create())
-                .client(NetworkClient.getUnsafeOkHttpClient())
-                .build();
-
-        endPoint = retrofit.create(EndPoint.class);
-    }
     protected void dialog(int rString) {
         new MaterialDialog.Builder(this)
                 .content(rString)
@@ -298,5 +264,48 @@ public class ProfileActivity extends BaseDialogActivity{
         dialogLogout(R.string.asklogout);
     }
 
+//    protected void dialogLogout(int rString) {
+//        new MaterialDialog.Builder(this)
+//                .content(rString)
+//                .icon(getResources().getDrawable(R.mipmap.ic_launcher))
+//                .title(R.string.companyName)
+//                .positiveText(R.string.buttonKeluar)
+//                .callback(new MaterialDialog.ButtonCallback() {
+//                    @Override
+//                    public void onPositive(MaterialDialog dialog) {
+//                        dialog.dismiss();
+//                        callLogout();
+//                    }
+//                })
+//                .cancelable(true)
+//                .show();
+//    }
+//    protected void callLogout(){
+//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//            builder.setView(R.layout.progress_bar).setCancelable(false);
+//        }
+//        dialog = builder.create();
+//        dialog.show();
+//        if (!networkConnection.isNetworkConnected()){
+//            dialog.dismiss();
+//            dialog(R.string.errorNoInternetConnection);
+//        } else {
+//            newEndPoint.logoutUser("Bearer " + userdata.select().getAccesstoken()).enqueue(new Callback<LogoutJson>() {
+//                @Override
+//                public void onResponse(Call<LogoutJson> call, Response<LogoutJson> response) {
+//                    if (response.isSuccessful()) {
+//                        dialog.dismiss();
+//                        removeUserData(response.body().getMessage());
+//                    }
+//                }
+//
+//                @Override
+//                public void onFailure(Call<LogoutJson> call, Throwable t) {
+//
+//                }
+//            });
+//        }
+//    }
 
 }

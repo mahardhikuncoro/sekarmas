@@ -21,8 +21,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:gravity="center"
-        android:layout_marginBottom="5dp"
-        android:background="@drawable/shape_round_shadow_white">
+        android:layout_marginBottom="5dp">
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/img_profile"
@@ -66,8 +65,8 @@
             android:layout_height="25dp"
             android:layout_below="@+id/txt_post_name"
             android:layout_toRightOf="@+id/img_profile"
-            android:tint="@color/colorPrimaryDark"
-            android:src="@drawable/ic_location" />
+            android:src="@drawable/ic_location"
+            app:tint="@color/colorPrimaryDark" />
 
         <TextView
             android:id="@+id/txt_position"
@@ -166,8 +165,8 @@
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:layout_margin="5dp"
-                android:tint="@color/colorPrimaryDark"
-                android:src="@drawable/ic_category"/>
+                android:src="@drawable/ic_category"
+                app:tint="@color/colorPrimaryDark" />
 
             <TextView
                 android:id="@+id/txt_category_name"
@@ -196,8 +195,8 @@
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:layout_margin="5dp"
-            android:tint="@color/colorPrimaryDark"
-            android:src="@drawable/ic_comment" />
+            android:src="@drawable/ic_comment"
+            app:tint="@color/colorPrimaryDark" />
 
         <TextView
             android:id="@+id/txt_comment"

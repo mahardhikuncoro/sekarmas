@@ -31,11 +31,6 @@ public class InformasiActivity extends BaseDialogActivity {
     @BindView(R.id.taskListRecycle)
     RecyclerView rvInformasi;
 
-    @BindView(R.id.layoutLatestTask)
-    LinearLayout _layoutLatestTask;
-
-    @BindView(R.id.linearTitleSwipe)
-    LinearLayout _linearTitleSwipe;
     @BindView(R.id.linearRecycle)
     LinearLayout _linearRecycle;
 

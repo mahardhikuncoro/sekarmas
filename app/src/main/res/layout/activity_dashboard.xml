@@ -9,9 +9,23 @@
         android:id="@+id/rl_username"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="20dp">
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="10dp">
 
         <TextView
+            android:id="@+id/txtHalo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:singleLine="false"
+            android:text="Hallo,"
+            android:textColor="@color/white"
+            android:textSize="18dp"
+            android:textStyle="bold" />
+        <TextView
+            android:layout_below="@+id/txtHalo"
             android:id="@+id/txtViewName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -20,7 +34,7 @@
             android:singleLine="false"
             android:text="Kasir Indomaret"
             android:textColor="@color/white"
-            android:textSize="24dp"
+            android:textSize="18dp"
             android:textStyle="bold" />
 
         <de.hdodenhof.circleimageview.CircleImageView
@@ -38,7 +52,7 @@
         android:layout_below="@+id/rl_username">
 
         <RelativeLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
@@ -65,7 +79,7 @@
             <androidx.core.widget.NestedScrollView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="120dp">
+                android:layout_marginTop="140dp">
 
                 <RelativeLayout
                     android:layout_width="match_parent"

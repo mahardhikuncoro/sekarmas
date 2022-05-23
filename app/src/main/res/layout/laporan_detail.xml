@@ -10,8 +10,7 @@
         android:id="@+id/topPanel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingStart="15dp"
-        android:paddingEnd="15dp">
+        android:layout_margin="15dp">
 
         <ImageView
             android:id="@+id/btnback_toolbar"
@@ -46,19 +45,8 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/rl_half_round"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/topPanel"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/half_rounded"
-        android:paddingBottom="20dp">
-
-    </RelativeLayout>
-
-    <RelativeLayout
         android:background="@color/white"
-        android:layout_below="@+id/rl_half_round"
+        android:layout_below="@+id/topPanel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 

@@ -30,6 +30,9 @@ public class InformasiDetail extends BaseDialogActivity {
     @BindView(R.id.tv_title_cv)
     TextView tvTitle;
 
+    @BindView(R.id.tv_content_date)
+    TextView tvDate;
+
     @BindView(R.id.img_post_detail)
     ImageView ivPost;
 
@@ -40,6 +43,7 @@ public class InformasiDetail extends BaseDialogActivity {
     private static final String KEY_MESSAGE = "message";
     private static final String KEY_DESC = "desc";
     private static final String KEY_IMAGE = "image";
+    private static final String KEY_DATE = "created_date";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -50,9 +54,9 @@ public class InformasiDetail extends BaseDialogActivity {
 
         tvTitle.setText(getIntent().getStringExtra(KEY_MESSAGE));
         tvContent.setText(getIntent().getStringExtra(KEY_DESC));
+        tvDate.setText(getIntent().getStringExtra(KEY_DATE));
 
         String url = URL.checkUrl()+getIntent().getStringExtra(KEY_IMAGE);
-        Log.e("HAHAHAHHA "," clicked news : " +  url);
         OkHttpClient picassoClient = NetworkClientNew.getUnsafeOkHttpClient();
         Picasso picasso = new Picasso.Builder(InformasiDetail.this).downloader(new OkHttp3Downloader(picassoClient)).build();
         picasso.setLoggingEnabled(true);

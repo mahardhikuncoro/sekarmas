@@ -11,14 +11,12 @@
         android:id="@+id/topPanel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
-        android:paddingStart="15dp"
-        android:paddingEnd="15dp">
+        android:layout_margin="15dp">
 
         <ImageView
             android:id="@+id/btnback_toolbar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_centerVertical="true"
             android:gravity="center"
             android:src="@drawable/ic_back" />
@@ -32,33 +30,24 @@
             android:layout_toRightOf="@+id/btnback_toolbar"
             android:gravity="center"
             android:singleLine="false"
-            android:text="Laporan Baru"
+            android:text="E-Pengaduan"
             android:textColor="@color/white"
             android:textSize="24dp"
             android:textStyle="bold" />
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/btn_post"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_alignParentEnd="true"
             android:src="@drawable/ic_send" />
 
     </RelativeLayout>
 
-    <RelativeLayout
-        android:id="@+id/rl_half_round"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/topPanel"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/half_rounded"
-        android:paddingBottom="20dp"/>
-
 
     <RelativeLayout
         android:background="@color/white"
-        android:layout_below="@+id/rl_half_round"
+        android:layout_below="@+id/topPanel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -71,15 +60,13 @@
             android:indeterminateOnly="true"
             android:progressTint="@color/colorPrimaryDark" />
 
-
         <RelativeLayout
-
         android:id="@+id/relative_laoyout_id"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
-        android:layout_marginTop="16dp">
+        android:layout_marginTop="15dp">
 
         <ImageView
             android:id="@+id/img_profile_post_write"
@@ -112,165 +99,143 @@
 
     </RelativeLayout>
 
-    <ScrollView
-        android:id="@+id/frame_text_view_post"
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/nv_post"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_below="@+id/relative_laoyout_id"
-        android:padding="8dp">
+        android:layout_height="match_parent"
+        android:layout_below="@+id/relative_laoyout_id">
 
-        <TextView
-            android:id="@+id/tv_university_choice_post"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:maxLines="10000"
-            android:scrollIndicators="left"
-            android:scrollbars="vertical"
-            android:textSize="14dp"
-            android:textStyle="bold" />
-    </ScrollView>
+            android:layout_height="wrap_content">
 
-        <androidx.core.widget.NestedScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_above="@+id/line_top"
-            android:layout_below="@+id/frame_text_view_post">
-
-            <RelativeLayout
+            <TextView
+                android:id="@+id/tv_title_judul"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="5dp"
+                android:text="Judul Laporan"/>
 
-                <EditText
-                    android:id="@+id/et_post_title"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginRight="16dp"
-                    android:background="@android:color/transparent"
-                    android:gravity="top"
-                    android:hint="Judul Laporan"
-                    android:maxLength="5000"
-                    android:maxLines="8" />
+            <EditText
+                android:layout_below="@+id/tv_title_judul"
+                android:id="@+id/et_post_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:padding="5dp"
+                android:background="@drawable/rounded_gray"
+                android:gravity="top"
+                android:maxLength="5000"
+                android:maxLines="8" />
 
+            <TextView
+                android:id="@+id/tv_title_deskripsi"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="5dp"
+                android:layout_below="@+id/et_post_title"
+                android:text="Deskripsi"/>
+            <EditText
+                android:id="@+id/et_post_write"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_title_deskripsi"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:padding="5dp"
+                android:background="@drawable/rounded_gray"
+                android:gravity="top"
+                android:maxLength="5000"
+                android:minLines="5"
+                android:maxLines="8"
+                android:scrollbars="vertical"/>
 
-                <EditText
-                    android:id="@+id/et_post_write"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/et_post_title"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginRight="16dp"
-                    android:background="@android:color/transparent"
-                    android:gravity="top"
-                    android:hint="Deskripsi"
-                    android:maxLength="5000"
-                    android:maxLines="8" />
+            <ImageView
+                android:id="@+id/img_upload"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/et_post_write"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="16dp"
+                android:adjustViewBounds="true"
+                android:contentDescription="TODO"
+                android:scaleType="centerCrop"
+                tools:ignore="ContentDescription" />
+
+            <LinearLayout
+                android:id="@+id/btn_upload_image_bar"
+                android:background="@drawable/button_orange_selector"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
+                android:gravity="center"
+                android:layout_below="@+id/img_upload"
+                android:layout_marginBottom="2dp">
 
                 <ImageView
-                    android:id="@+id/img_upload"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/et_post_write"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="16dp"
-                    android:adjustViewBounds="true"
-                    android:contentDescription="TODO"
-                    android:scaleType="centerCrop"
-                    tools:ignore="ContentDescription" />
-            </RelativeLayout>
-        </androidx.core.widget.NestedScrollView>
+                    android:layout_marginLeft="8dp"
+                    android:src="@drawable/ic_camera"
+                    app:tint="@color/white" />
 
-    <LinearLayout
-        android:id="@+id/layout_video_title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/btn_upload_image_bar"
-        android:orientation="horizontal"
-        android:padding="16dp"
-        android:visibility="gone"
-        tools:ignore="UseCompoundDrawables">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:src="@drawable/ic_comment"
-            tools:ignore="ContentDescription" />
-
-        <TextView
-            android:id="@+id/tv_video_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginStart="8dp"
-            android:maxLines="4"
-            android:text="Video Title" />
-    </LinearLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:textStyle="bold"
+                    android:textColor="@color/white"
+                    android:text="Tambahkan Foto" />
+            </LinearLayout>
 
 
-    <View
-        android:id="@+id/line_top_location"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_above="@id/btn_image_bar_loc"
-        android:background="@color/grey"
-        android:visibility="visible" />
+            <LinearLayout
+                android:id="@+id/btn_image_bar_loc"
+                android:background="@drawable/button_orange_selector"
+                android:layout_width="match_parent"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginTop="15dp"
+                android:layout_height="48dp"
+                android:layout_below="@+id/btn_upload_image_bar"
+                android:gravity="center"
+                android:layout_marginBottom="15dp">
 
-    <LinearLayout
-        android:id="@+id/btn_image_bar_loc"
-        style="@style/Base.Widget.AppCompat.Button.Borderless"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="2dp">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:src="@drawable/ic_location"
+                    app:tint="@color/white" />
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:tint="@color/colorAccent"
-            android:src="@drawable/ic_location" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:textStyle="bold"
+                    android:padding="5dp"
+                    android:textColor="@color/white"
+                    android:text="Tambahkan Lokasi" />
+            </LinearLayout>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginRight="48dp"
-            android:gravity="center_horizontal|center_vertical"
-            android:text="LOCATION" />
-    </LinearLayout>
+        </RelativeLayout>
+    </androidx.core.widget.NestedScrollView>
 
-    <View
-        android:id="@+id/line_top"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_above="@id/btn_upload_image_bar"
-        android:background="@color/grey"
-        android:visibility="visible" />
 
-    <LinearLayout
-        android:id="@+id/btn_upload_image_bar"
-        style="@style/Base.Widget.AppCompat.Button.Borderless"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:layout_above="@+id/btn_image_bar_loc"
-        android:layout_marginBottom="2dp">
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:tint="@color/colorAccent"
-            android:src="@drawable/ic_camera" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginRight="48dp"
-            android:gravity="center_horizontal|center_vertical"
-            android:text="UPLOAD MEDIA" />
-    </LinearLayout>
+
+
 
     </RelativeLayout>
 

@@ -4,6 +4,8 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,14 +14,20 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.jakewharton.picasso.OkHttp3Downloader;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
+import base.network.callback.NetworkClientNew;
 import base.network.callback.NetworkConnection;
 import base.data.umkmmodel.UmkmModel;
 import base.sqlite.model.Config;
 import base.utils.enm.ParameterKey;
 import id.sekarmas.mobile.application.R;
+import okhttp3.OkHttpClient;
+import ops.screen.adapter.LaporanItem;
 import user.sidebaru.DetailSidebaruActivity;
 
 
@@ -57,6 +65,30 @@ public class UmkmAdapter extends RecyclerView.Adapter<UmkmAdapter.ViewHolder> {
             else
                 ((UmkmListItem) holder).ivSatus.setImageResource(R.drawable.ic_reject);
 
+            if(list.get(position).getProfilePicture() != null) {
+                String url = list.get(position).getProfilePicture();
+                Log.e("URL_PHOTO", " "+url);
+                if (url != null && !url.isEmpty()) {
+                    OkHttpClient picassoClient = NetworkClientNew.getUnsafeOkHttpClient();
+                    Picasso picasso = new Picasso.Builder(context).downloader(new OkHttp3Downloader(picassoClient)).build();
+                    picasso.setLoggingEnabled(true);
+                    picasso.load(url)
+                            .placeholder(R.drawable.img_default)
+                            .error(R.drawable.img_default)
+                            .fit()
+                            .centerCrop()
+                            .into(((UmkmListItem) holder).ivList, new Callback() {
+                                @Override
+                                public void onSuccess() {
+                                }
+
+                                @Override
+                                public void onError() {
+                                }
+                            });
+                }
+            }
+
 
         setAnimation(holder.itemView, position);
 
@@ -67,7 +99,6 @@ public class UmkmAdapter extends RecyclerView.Adapter<UmkmAdapter.ViewHolder> {
                 Intent intent = new Intent(context, DetailSidebaruActivity.class);
                 intent.putExtra(ParameterKey.ID_UMKM, idUmkm);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 context.startActivity(intent);
             }
         });

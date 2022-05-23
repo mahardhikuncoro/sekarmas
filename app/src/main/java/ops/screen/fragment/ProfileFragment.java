@@ -80,7 +80,6 @@ public class ProfileFragment extends Fragment implements ServiceReceiver.Receive
     private String birthDate;
     private String gender,email, phoneNumber;
     private Picasso picasso;
-    private ChangePasswordFragment changePasswordFragment;
     private NetworkConnection networkConnection;
     private EndPoint endPoint;
     public MainActivityDashboard activity;
@@ -110,7 +109,6 @@ public class ProfileFragment extends Fragment implements ServiceReceiver.Receive
     @Override
     public void onCreate(Bundle savedInstanceState) {
         initiateApiData();
-        changePasswordFragment = new ChangePasswordFragment();
         getProfile();
         super.onCreate(savedInstanceState);
     }
@@ -119,7 +117,7 @@ public class ProfileFragment extends Fragment implements ServiceReceiver.Receive
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.profile_user, container, false);
+        View view = inflater.inflate(R.layout.activity_profile, container, false);
         ButterKnife.bind(this, view);
         return view;
     }
@@ -207,7 +205,6 @@ public class ProfileFragment extends Fragment implements ServiceReceiver.Receive
         FragmentManager fm = getFragmentManager();
         FragmentTransaction fragmentTransaction = fm.beginTransaction();
         fragmentTransaction.setCustomAnimations(R.animator.animation_enter, R.animator.animation_out, R.animator.animation_back_left, R.animator.animation_back_right);
-        fragmentTransaction.replace(R.id.frame_container, changePasswordFragment).addToBackStack(null).commit();
     }
 
 

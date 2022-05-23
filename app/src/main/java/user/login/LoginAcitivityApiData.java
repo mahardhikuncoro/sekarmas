@@ -33,6 +33,7 @@ import base.sqlite.model.TaskListDetailModel;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import user.DashboardActivity;
 
 
 public class LoginAcitivityApiData extends BaseDialogActivity  {
@@ -554,7 +555,7 @@ public class LoginAcitivityApiData extends BaseDialogActivity  {
                     dialog.dismiss();
                     Log.e("AVATAR" ," + " + response.body().getUser().getAvatar());
                     saveUserData(responseLogin,response);
-                    startActivity(new Intent(activity, MainActivityDashboard.class));
+                    startActivity(new Intent(activity, DashboardActivity.class));
                 }
             }
 

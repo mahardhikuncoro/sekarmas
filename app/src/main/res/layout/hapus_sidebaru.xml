@@ -21,7 +21,7 @@
             android:id="@+id/selectBranchLabel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="SIDEBARU"
+            android:text="E-UMKM"
             android:textColor="@color/white"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:gravity="center"/>

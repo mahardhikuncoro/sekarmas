@@ -12,10 +12,6 @@ import android.util.Log;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.FirebaseApp;
-import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.iid.InstanceIdResult;
-import com.google.firebase.messaging.FirebaseMessaging;
 
 import base.network.callback.EndPoint;
 import base.network.callback.LoginJson;
@@ -64,7 +60,7 @@ public class UserTypeService extends IntentService {
         criteria2 = intent.getExtras().getString("username");
         criteria3 = intent.getExtras().getString("imei");
         initiateApiData();
-        getToken();
+//        getToken();
         AlarmManager alarmManager=(AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
         Intent intenttimer = new Intent(getApplicationContext(), ProcessTimerReceiver.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, intenttimer, 0);
@@ -72,7 +68,7 @@ public class UserTypeService extends IntentService {
                 pendingIntent);
     }
 
-    private void getToken() {
+  /*  private void getToken() {
         new Thread(new Runnable() {
             public void run() {
                 try {
@@ -97,7 +93,7 @@ public class UserTypeService extends IntentService {
                 }
             }
         }).start();
-    }
+    }*/
 
     private void registerTokenNotofification(String token){
 

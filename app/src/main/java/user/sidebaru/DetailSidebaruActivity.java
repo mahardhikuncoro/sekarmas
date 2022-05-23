@@ -62,6 +62,7 @@ import ops.screen.fragment.RiwayatAdapter;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import user.DashboardActivity;
 
 public class DetailSidebaruActivity extends BaseDialogActivity {
 
@@ -395,7 +396,7 @@ public class DetailSidebaruActivity extends BaseDialogActivity {
                     @Override
                     public void onResponse(Call<SektorJson> call, Response<SektorJson> response) {
                         if(response.isSuccessful()){
-                            Intent intent = new Intent(getApplicationContext(), MainActivityDashboard.class);
+                            Intent intent = new Intent(getApplicationContext(), DashboardActivity.class);
                             intent.putExtra(ParameterKey.SCREEN_UMKM, true);
                             startActivity(intent);
                         }
@@ -448,12 +449,11 @@ public class DetailSidebaruActivity extends BaseDialogActivity {
     }
     @OnClick(R.id.btnback_toolbar)
     public void clickBack(){
-       finish();
+        finish();
     }
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
         finish();
     }
 }

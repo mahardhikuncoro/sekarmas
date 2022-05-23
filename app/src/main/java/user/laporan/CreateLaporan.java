@@ -80,12 +80,6 @@ public class CreateLaporan extends BaseDialogActivity {
     @BindView(R.id.img_upload)
     ImageView imgUpload;
 
-    @BindView(R.id.layout_video_title)
-    LinearLayout layoutVideoTitle;
-
-    @BindView(R.id.tv_video_title)
-    TextView tvVideoTitle;
-
     @BindView(R.id.tv_name_post_write)
     TextView tvName;
 
@@ -138,7 +132,6 @@ public class CreateLaporan extends BaseDialogActivity {
 
         categoryEndpoint = retrofit.create(CategoryEndpoint.class);
         laporanEndpoint = retrofit.create(LaporanEndpoint.class);
-        layoutVideoTitle.setVisibility(View.GONE);
         getCategory();
         if(getIntent().getExtras() != null){
             setValueFromMap();
@@ -390,16 +383,13 @@ public class CreateLaporan extends BaseDialogActivity {
                                 imageCompress.getHeight(), matrix, true);
                         imgUpload.setVisibility(View.VISIBLE);
                         imgUpload.setImageBitmap(newBitmap);
-                        layoutVideoTitle.setVisibility(View.GONE);
                         RequestBody mFile = RequestBody.create(MediaType.parse(mimeType), fileCompress);
                         fileToUpload = MultipartBody.Part.createFormData("post_image", fileCompress.getName(), mFile);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
                 } else if (formatType.equals("video")) {
-                    layoutVideoTitle.setVisibility(View.VISIBLE);
                     imgUpload.setVisibility(View.GONE);
-                    tvVideoTitle.setText(file.getName());
                     RequestBody mFile = RequestBody.create(MediaType.parse(mimeType), file);
                     fileToUpload = MultipartBody.Part.createFormData("post_image", file.getName(), mFile);
                 }
@@ -462,16 +452,13 @@ public class CreateLaporan extends BaseDialogActivity {
                         imageCompress.getHeight(), matrix, true);
                 imgUpload.setVisibility(View.VISIBLE);
                 imgUpload.setImageBitmap(newBitmap);
-                layoutVideoTitle.setVisibility(View.GONE);
                 RequestBody mFile = RequestBody.create(MediaType.parse(mimeType), fileCompress);
                 fileToUpload = MultipartBody.Part.createFormData("post_image", fileCompress.getName(), mFile);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         } else if (formatType.equals("video")) {
-            layoutVideoTitle.setVisibility(View.VISIBLE);
             imgUpload.setVisibility(View.GONE);
-            tvVideoTitle.setText(fileCameraRaw.getName());
             RequestBody mFile = RequestBody.create(MediaType.parse(mimeType), fileCameraRaw);
             fileToUpload = MultipartBody.Part.createFormData("post_image", fileCameraRaw.getName(), mFile);
         }

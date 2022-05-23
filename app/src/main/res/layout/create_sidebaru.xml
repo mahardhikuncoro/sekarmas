@@ -11,13 +11,12 @@
         android:id="@+id/rl_titlebar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="15dp"
-        android:layout_marginEnd="15dp">
+        android:layout_margin="15dp">
 
         <ImageView
             android:id="@+id/btnback_toolbar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_centerVertical="true"
             android:gravity="center"
             android:src="@drawable/ic_back" />
@@ -31,28 +30,19 @@
             android:layout_toRightOf="@+id/btnback_toolbar"
             android:gravity="center"
             android:singleLine="false"
-            android:text="Sidebaru"
+            android:text="E-Umkm"
             android:textColor="@color/white"
             android:textSize="24dp"
             android:textStyle="bold" />
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/btn_post"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_alignParentEnd="true"
             android:src="@drawable/ic_send" />
 
     </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/rl_half_round"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/rl_titlebar"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/half_rounded"
-        android:paddingBottom="20dp" />
 
 
 
@@ -60,7 +50,7 @@
         android:id="@+id/relative_laoyout_id"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/rl_half_round"
+        android:layout_below="@+id/rl_titlebar"
         android:background="@color/white">
 
         <TextView
@@ -844,44 +834,34 @@
         style="@style/Widget.AppCompat.ProgressBar.Horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/topPanel"
+        android:layout_below="@+id/rl_titlebar"
         android:progressTint="@color/colorPrimaryDark"
-        android:layout_centerVertical="true"
         android:indeterminateOnly="true" />
 
 
-    <View
-        android:id="@+id/line_top_location"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_above="@id/btn_image_bar_loc"
-        android:background="@color/grey"
-        android:visibility="visible" />
-
     <LinearLayout
         android:id="@+id/btn_image_bar_loc"
-        style="@style/Base.Widget.AppCompat.Button.Borderless"
         android:layout_width="match_parent"
-        android:background="@color/white"
+        android:background="@color/md_orange_900"
         android:layout_height="48dp"
+        android:gravity="center"
+
         android:layout_alignParentBottom="true">
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
-            android:tint="@color/colorAccent"
             android:src="@drawable/ic_location" />
 
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginRight="48dp"
+            android:textColor="@color/white"
+            android:textStyle="bold"
             android:gravity="center_horizontal|center_vertical"
-            android:text="CARI LOKASI" />
+            android:text="Cari Lokasi" />
     </LinearLayout>
-
-
-
 
 </RelativeLayout>

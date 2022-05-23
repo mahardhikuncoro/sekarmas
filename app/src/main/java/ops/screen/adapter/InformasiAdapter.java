@@ -125,6 +125,7 @@ public class InformasiAdapter extends RecyclerView.Adapter<InformasiItem> implem
                 intent.putExtra("message",list.get(position).getNewsTitle());
                 intent.putExtra("desc",list.get(position).getNewsDesc());
                 intent.putExtra("image",list.get(position).getImageUrl());
+                intent.putExtra("created_date",list.get(position).getCreateDate());
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
             }

@@ -56,6 +56,7 @@ import base.network.callback.LoginJson;
 import base.network.callback.NetworkClient;
 import base.network.callback.NetworkConnection;
 import base.service.kontak.KontakEndpoint;
+import base.service.laporan.LaporanEndpoint;
 import base.service.login.EndpointLogin;
 import base.service.information.InformationEndpoint;
 import base.service.umkm.UmkmEndpoint;
@@ -85,6 +86,8 @@ public class BaseDialogActivity extends AppCompatActivity {
     protected EndPoint endPoint;
     protected EndpointLogin newEndPoint;
     protected UmkmEndpoint umkmEndpoint;
+    protected LaporanEndpoint laporanEndpoint;
+
     protected InformationEndpoint informationEndpoint;
     protected VisiMisiEndpoint visiMisiEndpoint;
     protected KontakEndpoint kontakEndpoint;
@@ -137,6 +140,7 @@ public class BaseDialogActivity extends AppCompatActivity {
         informationEndpoint =retrofit.create(InformationEndpoint.class);
         visiMisiEndpoint = retrofit.create(VisiMisiEndpoint.class);
         kontakEndpoint = retrofit.create(KontakEndpoint.class);
+        laporanEndpoint = retrofit.create(LaporanEndpoint.class);
 
     }
 
@@ -528,8 +532,8 @@ public class BaseDialogActivity extends AppCompatActivity {
         this.cityName = cityName;
     }
 
-    protected void  callLogout(){
-        networkConnection = new NetworkConnection(this);
+    protected void callLogout(){
+        initiateApiData();
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             builder.setView(R.layout.progress_bar).setCancelable(false);

@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.daimajia.slider.library.R.id;
@@ -22,7 +23,9 @@ public class TextSliderViewCustom extends BaseSliderView {
         View v = LayoutInflater.from(this.getContext()).inflate(layout.render_type_text, null);
         ImageView target = (ImageView) v.findViewById(id.daimajia_slider_image);
         LinearLayout frame = (LinearLayout) v.findViewById(id.description_layout);
+        ProgressBar progressBar = (ProgressBar) v.findViewById(id.loading_bar);
         frame.setBackgroundColor(Color.TRANSPARENT);
+        progressBar.setVisibility(View.GONE);
 
 //      if you need description
 //      description.setText(this.getDescription());
