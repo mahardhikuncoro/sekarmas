@@ -188,7 +188,7 @@ public class LoginAcitivityApiData extends BaseDialogActivity  {
         userdata.save(userModel.body().getUser().getUsername(),
                 userModel.body().getUser().getFullname(),
                 userModel.body().getUser().getAvatar(),
-                String.valueOf(userModel.body().getUser().getRole()),
+                userModel.body().getUser().getDateOfBirth(),
                 userModel.body().getUser().getGender(),
                 userModel.body().getUser().getPhone(),
                 userModel.body().getUser().getId(),

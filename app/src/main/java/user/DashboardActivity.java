@@ -131,7 +131,7 @@ public class DashboardActivity extends BaseDialogActivity implements BaseSliderV
         mGridView.setExpanded(true);
         mGridViewLain.setExpanded(true);
 
-        tvUsername.setText(userdata.select().getUsername());
+        tvUsername.setText(userdata.select().getFullname());
         String img_url = userdata.select().getPhotoprofile();
         if (img_url!=null){
             Log.e("IMAGE URL"," : " + img_url);
@@ -252,7 +252,7 @@ public class DashboardActivity extends BaseDialogActivity implements BaseSliderV
         dataModelSidebaru.setBranchname("00");
         dataModelSidebaru.setTypeid("00");
         dataModelSidebaru.setMenuid("01");
-        dataModelSidebaru.setMenudesc("E-Umkm");
+        dataModelSidebaru.setMenudesc("E-UMKM");
         dataModelSidebaru.setAssigned("00");
         dataModelSidebaru.setTrack("00");
         dataModelSidebaru.setIs_add("00");
@@ -270,7 +270,7 @@ public class DashboardActivity extends BaseDialogActivity implements BaseSliderV
         dataModelPariwisata.setBranchname("00");
         dataModelPariwisata.setTypeid("00");
         dataModelPariwisata.setMenuid("02");
-        dataModelPariwisata.setMenudesc("Pariwisata");
+        dataModelPariwisata.setMenudesc("E-Pariwisata");
         dataModelPariwisata.setAssigned("00");
         dataModelPariwisata.setTrack("00");
         dataModelPariwisata.setIs_add("00");
@@ -326,7 +326,7 @@ public class DashboardActivity extends BaseDialogActivity implements BaseSliderV
                 if(datamenu.getMenudesc().equals("E-Pengaduan")){
                     Intent intent = new Intent(DashboardActivity.this, LaporanActivity.class);
                     startActivity(intent);
-                }else if(datamenu.getMenudesc().equals("E-Umkm")){
+                }else if(datamenu.getMenudesc().equals("E-UMKM")){
                     Intent intent = new Intent(DashboardActivity.this, SidebaruActivity.class);
                     startActivity(intent);
                 }else if(datamenu.getMenudesc().equals("Informasi")){
@@ -338,6 +338,8 @@ public class DashboardActivity extends BaseDialogActivity implements BaseSliderV
                 }else if(datamenu.getMenudesc().equals("Kontak Darurat")){
                     Intent intent = new Intent(DashboardActivity.this, KontakDaruratActivity.class);
                     startActivity(intent);
+                }else{
+                    dialogMessage("Fitur Masih dalam tahap pengembangan");
                 }
             }
         });

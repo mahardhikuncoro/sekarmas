@@ -10,7 +10,7 @@
     <string name="loading">Harap Menunggu</string>
     <string name="requesting">Requesting</string>
 
-    <string name="aboutVersion">Sekarmas Mobile Versi 1.0.0</string>
+    <string name="aboutVersion">Sekar Pinter Mobile Versi 1.0.0</string>
     <string name="aboutCopyright">©2021 Sekar Pinter</string>
     
     <string name="titleDana">Masukkan pendanaan yang anda inginkan</string>
@@ -56,6 +56,11 @@
         <item>Pilih Agunan</item>
         <item>BPKB Mobil</item>
         <item>BPKB Motor</item>
+    </string-array>
+
+    <string-array name="gender_array">
+        <item>Laki-laki</item>
+        <item>Perempuan</item>
     </string-array>
 
     <string name="errorDanaMin">Dana minimal</string>
@@ -342,6 +347,7 @@
     <string name="askregister">Dont have account ?<font color='#0000FF'><u>\n Register now ! term and conditions</u></font></string>
     <string name="next">next</string>
     <string name="save">next</string>
+    <string name="errorEmptyname">Nama Lengkap tidak boleh kosong !</string>
     <string name="errorEmptyUsername">Username tidak boleh kosong !</string>
     <string name="errorEmptyPassword">Password tidak boleh kosong !</string>
     <string name="rememberme">remember me</string>

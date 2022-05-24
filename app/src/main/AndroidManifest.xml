@@ -15,18 +15,10 @@
     <uses-feature
         android:name="android.hardware.camera"
         android:required="true" />
-    <queries>
-        <intent>
-            <action android:name="android.intent.action.VIEW" />
-            <category android:name="android.intent.category.BROWSABLE" />
-            <data android:scheme="https" />
-        </intent>
-    </queries>
-
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_logo"
+        android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:usesCleartextTraffic="true"
         android:largeHeap="true"
@@ -36,6 +28,7 @@
         android:theme="@style/AppTheme">
         <meta-data
             android:name="com.google.android.gms.version"
+            android:exported="true"
             android:value="@integer/google_play_services_version" />
 
         <meta-data
@@ -55,39 +48,49 @@
         <activity
             android:name="user.SplashActivity"
             android:noHistory="true"
+            android:exported="false"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.MAIN"
+                    android:exported="true"/>
 
-                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.LAUNCHER"
+                    android:exported="true"/>
             </intent-filter>
         </activity>
         <activity
             android:name="ops.screen.MainActivityDashboard"
+            android:exported="false"
             android:screenOrientation="portrait"></activity>
 
         <activity
             android:name="user.PermissionActivity"
+            android:exported="false"
             android:screenOrientation="portrait"></activity>
         <activity
             android:name="user.login.LoginActivity"
             android:windowSoftInputMode="stateHidden"
+            android:exported="false"
             android:screenOrientation="portrait"></activity>
         <activity
             android:name="user.changepassword.ChangePasswordActivity"
+            android:exported="false"
             android:screenOrientation="portrait"></activity>
 
         <activity
             android:name="ops.screen.fragment.FullEntry"
+            android:exported="false"
             android:screenOrientation="portrait"></activity>
         <activity
             android:name="ops.screen.fragment.FullEntryListImage"
+            android:exported="false"
             android:screenOrientation="portrait"></activity>
 
         <activity
             android:name="ops.screen.FormActivity"
             android:screenOrientation="portrait"
+            android:exported="false"
             android:windowSoftInputMode="adjustPan"></activity>
 <!--        <activity-->
 <!--            android:name="ops.DinamicLayout"-->
@@ -96,84 +99,95 @@
         <activity
             android:name="user.DashboardActivity"
             android:windowSoftInputMode="stateHidden"
+            android:exported="false"
             android:screenOrientation="portrait">
         </activity>
 
         <activity
             android:name="ops.screen.camera.MainActivityCamera"
+            android:exported="false"
             android:screenOrientation="portrait">
         </activity>
         <activity
             android:name="ops.screen.camera.PictureActivity"
+            android:exported="false"
             android:screenOrientation="portrait">
         </activity>
 
         <activity
             android:name="ops.screen.CameraActivity"
+            android:exported="false"
             android:screenOrientation="portrait">
         </activity>
         <activity
             android:name="ops.screen.fragment.FullEntryList"
+            android:exported="false"
             android:screenOrientation="portrait">
         </activity>
         <activity
             android:name="ops.screen.offline.FormOfflineDocument"
+            android:exported="false"
             android:windowSoftInputMode="adjustPan"
             android:screenOrientation="portrait">
         </activity>
         <activity
             android:name="ops.screen.offline.DokumenOfflineList"
+            android:exported="false"
             android:screenOrientation="portrait">
         </activity>
 
         <activity
             android:name="ops.screen.TaskListActivity"
+            android:exported="false"
             android:screenOrientation="portrait">
         </activity>
 
         <activity
             android:name="user.sidebaru.DetailSidebaruActivity"
+            android:exported="false"
             android:windowSoftInputMode="stateHidden"
             android:screenOrientation="portrait">
         </activity>
 
         <activity
             android:name="user.informasi.InformasiDetail"
+            android:exported="false"
             android:windowSoftInputMode="stateHidden"
             android:screenOrientation="portrait">
         </activity>
-        <!--<activity-->
-        <!--android:name="user.pin.AddPinActivity"-->
-        <!--android:noHistory="true"-->
-        <!--android:screenOrientation="portrait"></activity>-->
-        <!--<activity-->
-        <!--android:name="user.pin.ChangePinActivity"-->
-        <!--android:noHistory="true"-->
-        <!--android:screenOrientation="portrait"></activity>-->
-        <!--<activity-->
-        <!--android:name="user.pin.AskPinActivity"-->
-        <!--android:noHistory="true"-->
-        <!--android:screenOrientation="portrait"></activity>-->
 
-        <!-- Service Locaation Yang baru START -->
+        <activity android:name="user.laporan.LaporanDetail"
+            android:windowSoftInputMode="stateHidden"   android:exported="false"
+            android:screenOrientation="portrait">
+        </activity>
 
-        <!--<activity android:name=".application.SubmitDana"></activity>-->
+        <activity android:name="user.laporan.CreateLaporan"
+            android:windowSoftInputMode="stateHidden"   android:exported="false"
+            android:screenOrientation="portrait">
+        </activity>
 
-<!--        <service-->
-<!--            android:name="base.utils.MyFirebaseMessagingService"-->
-<!--            android:enabled="true"-->
-<!--            android:exported="true">-->
-<!--            <intent-filter>-->
-<!--                <action android:name="com.google.firebase.MESSAGING_EVENT" />-->
-<!--            </intent-filter>-->
-<!--        </service>-->
-<!--        <service android:name="base.utils.MyFirebaseInstanceIDService">-->
-<!--            <intent-filter>-->
-<!--                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />-->
-<!--            </intent-filter>-->
-<!--        </service>-->
+        <activity android:name="user.sidebaru.CreateSidebaru"
+            android:windowSoftInputMode="stateHidden"
+            android:exported="false"
+            android:screenOrientation="portrait">
+        </activity>
 
-        <service android:name="base.utils.UserTypeService" />
+        <activity android:name="user.sidebaru.UpdateSidebaru"   android:exported="false" android:windowSoftInputMode="stateHidden" android:screenOrientation="portrait"> </activity>
+        <activity android:name="base.screen.GridViewActivity"   android:exported="false" android:windowSoftInputMode="stateHidden" android:screenOrientation="portrait"> </activity>
+        <activity android:name="user.laporan.LaporanActivity"   android:exported="false" android:windowSoftInputMode="stateHidden" android:screenOrientation="portrait"> </activity>
+        <activity android:name="user.sidebaru.SidebaruActivity"   android:exported="false" android:windowSoftInputMode="stateHidden" android:screenOrientation="portrait"> </activity>
+        <activity android:name="user.informasi.InformasiActivity"   android:exported="false" android:windowSoftInputMode="stateHidden" android:screenOrientation="portrait"> </activity>
+        <activity android:name="user.visimisi.VisiMisiActivity"   android:exported="false" android:windowSoftInputMode="stateHidden" android:screenOrientation="portrait"> </activity>
+        <activity android:name="user.kontakdarurat.KontakDaruratActivity" android:exported="false" android:windowSoftInputMode="stateHidden" android:screenOrientation="portrait"> </activity>
+        <activity android:name="user.pengaturan.ProfileActivity" android:exported="false" android:windowSoftInputMode="stateHidden" android:screenOrientation="portrait"> </activity>
+        <activity android:name="user.pengaturan.PengaturanActivity" android:exported="false" android:windowSoftInputMode="stateHidden" android:screenOrientation="portrait"> </activity>
+        <activity android:name="user.registrasi.Registrasi" android:exported="false" android:windowSoftInputMode="stateHidden" android:screenOrientation="portrait"> </activity>
+        <activity android:name="ops.screen.MapsActivity"
+            android:exported="false"> </activity>
+        <activity android:name="ops.screen.MapsDetailUmkmActivity"
+            android:exported="false"
+            > </activity>
+
 
     </application>
 

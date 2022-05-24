@@ -39,7 +39,6 @@ public class LoginActivity extends LoginAcitivityApiData {
 
     @BindView(R.id.input_layout_user) TextInputLayout layoutInputUser;
     @BindView(R.id.input_layout_password) TextInputLayout layoutInputPassword;
-    @BindView(R.id.wrong_pasword) TextInputLayout wrong_pasword;
     @BindView(R.id.inputUser) EditText inputUser;
     @BindView(R.id.inputPassword) EditText inputPassword;
     @BindView(R.id.txtLupasPassword) TextView txtLupaPass;
@@ -140,6 +139,7 @@ public class LoginActivity extends LoginAcitivityApiData {
         Intent intent = new Intent(LoginActivity.this, Registrasi.class);
         startActivity(intent);
     }
+
 
     private void validate(){
         if (inputUser.getText().toString().length() > 0 && inputPassword.getText().toString().length() > 0){

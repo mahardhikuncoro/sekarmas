@@ -59,6 +59,7 @@ import base.service.kontak.KontakEndpoint;
 import base.service.laporan.LaporanEndpoint;
 import base.service.login.EndpointLogin;
 import base.service.information.InformationEndpoint;
+import base.service.registrasi.RegistrasiEndpoint;
 import base.service.umkm.UmkmEndpoint;
 import base.service.visimisi.VisiMisiEndpoint;
 import base.sqlite.model.FormData;
@@ -77,6 +78,7 @@ import retrofit2.converter.scalars.ScalarsConverterFactory;
 import user.changepassword.ChangePasswordActivity;
 import user.login.LoginActivity;
 import id.sekarmas.mobile.application.R;
+import user.registrasi.Registrasi;
 
 
 public class BaseDialogActivity extends AppCompatActivity {
@@ -87,6 +89,7 @@ public class BaseDialogActivity extends AppCompatActivity {
     protected EndpointLogin newEndPoint;
     protected UmkmEndpoint umkmEndpoint;
     protected LaporanEndpoint laporanEndpoint;
+    protected RegistrasiEndpoint registrasiEndpoint;
 
     protected InformationEndpoint informationEndpoint;
     protected VisiMisiEndpoint visiMisiEndpoint;
@@ -141,6 +144,7 @@ public class BaseDialogActivity extends AppCompatActivity {
         visiMisiEndpoint = retrofit.create(VisiMisiEndpoint.class);
         kontakEndpoint = retrofit.create(KontakEndpoint.class);
         laporanEndpoint = retrofit.create(LaporanEndpoint.class);
+        registrasiEndpoint = retrofit.create(RegistrasiEndpoint.class);
 
     }
 

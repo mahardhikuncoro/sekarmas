@@ -35,7 +35,7 @@
                 android:layout_toRightOf="@+id/iv_backbutton"
                 android:gravity="center"
                 android:singleLine="false"
-                android:text="E-Umkm"
+                android:text="E-UMKM"
                 android:textColor="@color/white"
                 android:textSize="24dp"
                 android:textStyle="bold" />

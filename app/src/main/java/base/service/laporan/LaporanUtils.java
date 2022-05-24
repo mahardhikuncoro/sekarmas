@@ -5,7 +5,7 @@ import base.service.URL;
 
 public class LaporanUtils {
 
-    public static LaporanEndpoint getLaporanList() {
+    public static LaporanEndpoint registrasi() {
         return RetrofitClient.getClient(URL.checkUrl()).create(LaporanEndpoint.class);
     }
 }

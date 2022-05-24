@@ -33,7 +33,7 @@
             android:layout_toRightOf="@+id/iv_backbutton"
             android:gravity="center"
             android:singleLine="false"
-            android:text="Visi &amp; MISI"
+            android:text="Visi &amp; Misi"
             android:textColor="@color/white"
             android:textSize="24dp"
             android:textStyle="bold" />
