@@ -19,6 +19,7 @@ import java.util.List;
 import id.sekarmas.mobile.application.R;
 import user.changepassword.ChangePasswordActivity;
 import user.informasi.InformasiDetail;
+import user.pengaturan.PengaturanInterface;
 import user.pengaturan.ProfileActivity;
 
 
@@ -30,10 +31,12 @@ public class PengaturanAdapter extends RecyclerView.Adapter<PengaturanAdapter.Sc
 
     private final Context context;
     private List<String> menuList;
+    private PengaturanInterface pengaturanInterface;
 
-    public PengaturanAdapter(Context context, List<String> notificationList) {
+    public PengaturanAdapter(Context context, List<String> notificationList, PengaturanInterface pengaturanInterface) {
         this.context = context;
         this.menuList = notificationList;
+        this.pengaturanInterface = pengaturanInterface;
     }
 
     @NonNull
@@ -63,6 +66,7 @@ public class PengaturanAdapter extends RecyclerView.Adapter<PengaturanAdapter.Sc
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startActivity(intent);
                 }else if(menuList.get(position).equals("Tentang Aplikasi")){
+                    pengaturanInterface.showAbout();
 //                    holder.iconlist.setImageResource(context.getResources().getDrawable(R.drawable.ic_info));
                 }else if(menuList.get(position).equals("Pengaturan Perizinan")){
 //                    holder.iconlist.setImageResource(context.getResources().getDrawable(R.drawable.ic_setting));

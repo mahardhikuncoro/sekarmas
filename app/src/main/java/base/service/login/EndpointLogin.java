@@ -2,8 +2,11 @@ package base.service.login;
 
 import base.data.loginmodel.LoginNewJson;
 import base.data.loginmodel.LogoutJson;
+import base.data.loginmodel.ResetPasswordJson;
 import base.data.userlogin.UserLoginJson;
+import base.location.BaseNetworkCallback;
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -27,4 +30,9 @@ public interface EndpointLogin {
     @GET("api/logout")
     @Headers("X-Requested-With: XMLHttpRequest")
     Call<LogoutJson> logoutUser(@Header("Authorization") String auth);
+
+    @POST("api/password/reset")
+    @Headers("X-Requested-With: XMLHttpRequest")
+    Call<BaseNetworkCallback> callReset(@Body ResetPasswordJson  resetPasswordJson);
+
 }

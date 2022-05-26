@@ -2,6 +2,7 @@ package user.changepassword;
 
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import com.google.android.material.textfield.TextInputLayout;
@@ -10,6 +11,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import base.data.loginmodel.ResetPasswordJson;
+import base.location.BaseNetworkCallback;
 import base.network.callback.ChangePassJson;
 import base.screen.BaseDialogActivity;
 import butterknife.BindView;
@@ -27,78 +30,94 @@ public class ChangePasswordActivity extends BaseDialogActivity {
     @BindView(R.id.etOldpass) EditText etOldpass;
     @BindView(R.id.etNewpass) EditText etNewpass;
     @BindView(R.id.etNewpassconf) EditText etNewpassconf;
+    @BindView(R.id.etEmail) EditText etEmail;
     @BindView(R.id.input_layout_password) TextInputLayout layoutInputPassword;
     @BindView(R.id.input_layout_password_confirm) TextInputLayout layoutInputPasswordconfirm;
-    @BindView(R.id.txtFullname) TextView txtFullname;
-    @BindView(R.id.txtIdUser) TextView txtIdUser;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        transparentStatusbar();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_change_password);
         ButterKnife.bind(this);
         initiateApiData();
-//        getLastLocation();
-        setToolbar();
+        if(getIntent().getExtras()!= null)
+            etEmail.setText(userdata.select().getEmail());
     }
 
     @OnClick(R.id.buttonSavePass)
     public void saveNewPassword(){
-        if(passwordIdentic(etNewpass.getText().toString(),etNewpassconf.getText().toString())){
+        if(getIntent().getExtras()!=null){
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 builder.setView(R.layout.progress_bar).setCancelable(false);
             }
             dialog = builder.create();
             dialog.show();
-            if (!networkConnection.isNetworkConnected()) {
+            if (!networkConnection.isNetworkConnected() && !etEmail.getText().toString().equals("")) {
                 dialog.dismiss();
                 dialog(R.string.errorNoInternetConnection);
             } else {
 
-                final ChangePassJson.ChangePassRequest request = new ChangePassJson().new ChangePassRequest();
-                request.setUserid(userdata.select().getUsername());
-                request.setPassword(encryptPassword(etOldpass.getText().toString()));
-                request.setNewpwd(encryptPassword(etNewpass.getText().toString()));
-                request.setNewpwd2(encryptPassword(etNewpassconf.getText().toString()));
-                request.setLon(String.valueOf(getLongitude()));
-                request.setLat(String.valueOf(getLatitude()));
-                request.setAddr(String.valueOf(getAddress()));
+                final ResetPasswordJson request = new ResetPasswordJson();
+                request.setEmail(userdata.select().getEmail());
 
-                Call<ChangePassJson.ChangePassCallback> callChangePass = endPoint.changePassword(userdata.select().getAccesstoken(), request);
-                callChangePass.enqueue(new Callback<ChangePassJson.ChangePassCallback>() {
+                Call<BaseNetworkCallback> resetPasswordJsonCall = newEndPoint.callReset(request);
+                resetPasswordJsonCall.enqueue(new Callback<BaseNetworkCallback>() {
                     @Override
-                    public void onResponse(Call<ChangePassJson.ChangePassCallback> call, Response<ChangePassJson.ChangePassCallback> response) {
-                        if(response.isSuccessful()){
-                            if(response.body().getStatus().equalsIgnoreCase("1")){
-                                Toast.makeText(getApplicationContext(), getResources().getString(R.string.successupdatepassword), Toast.LENGTH_LONG).show();
-                                dialog.dismiss();
-                                userdata.deleteAll();
-                                formData.deleteAll();
-                                startActivity(new Intent(getApplicationContext(), LoginActivity.class));
-                            }else if(response.body().getStatus().equalsIgnoreCase("100")){
-                                dialog.dismiss();
-                                removeUserData(response.body().getMessage());
-                            }else{
-                                dialog.dismiss();
-                                dialogMessage(response.body().getMessage());
-                            }
+                    public void onResponse(Call<BaseNetworkCallback> call, Response<BaseNetworkCallback> response) {
+                        if (response.body().getSuccess()) {
+                            dialog.dismiss();
+                            Toast.makeText(getApplicationContext(), response.body().getMessage(), Toast.LENGTH_LONG).show();
+                        } else {
+                            dialog.dismiss();
+                            dialogMessage(response.body().getMessage());
                         }
                     }
 
                     @Override
-                    public void onFailure(Call<ChangePassJson.ChangePassCallback> call, Throwable t) {
+                    public void onFailure(Call<BaseNetworkCallback> call, Throwable t) {
                         dialog.dismiss();
                     }
                 });
-
-
-                Log.e("SAMA", "OKE ");
             }
-        }else{
-            Log.e("BEDA","OKE ");
-            layoutInputPasswordconfirm.setError(getResources().getString(R.string.passnotmatch));
+
+
+
+//                Call<ChangePassJson.ChangePassCallback> callChangePass = endPoint.changePassword(userdata.select().getAccesstoken(), request);
+//                callChangePass.enqueue(new Callback<ChangePassJson.ChangePassCallback>() {
+//                    @Override
+//                    public void onResponse(Call<ChangePassJson.ChangePassCallback> call, Response<ChangePassJson.ChangePassCallback> response) {
+//                        if(response.isSuccessful()){
+//                            if(response.body().getStatus().equalsIgnoreCase("1")){
+//                                Toast.makeText(getApplicationContext(), getResources().getString(R.string.successupdatepassword), Toast.LENGTH_LONG).show();
+//                                dialog.dismiss();
+//                                userdata.deleteAll();
+//                                formData.deleteAll();
+//                                startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+//                            }else if(response.body().getStatus().equalsIgnoreCase("100")){
+//                                dialog.dismiss();
+//                                removeUserData(response.body().getMessage());
+//                            }else{
+//                                dialog.dismiss();
+//                                dialogMessage(response.body().getMessage());
+//                            }
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onFailure(Call<ChangePassJson.ChangePassCallback> call, Throwable t) {
+//                        dialog.dismiss();
+//                    }
+//                });
+//
+//            }
+//        }else{
+//            layoutInputPasswordconfirm.setError(getResources().getString(R.string.passnotmatch));
+//        }
+            }else{
+            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("  https://www.sekarmas.com/password/reset"));
+            startActivity(browserIntent);
+
         }
     }
 
@@ -106,21 +125,13 @@ public class ChangePasswordActivity extends BaseDialogActivity {
         return newPass.equalsIgnoreCase(confirmPass);
     }
 
-    private void setToolbar() {
-
-        String id = userdata.select().getGender().equalsIgnoreCase("")? "Group Name" : userdata.select().getGender();
-        String fullname = userdata.select().getFullname();
-        txtIdUser.setText(id);
-        txtFullname.setText(fullname);
-    }
-
     @Override
     public void onBackPressed() {
-        startActivity(new Intent(getApplicationContext(), MainActivityDashboard.class));
+        finish();
     }
 
-    @OnClick(R.id.btnback_toolbar)
+    @OnClick(R.id.iv_backbutton)
     public void backButton(){
-        onBackPressed();
+        finish();
     }
 }

@@ -3,6 +3,7 @@ package user.login;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import com.google.android.material.textfield.TextInputLayout;
@@ -10,13 +11,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
-import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 import java.text.DateFormat;
@@ -30,10 +28,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import id.sekarmas.mobile.application.R;
-import ops.screen.MainActivityDashboard;
-import ops.screen.offline.DokumenOfflineList;
 import user.DashboardActivity;
-import user.registrasi.Registrasi;
+import user.changepassword.ChangePasswordActivity;
+import user.registrasi.RegistrasiActivity;
 
 public class LoginActivity extends LoginAcitivityApiData {
 
@@ -136,8 +133,14 @@ public class LoginActivity extends LoginAcitivityApiData {
 
     @OnClick(R.id.tv_register)
     public void registerNewUser(){
-        Intent intent = new Intent(LoginActivity.this, Registrasi.class);
+        Intent intent = new Intent(LoginActivity.this, RegistrasiActivity.class);
         startActivity(intent);
+    }
+
+    @OnClick(R.id.tv_reset)
+    public void resetPassword(){
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.sekarmas.com/password/reset"));
+        startActivity(browserIntent);
     }
 
 

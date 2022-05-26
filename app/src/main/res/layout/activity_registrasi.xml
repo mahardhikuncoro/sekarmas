@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/blue_background"
-    tools:context="user.registrasi.Registrasi">
+    tools:context="user.registrasi.RegistrasiActivity">
 
     <ProgressBar
         android:id="@+id/progress_registrasi"
@@ -65,6 +65,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:padding="10dp"
             android:layout_below="@+id/toolbar_dokumen_detail"
             android:id="@+id/rtl_dokumen_detail">
 
@@ -72,11 +73,11 @@
                 android:id="@+id/iv_propict"
                 android:layout_width="120dp"
                 android:layout_height="120dp"
-                android:scaleType="fitCenter"
+                android:layout_centerHorizontal="true"
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"
+                android:scaleType="fitCenter"
                 android:src="@drawable/ic_profile"
-                android:layout_centerHorizontal="true"
                 tools:ignore="ContentDescription" />
 
             <TextView
@@ -84,7 +85,6 @@
                 android:id="@+id/lbl_informasi_diri"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
                 android:text="Informasi Diri"
                 android:textSize="18dp"
                 android:layout_marginTop="10dp"
@@ -92,104 +92,99 @@
                 android:textStyle="bold" />
 
             <LinearLayout
+                android:id="@+id/lnr_nama_lengkap"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/lnr_nama_lengkap"
-                android:orientation="vertical"
                 android:layout_below="@+id/lbl_informasi_diri"
-                android:padding="5dp"
-                >
+                android:orientation="vertical">
+
                 <TextView
                     android:id="@+id/lbl_nama_lengkap"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:text="Nama Lengkap*"
                     android:layout_marginTop="10dp"
+                    android:text="Nama Lengkap*"
                     android:textColor="@color/md_grey_600"
                     android:textStyle="bold" />
 
-                <com.google.android.material.textfield.TextInputEditText
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginEnd="20dp"
-                    android:layout_marginStart="20dp"
-                    android:inputType="text"
-                    android:padding="10dp"
-                    android:background="@drawable/shape_rounded_grey_corner"
-                    android:id="@+id/et_nama_lengkap"/>
+                    app:colorControlActivated="@color/red"
+                    app:errorEnabled="true"
+                    app:passwordToggleEnabled="false">
+
+                    <EditText
+                        android:id="@+id/et_nama_lengkap"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text" />
+                </com.google.android.material.textfield.TextInputLayout>
 
             </LinearLayout>
 
 
-
             <LinearLayout
+                android:id="@+id/lnr_nomor_telp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/lnr_nomor_telp"
-                android:orientation="vertical"
                 android:layout_below="@+id/lnr_nama_lengkap"
-                android:padding="5dp"
-                >
+                android:orientation="vertical">
+
                 <TextView
                     android:id="@+id/lbl_nomor_tlp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
                     android:text="No. Telpon*"
-                    android:layout_marginTop="5dp"
                     android:textColor="@color/md_grey_600"
                     android:textStyle="bold" />
 
-                <com.google.android.material.textfield.TextInputEditText
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginEnd="20dp"
-                    android:layout_marginStart="20dp"
-                    android:inputType="number"
-                    android:padding="10dp"
-                    android:background="@drawable/shape_rounded_grey_corner"
-                    android:id="@+id/et_nomor_tlp"/>
+                    app:colorControlActivated="@color/red"
+                    app:errorEnabled="true"
+                    app:passwordToggleEnabled="false">
+
+                    <EditText
+                        android:id="@+id/et_nomor_tlp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="phone" />
+                </com.google.android.material.textfield.TextInputLayout>
 
             </LinearLayout>
 
             <RelativeLayout
+                android:id="@+id/lnr_gender"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/lnr_gender"
-                android:orientation="vertical"
                 android:layout_below="@+id/lnr_nomor_telp"
-                android:padding="5dp"
-                >
+                android:layout_marginBottom="10dp"
+                android:orientation="vertical">
+
                 <TextView
                     android:id="@+id/lbl_gender"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:text="Jenis Kelamin*"
                     android:layout_marginTop="5dp"
+                    android:text="Jenis Kelamin*"
                     android:textColor="@color/md_grey_600"
                     android:textStyle="bold" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_below="@+id/lbl_gender"
                     android:layout_marginTop="5dp"
-                    android:layout_marginEnd="20dp"
-                    android:layout_marginStart="20dp"
-                    android:padding="10dp"
-                    android:orientation="horizontal"
-                    android:background="@drawable/shape_rounded_grey_corner"
-                    android:layout_below="@+id/lbl_gender">
+                    android:orientation="horizontal">
 
                     <Spinner
+                        android:id="@+id/spinner_gender"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:entries="@array/gender_array"
                         android:layout_weight="5"
-                        android:id="@+id/spinner_gender"/>
+                        android:entries="@array/gender_array" />
 
 
                 </LinearLayout>
@@ -198,48 +193,49 @@
 
 
             <LinearLayout
+                android:id="@+id/lnr_birthdate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/lnr_birthdate"
-                android:orientation="vertical"
                 android:layout_below="@+id/lnr_gender"
-                android:padding="5dp"
-                >
+                android:orientation="vertical">
+
                 <TextView
                     android:id="@+id/lbl_tgl_lahir"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="10dp"
                     android:text="Tanggal Lahir*"
-                    android:layout_marginTop="5dp"
                     android:textColor="@color/md_grey_600"
                     android:textStyle="bold" />
 
-                <com.google.android.material.textfield.TextInputEditText
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginEnd="20dp"
-                    android:layout_marginStart="20dp"
-                    android:padding="10dp"
-                    android:focusable="false"
-                    android:background="@drawable/shape_rounded_grey_corner"
-                    android:id="@+id/et_tgl_lahir"/>
+                    app:colorControlActivated="@color/red"
+                    app:errorEnabled="true"
+                    app:passwordToggleEnabled="false">
+
+                    <EditText
+                        android:id="@+id/et_tgl_lahir"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:focusable="false" />
+                </com.google.android.material.textfield.TextInputLayout>
 
             </LinearLayout>
 
 
-
             <TextView
-                android:layout_below="@+id/lnr_birthdate"
                 android:id="@+id/lbl_informasi_pengguna"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:text="Informasi Pengguna"
-                android:textSize="18dp"
+                android:layout_below="@+id/lnr_birthdate"
                 android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:text="Informasi Pengguna"
                 android:textColor="@color/black"
+                android:textSize="18dp"
                 android:textStyle="bold" />
 
 
@@ -251,65 +247,62 @@
                 android:id="@+id/lnr_email"
                 android:orientation="vertical"
                 android:layout_below="@+id/lbl_informasi_pengguna"
-                android:padding="5dp"
                 >
                 <TextView
                     android:id="@+id/lbl_email"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
                     android:text="E-mail*"
-                    android:layout_marginTop="5dp"
                     android:textColor="@color/md_grey_600"
                     android:textStyle="bold" />
 
-                <com.google.android.material.textfield.TextInputEditText
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:colorControlActivated="@color/red"
+                    app:errorEnabled="true"
+                    app:passwordToggleEnabled="false">
+                <EditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    android:layout_marginEnd="20dp"
-                    android:layout_marginStart="20dp"
                     android:inputType="textEmailAddress"
-                    android:padding="10dp"
-                    android:background="@drawable/shape_rounded_grey_corner"
                     android:id="@+id/et_email"
-                    android:layout_marginBottom="10dp"
                     />
+                </com.google.android.material.textfield.TextInputLayout>
 
             </LinearLayout>
 
 
             <LinearLayout
+                android:id="@+id/lnr_username"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/lnr_username"
-                android:orientation="vertical"
                 android:layout_below="@+id/lnr_email"
-                android:padding="5dp">
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/lbl_penghasilan"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
                     android:text="Username"
-                    android:layout_marginTop="10dp"
                     android:textColor="@color/md_grey_600"
                     android:textStyle="bold" />
 
 
-                <com.google.android.material.textfield.TextInputEditText
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginEnd="20dp"
-                    android:layout_marginStart="20dp"
-                    android:inputType="text"
-                    android:padding="10dp"
-                    android:background="@drawable/shape_rounded_grey_corner"
-                    android:id="@+id/et_username"
-                    android:layout_marginBottom="10dp"
-                    />
+                    app:colorControlActivated="@color/red"
+                    app:errorEnabled="true"
+                    app:passwordToggleEnabled="false">
+
+                    <EditText
+                        android:id="@+id/et_username"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text" />
+                </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
 
 
@@ -318,31 +311,30 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/lnr_password"
                 android:orientation="vertical"
-                android:layout_below="@+id/lnr_username"
-                android:padding="5dp">
+                android:layout_below="@+id/lnr_username">
 
                 <TextView
                     android:id="@+id/lbl_password"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:text="Kata_sandi"
-                    android:layout_marginTop="10dp"
+                    android:text="Kata Sandi"
                     android:textColor="@color/md_grey_600"
                     android:textStyle="bold" />
 
-                <com.google.android.material.textfield.TextInputEditText
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginEnd="20dp"
-                    android:layout_marginStart="20dp"
+                    app:colorControlActivated="@color/red"
+                    app:errorEnabled="true"
+                    app:passwordToggleEnabled="true">
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:inputType="textPassword"
-                    android:padding="10dp"
                     android:id="@+id/et_password"
                     app:passwordToggleEnabled="true"
-                    android:layout_marginBottom="10dp"
                     />
+                </com.google.android.material.textfield.TextInputLayout>
 
             </LinearLayout>
 
@@ -351,51 +343,47 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/lnr_konfirmasi"
                 android:orientation="vertical"
-                android:layout_below="@+id/lnr_password"
-                android:padding="5dp">
+                android:layout_below="@+id/lnr_password">
 
                 <TextView
                     android:id="@+id/lbl_password_konfirmasi"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:text="Konfirmasi Kata_sandi"
+                    android:text="Konfirmasi Kata Sandi"
                     android:layout_marginTop="10dp"
                     android:textColor="@color/md_grey_600"
                     android:textStyle="bold" />
 
-                <com.google.android.material.textfield.TextInputEditText
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginEnd="20dp"
-                    android:layout_marginStart="20dp"
+                    app:colorControlActivated="@color/red"
+                    app:errorEnabled="true"
+                    app:passwordToggleEnabled="true">
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:inputType="textPassword"
-                    android:padding="10dp"
                     android:id="@+id/et_password_konfirmasi"
                     app:passwordToggleEnabled="true"
                     android:layout_marginBottom="10dp"
                     />
+                </com.google.android.material.textfield.TextInputLayout>
 
             </LinearLayout>
-
-
 
             <Button
                 android:id="@+id/btn_regist"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Daftar"
                 android:layout_below="@+id/lnr_konfirmasi"
-                android:textColor="@color/white"
-                android:background="@drawable/button_orange_selector"
-                android:layout_marginEnd="20dp"
-                android:textAllCaps="false"
+                android:layout_centerHorizontal="true"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
-                android:layout_centerHorizontal="true"
-                android:layout_marginStart="20dp"
-                />
+                android:background="@drawable/button_orange_selector"
+                android:text="Daftar"
+                android:textAllCaps="false"
+                android:textColor="@color/white" />
 
 
         </RelativeLayout>

@@ -48,7 +48,7 @@
         <activity
             android:name="user.SplashActivity"
             android:noHistory="true"
-            android:exported="false"
+            android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <intent-filter>
@@ -181,7 +181,7 @@
         <activity android:name="user.kontakdarurat.KontakDaruratActivity" android:exported="false" android:windowSoftInputMode="stateHidden" android:screenOrientation="portrait"> </activity>
         <activity android:name="user.pengaturan.ProfileActivity" android:exported="false" android:windowSoftInputMode="stateHidden" android:screenOrientation="portrait"> </activity>
         <activity android:name="user.pengaturan.PengaturanActivity" android:exported="false" android:windowSoftInputMode="stateHidden" android:screenOrientation="portrait"> </activity>
-        <activity android:name="user.registrasi.Registrasi" android:exported="false" android:windowSoftInputMode="stateHidden" android:screenOrientation="portrait"> </activity>
+        <activity android:name="user.registrasi.RegistrasiActivity" android:exported="false" android:windowSoftInputMode="stateHidden" android:screenOrientation="portrait"> </activity>
         <activity android:name="ops.screen.MapsActivity"
             android:exported="false"> </activity>
         <activity android:name="ops.screen.MapsDetailUmkmActivity"

@@ -48,7 +48,7 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_below="@+id/rl_username">
 
         <RelativeLayout
@@ -67,7 +67,7 @@
         <LinearLayout
             android:id="@+id/dash1"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_marginTop="100dp"
             android:paddingTop="100dp"
             android:background="@color/white"
@@ -79,7 +79,7 @@
             <androidx.core.widget.NestedScrollView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="140dp">
+                android:layout_marginTop="90dp">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -89,9 +89,10 @@
                         android:id="@+id/txt_title_menu"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
                         android:padding="10dp"
                         android:text="MENU"
-                        android:textStyle="bold"/>
+                        android:textStyle="bold" />
 
                     <base.utils.ExpandableHeightGridView
                         android:layout_below="@+id/txt_title_menu"
@@ -110,30 +111,30 @@
                         android:horizontalSpacing="5dp" />
 
                     <TextView
-                        android:layout_below="@+id/gridView"
                         android:id="@+id/txt_title_menu_lain"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_below="@+id/gridView"
                         android:padding="10dp"
+                        android:layout_marginLeft="10dp"
                         android:text="Lain-Lain"
-                        android:textStyle="bold"/>
+                        android:textStyle="bold" />
 
                     <base.utils.ExpandableHeightGridView
-                        android:layout_below="@+id/txt_title_menu_lain"
                         android:id="@+id/gridView_lain"
-                        android:padding="5dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_below="@+id/txt_title_menu_lain"
+                        android:clickable="true"
                         android:columnWidth="110dp"
                         android:drawSelectorOnTop="true"
-                        android:gravity="center"
-                        android:numColumns="auto_fit"
-                        android:stretchMode="columnWidth"
-                        android:verticalSpacing="5dp"
                         android:focusable="true"
-                        android:clickable="true"
+                        android:gravity="center"
                         android:horizontalSpacing="5dp"
-                        />
+                        android:numColumns="auto_fit"
+                        android:padding="5dp"
+                        android:stretchMode="columnWidth"
+                        android:verticalSpacing="5dp" />
 
                 </RelativeLayout>
 

@@ -78,7 +78,6 @@ import retrofit2.converter.scalars.ScalarsConverterFactory;
 import user.changepassword.ChangePasswordActivity;
 import user.login.LoginActivity;
 import id.sekarmas.mobile.application.R;
-import user.registrasi.Registrasi;
 
 
 public class BaseDialogActivity extends AppCompatActivity {

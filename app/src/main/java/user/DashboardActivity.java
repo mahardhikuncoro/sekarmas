@@ -1,6 +1,8 @@
 package user;
 
+import android.app.AlertDialog;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -20,7 +22,10 @@ import com.jakewharton.picasso.OkHttp3Downloader;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import base.data.informationmodel.Information;
+import base.network.callback.LoginJson;
 import base.network.callback.NetworkClient;
 import base.network.callback.NetworkClientNew;
 import base.network.callback.NetworkConnection;
@@ -34,6 +39,7 @@ import base.service.kontak.KontakEndpoint;
 import base.service.visimisi.VisiMisiEndpoint;
 import base.sqlite.model.Config;
 import base.sqlite.model.DataMenuModel;
+import base.sqlite.model.InformasiModel;
 import base.sqlite.model.SliderSQL;
 import base.sqlite.model.Userdata;
 import base.utils.ExpandableHeightGridView;
@@ -46,6 +52,9 @@ import okhttp3.OkHttpClient;
 import ops.screen.MainActivityDashboard;
 import ops.screen.adapter.GridViewAdapterMenu;
 import ops.screen.fragment.TaskListFragment;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import user.informasi.InformasiActivity;
@@ -97,10 +106,80 @@ public class DashboardActivity extends BaseDialogActivity implements BaseSliderV
         ButterKnife.bind(this);
         initiateApiData();
         initview();
-        callApiSlider();
-        loadSlider();
+        getInformation();
+
         menuGridview();
+//        callApiSlider();
+
     }
+
+    protected void getInformation(){
+
+        sliderdql = new SliderSQL(this);
+        sliderDataList = new ArrayList<Slider>();
+        sliderList = new ArrayList<String>();
+        sliderdql.deleteAll();
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            builder.setView(R.layout.progress_bar).setCancelable(false);
+        }
+        dialog = builder.create();
+        dialog.show();
+        if (!networkConnection.isNetworkConnected()) {
+            dialog.dismiss();
+            dialog(R.string.errorNoInternetConnection);
+        } else {
+            informationEndpoint.getInformationList("Bearer " + userdata.select().getAccesstoken()).enqueue(new Callback<List<Information>>() {
+                @Override
+                public void onResponse(Call<List<Information>> call, Response<List<Information>> response) {
+                    try {
+                        if (response.isSuccessful()) {
+                            dialog.dismiss();
+                            for (int i = 0; i < response.body().size(); i++) {
+                                InformasiModel newsmod = new InformasiModel();
+                                newsmod.setNewsId(String.valueOf("" + i));
+                                newsmod.setNewsTitle(response.body().get(i).getTitle());
+                                newsmod.setNewsDesc(response.body().get(i).getDescription());
+                                newsmod.setActive(response.body().get(i).getTitle());
+                                newsmod.setImageUrl(URL.checkUrl() + response.body().get(i).getImageUrl());
+                                newsmod.setCreateDate(response.body().get(i).getCreatedAt());
+                                saveApiSlider(newsmod);
+                            }
+                            loadSlider();
+                        } else {
+                            dialog.dismiss();
+                        }
+                    }catch (Exception e){
+
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<List<Information>> call, Throwable t) {
+
+                }
+            });
+        }
+    }
+
+    private void saveApiSlider(InformasiModel sliderObject) {
+//        for (int i=0;i<=5 ;i++) {
+
+            Log.e("SLIDER SIZE INPUT " , " + "+ sliderObject.getImageUrl());
+            Slider slider = new Slider();
+            slider.setId(Long.parseLong(sliderObject.getNewsId()));
+            slider.setName(sliderObject.getNewsTitle());
+            slider.setImage( sliderObject.getImageUrl());
+            slider.setLink(sliderObject.getImageUrl());
+            slider.setPublish("Y");
+            slider.setPackage_name("");
+
+            sliderDataList.add(slider);
+            sliderdql.save(slider);
+//        }
+    }
+
 
     private void callApiSlider() {
 
@@ -169,14 +248,14 @@ public class DashboardActivity extends BaseDialogActivity implements BaseSliderV
 
             for (int i = 1; i <= slidesize; i++) {
                 Slider temp = slidersql.select(i);
-
+                Log.e("SELECT "," IMAGE URL " + temp.getImage());
                 TextSliderViewCustom textSliderView = new TextSliderViewCustom(this);
                 textSliderView
                         .description(temp.getName())
                         .image(temp.getImage())
                         .error(R.drawable.defaultslide)
                         .empty(R.drawable.defaultslide)
-                        .setScaleType(BaseSliderView.ScaleType.Fit)
+                        .setScaleType(BaseSliderView.ScaleType.CenterCrop)
                         .setOnSliderClickListener(DashboardActivity.this);
 
                 textSliderView.bundle(new Bundle());
@@ -194,7 +273,7 @@ public class DashboardActivity extends BaseDialogActivity implements BaseSliderV
             sliderLayout.setPresetTransformer(SliderLayout.Transformer.DepthPage);
             sliderLayout.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom);
             sliderLayout.setCustomAnimation(new DescriptionAnimation());
-            sliderLayout.setDuration(6000);
+            sliderLayout.setDuration(3000);
             sliderLayout.setCustomIndicator(pagerIndicator);
             sliderLayout.addOnPageChangeListener(DashboardActivity.this);
 

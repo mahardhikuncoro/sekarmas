@@ -379,6 +379,7 @@
     <string name="errorJudul">Mohon isi judul laporan !</string>
     <string name="errorDeskripsi">Mohon isi deskripsi laporan !</string>
     <string name="errorIMage">Mohon ambil gambar untuk laporan !</string>
+    <string name="errorImageRegist">Mohon ambil gambar untuk registrasi !</string>
     <string name="errorLokasi">Mohon tentukan lokasi laporan !</string>
     <string name="errorNamasidebaru">Mohon isi nama sidebaru !</string>
     <string name="errorAlamatsidebaru">Mohon isi alamat sidebaru !</string>
