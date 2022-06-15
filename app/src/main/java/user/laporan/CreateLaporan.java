@@ -176,7 +176,6 @@ public class CreateLaporan extends BaseDialogActivity {
 
                 }
             });
-
         }
     }
 

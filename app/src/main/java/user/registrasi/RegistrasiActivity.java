@@ -359,7 +359,7 @@ public class RegistrasiActivity extends BaseDialogActivity {
                         options.inPreferredConfig = Bitmap.Config.RGB_565;
 
                         Matrix matrix = new Matrix();
-                        matrix.postRotate(getCameraPhotoOrientation(this, uri, file));
+//                        matrix.postRotate(getCameraPhotoOrientation(this, uri, file));
                         File fileCompress = new Compressor(this).compressToFile(file);
                         Bitmap imageCompress = new Compressor(this).compressToBitmap(file);
                         Bitmap newBitmap = Bitmap.createBitmap(imageCompress, 0, 0, imageCompress.getWidth(),
@@ -367,12 +367,6 @@ public class RegistrasiActivity extends BaseDialogActivity {
 
                         imgUpload.setVisibility(View.VISIBLE);
                         imgUpload.setImageBitmap(newBitmap);
-                        int height = options.outHeight;
-                        int width = options.outWidth;
-
-//                        if ((height * width) >= 1000000) {
-//                            resizePhotonew(fileCompress);
-//                        }
                         Log.e("SIZE "," 11 : " + (imageCompress.getWidth()* imageCompress.getWidth()));
                         RequestBody mFile = RequestBody.create(MediaType.parse(mimeType), fileCompress);
                         fileToUpload = MultipartBody.Part.createFormData("avatars", fileCompress.getName(), mFile);
@@ -425,7 +419,7 @@ public class RegistrasiActivity extends BaseDialogActivity {
         try {
             File fileCameraRaw = new File(getRealPathFromURIPath(imagePath, this));
             Matrix matrix = new Matrix();
-            matrix.postRotate(getCameraPhotoOrientation(this, imagePath, fileCameraRaw));
+//            matrix.postRotate(getCameraPhotoOrientation(this, imagePath, fileCameraRaw));
             File fileCompress = new CompressorNew(this).compressToFile(fileCameraRaw);
             Bitmap bitmapCompress = new CompressorNew(this).compressToBitmap(fileCompress);
             Bitmap newBitmap = Bitmap.createBitmap(bitmapCompress, 0, 0, bitmapCompress.getWidth(),
@@ -514,7 +508,7 @@ public class RegistrasiActivity extends BaseDialogActivity {
                 final BitmapFactory.Options options = new BitmapFactory.Options();
                 options.inPreferredConfig = Bitmap.Config.RGB_565;
 
-                matrix.postRotate(getCameraPhotoOrientation(this, imagePath, fileCameraRaw));
+//                matrix.postRotate(getCameraPhotoOrientation(this, imagePath, fileCameraRaw));
                 File fileCompress = new Compressor(this).compressToFile(fileCameraRaw);
                 Bitmap imageCompress = new Compressor(this).compressToBitmap(fileCameraRaw);
                 Bitmap newBitmap = Bitmap.createBitmap(imageCompress, 0, 0, imageCompress.getWidth(),

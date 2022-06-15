@@ -118,7 +118,7 @@ public class LaporanAdapter extends RecyclerView.Adapter<LaporanItem> implements
                  picasso.setLoggingEnabled(true);
                  picasso.load(base.service.URL.checkUrl()+img_url)
                          .placeholder(R.drawable.ic_profile)// Place holder image from drawable folder
-                         .error(R.drawable.ic_profile).resize(200, 200).rotate(90)
+                         .error(R.drawable.ic_profile).resize(200, 200)
                          .into( ((LaporanItem) holder).imgProfile, new com.squareup.picasso.Callback() {
                              @Override
                              public void onSuccess() {

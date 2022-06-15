@@ -15,6 +15,7 @@ import java.util.List;
 import base.screen.BaseDialogActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import id.sekarmas.mobile.application.R;
 import ops.screen.MainActivityDashboard;
 import ops.screen.adapter.PengaturanAdapter;
@@ -63,5 +64,15 @@ public class PengaturanActivity extends BaseDialogActivity implements Pengaturan
                     }
                 }).setNegativeButton("", null).show();
 
+    }
+
+    @OnClick(R.id.iv_backbutton)
+    public void clickBack(){
+        finish();
+    }
+
+    @Override
+    public void onBackPressed() {
+        finish();
     }
 }
