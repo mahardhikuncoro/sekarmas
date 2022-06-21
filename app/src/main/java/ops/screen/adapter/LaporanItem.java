@@ -9,7 +9,7 @@ import androidx.cardview.widget.CardView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import id.sekarmas.mobile.application.R;
+import id.sekarpinter.mobile.application.R;
 
 
 public class LaporanItem extends LaporanAdapter.ViewHolder {

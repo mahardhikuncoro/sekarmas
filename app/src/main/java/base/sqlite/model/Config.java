@@ -6,7 +6,7 @@ import android.os.Build;
 import java.util.Properties;
 
 import base.AssetsPropertyReader;
-import id.sekarmas.mobile.application.BuildConfig;
+import id.sekarpinter.mobile.application.BuildConfig;
 
 public class Config {
 

@@ -13,7 +13,7 @@ import androidx.core.content.ContextCompat;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
-import id.sekarmas.mobile.application.R;
+import id.sekarpinter.mobile.application.R;
 import ops.screen.MainActivityDashboard;
 import user.login.LoginActivity;
 

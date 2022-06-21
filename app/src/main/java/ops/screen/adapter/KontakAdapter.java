@@ -28,7 +28,7 @@ import base.service.kontak.Kontak;
 import base.sqlite.model.Config;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import id.sekarmas.mobile.application.R;
+import id.sekarpinter.mobile.application.R;
 import ops.screen.fragment.TaskListInterface;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;

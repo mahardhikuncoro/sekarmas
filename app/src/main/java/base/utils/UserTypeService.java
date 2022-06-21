@@ -38,7 +38,7 @@ public class UserTypeService extends IntentService {
 
     private final static String TAG = "BroadcastService";
 
-    public static final String COUNTDOWN_BR = "id.sekarmas.mobile.application";
+    public static final String COUNTDOWN_BR = "id.sekarpinter.mobile.application";
     Intent bi = new Intent(COUNTDOWN_BR);
     CountDownTimer cdt = null;
 

@@ -7,7 +7,7 @@ import java.util.concurrent.TimeUnit;
 import base.screen.BaseDialogActivity;
 import base.sqlite.model.SQLiteConfig;
 import base.utils.enm.ResponseCode;
-import id.sekarmas.mobile.application.R;
+import id.sekarpinter.mobile.application.R;
 import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Callback;

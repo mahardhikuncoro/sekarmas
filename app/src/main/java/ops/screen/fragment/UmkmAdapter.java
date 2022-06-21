@@ -25,7 +25,7 @@ import base.network.callback.NetworkConnection;
 import base.data.umkmmodel.UmkmModel;
 import base.sqlite.model.Config;
 import base.utils.enm.ParameterKey;
-import id.sekarmas.mobile.application.R;
+import id.sekarpinter.mobile.application.R;
 import okhttp3.OkHttpClient;
 import ops.screen.adapter.LaporanItem;
 import user.sidebaru.DetailSidebaruActivity;

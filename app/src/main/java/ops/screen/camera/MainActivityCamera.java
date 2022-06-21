@@ -17,7 +17,7 @@ import android.widget.LinearLayout;
 import androidx.core.content.ContextCompat;
 
 import base.screen.BaseDialogActivity;
-import id.sekarmas.mobile.application.R;
+import id.sekarpinter.mobile.application.R;
 
 public class MainActivityCamera extends BaseDialogActivity {
 

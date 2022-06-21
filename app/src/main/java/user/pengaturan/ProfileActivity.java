@@ -34,7 +34,7 @@ import base.sqlite.model.Userdata;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import id.sekarmas.mobile.application.R;
+import id.sekarpinter.mobile.application.R;
 import okhttp3.OkHttpClient;
 import ops.screen.CameraActivity;
 
@@ -112,7 +112,7 @@ public class ProfileActivity extends BaseDialogActivity{
         OkHttpClient picassoClient = NetworkClientNew.getUnsafeOkHttpClient();
         Picasso picasso = new Picasso.Builder(this).downloader(new OkHttp3Downloader(picassoClient)).build();
         picasso.setLoggingEnabled(true);
-        picasso.load(URL.checkUrl()+img_url)
+        picasso.load(img_url)
                 .placeholder(R.drawable.ic_profile)// Place holder image from drawable folder
                 .error(R.drawable.ic_profile) .resize(200, 200)
                 .into(imgDataNama, new com.squareup.picasso.Callback() {

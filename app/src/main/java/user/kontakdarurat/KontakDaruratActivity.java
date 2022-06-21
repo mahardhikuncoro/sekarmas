@@ -18,7 +18,7 @@ import base.service.kontak.Kontak;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import id.sekarmas.mobile.application.R;
+import id.sekarpinter.mobile.application.R;
 import ops.screen.adapter.KontakAdapter;
 import retrofit2.Call;
 import retrofit2.Callback;

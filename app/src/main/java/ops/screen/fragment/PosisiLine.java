@@ -6,7 +6,7 @@ import android.widget.TextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import id.sekarmas.mobile.application.R;
+import id.sekarpinter.mobile.application.R;
 
 
 public class PosisiLine extends PosisiAdapter.ViewHolder {

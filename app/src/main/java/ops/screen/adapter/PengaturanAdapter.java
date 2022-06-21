@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-import id.sekarmas.mobile.application.R;
+import id.sekarpinter.mobile.application.R;
 import user.changepassword.ChangePasswordActivity;
 import user.informasi.InformasiDetail;
 import user.pengaturan.PengaturanInterface;

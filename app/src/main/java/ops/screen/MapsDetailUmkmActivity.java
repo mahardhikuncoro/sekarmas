@@ -39,7 +39,7 @@ import java.util.Locale;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import id.sekarmas.mobile.application.R;
+import id.sekarpinter.mobile.application.R;
 import user.sidebaru.DetailSidebaruActivity;
 import user.sidebaru.UpdateSidebaru;
 

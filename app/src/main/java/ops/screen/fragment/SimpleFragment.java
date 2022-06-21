@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
-import id.sekarmas.mobile.application.R;
+import id.sekarpinter.mobile.application.R;
 import user.informasi.InformasiDetail;
 
 public class SimpleFragment extends Fragment {

@@ -12,7 +12,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 
 import java.util.List;
 import base.sqlite.model.ContentModel;
-import id.sekarmas.mobile.application.R;
+import id.sekarpinter.mobile.application.R;
 
 
 public class FullEntryListImageAdapter extends RecyclerView.Adapter<FullEntryListImageAdapter.ViewHolder> {

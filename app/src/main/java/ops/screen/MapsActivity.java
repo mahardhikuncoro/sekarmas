@@ -43,7 +43,7 @@ import java.util.Locale;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import id.sekarmas.mobile.application.R;
+import id.sekarpinter.mobile.application.R;
 import user.laporan.CreateLaporan;
 import user.sidebaru.CreateSidebaru;
 

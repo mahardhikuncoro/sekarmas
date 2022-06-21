@@ -14,7 +14,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-import id.sekarmas.mobile.application.R;
+import id.sekarpinter.mobile.application.R;
 
 public class GridViewDetailAdapter extends ArrayAdapter<GridItem> {
 

@@ -16,7 +16,7 @@ import java.util.List;
 
 import base.sqlite.model.ContentModel;
 import base.sqlite.model.TaskListDetailModel;
-import id.sekarmas.mobile.application.R;
+import id.sekarpinter.mobile.application.R;
 
 
 public class FullEntryListAdapter extends RecyclerView.Adapter<FullEntryListAdapter.ViewHolder> implements Serializable {

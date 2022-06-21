@@ -16,7 +16,7 @@ import java.util.List;
 import base.network.callback.NetworkConnection;
 import base.sqlite.model.Config;
 import base.sqlite.model.TaskListDetailModel;
-import id.sekarmas.mobile.application.R;
+import id.sekarpinter.mobile.application.R;
 
 
 public class FullEntryAdapter extends RecyclerView.Adapter<FullEntryAdapter.ViewHolder> {

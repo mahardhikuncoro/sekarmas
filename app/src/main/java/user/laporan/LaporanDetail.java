@@ -26,7 +26,7 @@ import base.service.comment.CommentEndpoint;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import id.sekarmas.mobile.application.R;
+import id.sekarpinter.mobile.application.R;
 import okhttp3.OkHttpClient;
 import ops.screen.adapter.CommentAdapter;
 import retrofit2.Call;

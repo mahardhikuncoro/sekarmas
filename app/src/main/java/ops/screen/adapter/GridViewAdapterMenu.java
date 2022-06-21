@@ -14,7 +14,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import base.sqlite.model.DataMenuModel;
-import id.sekarmas.mobile.application.R;
+import id.sekarpinter.mobile.application.R;
 
 
 public class GridViewAdapterMenu extends ArrayAdapter<DataMenuModel> {

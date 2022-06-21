@@ -45,12 +45,12 @@ import base.utils.ServiceReceiver;
 import base.utils.UserTypeService;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import id.sekarmas.mobile.application.BuildConfig;
+import id.sekarpinter.mobile.application.BuildConfig;
 import okhttp3.OkHttpClient;
 import ops.screen.fragment.ProfileFragment;
 import ops.screen.fragment.TaskListFragment;
 import ops.screen.fragment.HomeFragment;
-import id.sekarmas.mobile.application.R;
+import id.sekarpinter.mobile.application.R;
 import ops.screen.fragment.UmkmFragment;
 import ops.screen.offline.DokumenOfflineList;
 import retrofit2.Call;
@@ -373,7 +373,7 @@ public class MainActivityDashboard extends BaseDialogActivity implements Service
             OkHttpClient picassoClient = NetworkClientNew.getUnsafeOkHttpClient();
             Picasso picasso = new Picasso.Builder(MainActivityDashboard.this).downloader(new OkHttp3Downloader(picassoClient)).build();
             picasso.setLoggingEnabled(true);
-            picasso.load(URL.checkUrl()+img_url)
+            picasso.load(img_url)
                     .placeholder(R.drawable.ic_profile)// Place holder image from drawable folder
                     .error(R.drawable.ic_profile) .resize(200, 200).rotate(90)
                     .into(imgprofile, new com.squareup.picasso.Callback() {

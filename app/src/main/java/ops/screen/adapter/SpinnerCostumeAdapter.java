@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import id.sekarmas.mobile.application.R;
+import id.sekarpinter.mobile.application.R;
 
 /**
  * Created by Human on 12/28/2017.

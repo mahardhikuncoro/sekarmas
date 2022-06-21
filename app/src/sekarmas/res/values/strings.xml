@@ -342,7 +342,7 @@
 
 
 
-    <string name="packageProvider">id.sekarmas.mobile.application</string>
+    <string name="packageProvider">id.sekarpinter.mobile.application</string>
 
     <string name="askregister">Dont have account ?<font color='#0000FF'><u>\n Register now ! term and conditions</u></font></string>
     <string name="next">next</string>

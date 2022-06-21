@@ -43,8 +43,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-import id.sekarmas.mobile.application.BuildConfig;
-import id.sekarmas.mobile.application.R;
+import id.sekarpinter.mobile.application.BuildConfig;
+import id.sekarpinter.mobile.application.R;
 
 import static android.hardware.Camera.CameraInfo.CAMERA_FACING_FRONT;
 

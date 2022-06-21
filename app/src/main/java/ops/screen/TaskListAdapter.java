@@ -22,7 +22,7 @@ import base.network.callback.EndPoint;
 import base.network.callback.NetworkClient;
 import base.network.callback.NetworkConnection;
 import base.sqlite.model.Config;
-import id.sekarmas.mobile.application.R;
+import id.sekarpinter.mobile.application.R;
 import ops.screen.fragment.TaskListInterface;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;

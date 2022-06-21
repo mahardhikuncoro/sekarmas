@@ -47,7 +47,7 @@ import base.widget.TextSliderViewCustom;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import id.sekarmas.mobile.application.R;
+import id.sekarpinter.mobile.application.R;
 import okhttp3.OkHttpClient;
 import ops.screen.MainActivityDashboard;
 import ops.screen.adapter.GridViewAdapterMenu;
@@ -142,7 +142,7 @@ public class DashboardActivity extends BaseDialogActivity implements BaseSliderV
                                 newsmod.setNewsTitle(response.body().get(i).getTitle());
                                 newsmod.setNewsDesc(response.body().get(i).getDescription());
                                 newsmod.setActive(response.body().get(i).getTitle());
-                                newsmod.setImageUrl(URL.checkUrl() + response.body().get(i).getImageUrl());
+                                newsmod.setImageUrl(response.body().get(i).getImageUrl());
                                 newsmod.setCreateDate(response.body().get(i).getCreatedAt());
                                 saveApiSlider(newsmod);
                             }

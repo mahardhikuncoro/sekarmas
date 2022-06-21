@@ -1,7 +1,7 @@
 -keep class base.** { *; }
 -keep class user.** { *; }
 -keep class ops.** { *; }
--keep class id.sekarmas.mobile.application.* { *; }
+-keep class id.sekarpinter.mobile.application.* { *; }
 #-keep class id.co.smma.** { *; }
 
 

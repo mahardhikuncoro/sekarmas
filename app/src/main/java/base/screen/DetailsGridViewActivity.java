@@ -18,7 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.squareup.picasso.Picasso;
 
-import id.sekarmas.mobile.application.R;
+import id.sekarpinter.mobile.application.R;
 
 public class DetailsGridViewActivity extends BaseDialogActivity {
     private static final int ANIM_DURATION = 600;

@@ -69,7 +69,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import butterknife.OnClick;
-import id.sekarmas.mobile.application.R;
+import id.sekarpinter.mobile.application.R;
 import ops.screen.adapter.KontakAdapter;
 import ops.screen.adapter.TaskListMisiAdapter;
 import ops.screen.TaskListAdapter;

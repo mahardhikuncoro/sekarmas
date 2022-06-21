@@ -16,7 +16,7 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
-import id.sekarmas.mobile.application.R;
+import id.sekarpinter.mobile.application.R;
 
 public class GridViewAdapter extends ArrayAdapter<GridItem> {
 

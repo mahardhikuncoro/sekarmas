@@ -18,7 +18,7 @@ import base.network.callback.NetworkConnection;
 import base.sqlite.model.Config;
 import base.sqlite.model.TasklistHistoryModel;
 import base.utils.enm.ParameterKey;
-import id.sekarmas.mobile.application.R;
+import id.sekarpinter.mobile.application.R;
 import user.sidebaru.DetailSidebaruActivity;
 
 

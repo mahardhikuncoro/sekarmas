@@ -27,7 +27,7 @@ import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import id.sekarmas.mobile.application.R;
+import id.sekarpinter.mobile.application.R;
 import user.DashboardActivity;
 import user.changepassword.ChangePasswordActivity;
 import user.registrasi.RegistrasiActivity;
@@ -139,7 +139,7 @@ public class LoginActivity extends LoginAcitivityApiData {
 
     @OnClick(R.id.tv_reset)
     public void resetPassword(){
-        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.sekarmas.com/password/reset"));
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.sekarpinter.com/password/reset"));
         startActivity(browserIntent);
     }
 

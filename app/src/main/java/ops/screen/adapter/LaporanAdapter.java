@@ -32,7 +32,7 @@ import base.network.callback.NetworkConnection;
 import base.service.laporan.LaporanEndpoint;
 import base.sqlite.model.Config;
 import base.sqlite.model.Userdata;
-import id.sekarmas.mobile.application.R;
+import id.sekarpinter.mobile.application.R;
 import okhttp3.OkHttpClient;
 import user.laporan.LaporanDetail;
 import ops.screen.fragment.TaskListInterface;
@@ -116,7 +116,7 @@ public class LaporanAdapter extends RecyclerView.Adapter<LaporanItem> implements
                  OkHttpClient picassoClient = NetworkClientNew.getUnsafeOkHttpClient();
                  Picasso picasso = new Picasso.Builder(context).downloader(new OkHttp3Downloader(picassoClient)).build();
                  picasso.setLoggingEnabled(true);
-                 picasso.load(base.service.URL.checkUrl()+img_url)
+                 picasso.load(img_url)
                          .placeholder(R.drawable.ic_profile)// Place holder image from drawable folder
                          .error(R.drawable.ic_profile).resize(200, 200)
                          .into( ((LaporanItem) holder).imgProfile, new com.squareup.picasso.Callback() {
@@ -132,7 +132,7 @@ public class LaporanAdapter extends RecyclerView.Adapter<LaporanItem> implements
 
 
 
-             Log.e("IMAGE URL"," : " + base.service.URL.checkUrl()+list.get(position).getImageUrl());
+             Log.e("IMAGE URL"," : "+list.get(position).getImageUrl());
              Log.e(" URL"," : " + list.get(position).getImageUrl());
          }
 

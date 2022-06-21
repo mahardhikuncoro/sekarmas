@@ -71,7 +71,7 @@ import base.sqlite.model.ParameterModel;
 import base.sqlite.model.Config;
 import base.sqlite.model.Userdata;
 import base.utils.enm.ParameterKey;
-import id.sekarmas.mobile.application.R;
+import id.sekarpinter.mobile.application.R;
 import ops.screen.CameraActivity;
 import ops.screen.FormActivity;
 import ops.screen.MainActivityDashboard;

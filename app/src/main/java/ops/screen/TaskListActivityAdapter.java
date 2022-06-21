@@ -21,7 +21,7 @@ import java.util.List;
 
 import base.sqlite.model.TaskListDetailModel;
 import base.utils.enm.ParameterKey;
-import id.sekarmas.mobile.application.R;
+import id.sekarpinter.mobile.application.R;
 import ops.screen.fragment.FullEntry;
 import ops.screen.fragment.TaskListInterface;
 

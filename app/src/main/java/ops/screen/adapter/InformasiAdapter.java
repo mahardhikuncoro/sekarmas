@@ -32,7 +32,7 @@ import base.service.laporan.LaporanEndpoint;
 import base.sqlite.model.Config;
 import base.sqlite.model.InformasiModel;
 import base.sqlite.model.Userdata;
-import id.sekarmas.mobile.application.R;
+import id.sekarpinter.mobile.application.R;
 import okhttp3.OkHttpClient;
 import ops.screen.fragment.SimpleFragment;
 import ops.screen.fragment.TaskListInterface;

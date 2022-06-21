@@ -18,7 +18,7 @@ import base.screen.BaseDialogActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import id.sekarmas.mobile.application.R;
+import id.sekarpinter.mobile.application.R;
 import ops.screen.MainActivityDashboard;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -115,7 +115,7 @@ public class ChangePasswordActivity extends BaseDialogActivity {
 //            layoutInputPasswordconfirm.setError(getResources().getString(R.string.passnotmatch));
 //        }
             }else{
-            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("  https://www.sekarmas.com/password/reset"));
+            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("  https://www.sekarpinter.com/password/reset"));
             startActivity(browserIntent);
 
         }

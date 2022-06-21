@@ -1,7 +1,7 @@
 package base.service;
 
 
-import id.sekarmas.mobile.application.BuildConfig;
+import id.sekarpinter.mobile.application.BuildConfig;
 
 /**
  * Created by Human on 5/30/2017.

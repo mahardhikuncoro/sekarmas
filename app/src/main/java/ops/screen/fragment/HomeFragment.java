@@ -60,7 +60,7 @@ import base.utils.enm.ParameterKey;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import id.sekarmas.mobile.application.R;
+import id.sekarpinter.mobile.application.R;
 import user.laporan.CreateLaporan;
 import ops.screen.MainActivityDashboard;
 import ops.screen.TaskListActivity;

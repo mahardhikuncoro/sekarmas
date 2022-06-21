@@ -18,7 +18,7 @@ import base.service.URL;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import id.sekarmas.mobile.application.R;
+import id.sekarpinter.mobile.application.R;
 import okhttp3.OkHttpClient;
 
 public class InformasiDetail extends BaseDialogActivity {

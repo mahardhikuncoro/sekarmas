@@ -22,7 +22,7 @@ import base.sqlite.model.InformasiModel;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import id.sekarmas.mobile.application.R;
+import id.sekarpinter.mobile.application.R;
 import ops.screen.TaskListAdapter;
 import ops.screen.adapter.InformasiAdapter;
 import ops.screen.adapter.TaskListMisiAdapter;

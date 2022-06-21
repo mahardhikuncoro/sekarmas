@@ -27,7 +27,7 @@ import base.network.callback.Slider;
 import base.network.callback.Wewenang;
 import base.screen.BaseDialogActivity;
 import base.sqlite.model.SliderSQL;
-import id.sekarmas.mobile.application.R;
+import id.sekarpinter.mobile.application.R;
 import ops.screen.MainActivityDashboard;
 import base.sqlite.model.TaskListDetailModel;
 import retrofit2.Call;

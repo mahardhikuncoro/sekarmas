@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import java.util.List;
 
 import base.data.DokumenOfflineModel;
-import id.sekarmas.mobile.application.R;
+import id.sekarpinter.mobile.application.R;
 
 
 public class DokumenListAdapter extends RecyclerView.Adapter<DokumenListAdapter.ViewHolder> {

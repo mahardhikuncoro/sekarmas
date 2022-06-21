@@ -77,7 +77,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
 import user.changepassword.ChangePasswordActivity;
 import user.login.LoginActivity;
-import id.sekarmas.mobile.application.R;
+import id.sekarpinter.mobile.application.R;
 
 
 public class BaseDialogActivity extends AppCompatActivity {
