@@ -19,7 +19,6 @@ public class ParameterKey {
     public static final String ALLOW_NEW_ITEM   = "ALLOW_NEW_ITEM";
     public static final String ASSIGNED_TYPE    = "ASSIGNED_TYPE";
     public static final String ASSIGNED_TC      = "ASSIGNED_TC";
-    public static final String MENU_DESC        = "MENU_DESC";
     public static final String SCREEN_TASK      = "SCREEN_TASK";
     public static final String SCREEN_UMKM      = "SCREEN_HISTORY";
     public static final String SCREEN_PROFILE   = "SCREEN_PROFILE";
@@ -27,4 +26,6 @@ public class ParameterKey {
     public static final String TAB_TUGASKU      = "TAB_TUGASKU";
     public static final String SETDATA_TYPE     = "SETDATA_TYPE";
     public static final String ID_UMKM          = "ID_UMKM";
+    public static final String NAMA_UMKM        = "NAMA_UMKM";
+    public static final String PICTFROM         = "PICTFROM";
 }

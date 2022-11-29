@@ -90,7 +90,7 @@ public class TaskListActivity extends BaseDialogActivity {
         taskListRecycleAll.setLayoutManager(linearLayoutManager);
         taskListRecycleAll.setHasFixedSize(true);
         taskListRecycleAll.smoothScrollToPosition(10);
-        _titleList.setText(getIntent().getStringExtra(ParameterKey.MENU_DESC));
+        _titleList.setText(getIntent().getStringExtra(ParameterKey.NAMA_UMKM));
         toolbar.inflateMenu(R.menu.menu_actionbar);
         setToolbar();
         if(getIntent().getStringExtra(ParameterKey.IS_ADD).equalsIgnoreCase("1"))
@@ -290,7 +290,7 @@ public class TaskListActivity extends BaseDialogActivity {
         intent.putExtra(ParameterKey.TYPE,"SDEIND");
         intent.putExtra(ParameterKey.STATUS,"0");
         intent.putExtra(ParameterKey.NEW_DATA,"1");
-        intent.putExtra("TITLE",getIntent().getStringExtra(ParameterKey.MENU_DESC));
+        intent.putExtra("TITLE",getIntent().getStringExtra(ParameterKey.NAMA_UMKM));
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }

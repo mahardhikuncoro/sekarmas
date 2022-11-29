@@ -1,69 +1,147 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
-    <LinearLayout
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/rl_titlebar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:padding="20dp"
-        android:elevation="7dp"
-        android:id="@+id/selectbranchLayout"
-        android:orientation="vertical"
-        android:background="@color/colorAccent">
+        android:background="@color/blue_background">
 
-        <TextView
-            android:id="@+id/selectBranchLabel"
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Preview Gambar"
-            android:textColor="@color/white"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:gravity="center"/>
+            android:layout_margin="15dp">
 
-    </LinearLayout>
+            <ImageView
+                android:id="@+id/btnback_toolbar"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_centerVertical="true"
+                android:gravity="center"
+                android:src="@drawable/ic_back" />
 
+            <TextView
+                android:id="@+id/tv_title_sidebaru"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:layout_toRightOf="@+id/btnback_toolbar"
+                android:gravity="center"
+                android:singleLine="false"
+                android:text="Tinjauan Gambar"
+                android:textColor="@color/white"
+                android:textSize="24dp"
+                android:textStyle="bold" />
 
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/btn_post"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_alignParentEnd="true"
+                android:src="@drawable/ic_send"
+                android:visibility="gone" />
 
-    <ImageView
-        android:id="@+id/imageview"
-        android:layout_width="fill_parent"
-        android:layout_marginTop="5dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"/>
+        </RelativeLayout>
 
-    <LinearLayout
-        android:id="@+id/Linearbutton"
+    </RelativeLayout>
+
+    <ScrollView
+        android:id="@+id/layoutScrollPribadi"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/btn_image_bar_loc"
+        android:layout_below="@+id/rl_titlebar"
+        android:background="@drawable/half_rounded">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/imageview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:adjustViewBounds="true"
+                android:scaleType="fitCenter"/>
+
+            <TextView
+                android:id="@+id/tv_title_deskripsi"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="5dp"
+                android:text="Deskripsi"/>
+
+            <EditText
+                android:id="@+id/et_deskripsi"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:background="@drawable/rounded_gray"
+                android:gravity="top"
+                android:maxLength="5000"
+                android:maxLines="8"
+                android:minLines="5"
+                android:padding="5dp"
+                android:imeOptions="actionDone" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <ProgressBar
+        android:id="@+id/post_progress_bar"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_below="@+id/rl_titlebar"
+        android:progressTint="@color/colorPrimaryDark"
+        android:indeterminateOnly="true" />
+
+    <LinearLayout
+        android:id="@+id/btn_image_bar_loc"
+        android:layout_width="match_parent"
+        android:background="@drawable/shape_rounded_grey"
+        android:layout_height="wrap_content"
+        android:gravity="center"
         android:orientation="horizontal"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
-        android:weightSum="2">
-        <Button
-            android:id="@+id/button_image"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:onClick="takePicture"
-            android:background="@color/orange_light"
-            android:text="Ambil Photo"/>
+        android:layout_alignParentBottom="true">
 
         <Button
-            android:id="@+id/save_image"
+            android:id="@+id/btnRetake"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_toRightOf="@+id/button_image"
-            android:background="@color/orange_light"
-            android:onClick="uploadImage"
-            android:text="Simpan Photo"/>
+            android:layout_gravity="center"
+            android:layout_margin="15dp"
+            android:background="@drawable/button_orange_selector"
+            android:text="Foto Ulang"
+            android:layout_weight="1"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
+        <Button
+            android:id="@+id/btnSave"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:layout_margin="15dp"
+            android:background="@drawable/button_orange_selector"
+            android:text="@string/buttonSimpan"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
+
     </LinearLayout>
-</LinearLayout>
+</RelativeLayout>

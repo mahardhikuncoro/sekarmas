@@ -6,15 +6,13 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
-
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
 import id.sekarpinter.mobile.application.R;
-import ops.screen.MainActivityDashboard;
 import user.login.LoginActivity;
 
 
@@ -26,6 +24,7 @@ public class PermissionActivity extends AppCompatActivity implements ActivityCom
             Manifest.permission.ACCESS_WIFI_STATE,
             Manifest.permission.CAMERA,
             Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
             Manifest.permission.ACCESS_COARSE_LOCATION,
             Manifest.permission.ACCESS_FINE_LOCATION
 
@@ -40,6 +39,7 @@ public class PermissionActivity extends AppCompatActivity implements ActivityCom
                 (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_WIFI_STATE) != PackageManager.PERMISSION_GRANTED) ||
                 (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) ||
                 (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) ||
+                (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) ||
                 (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) ||
                 (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
         ) {
@@ -58,6 +58,7 @@ public class PermissionActivity extends AppCompatActivity implements ActivityCom
                 Manifest.permission.ACCESS_WIFI_STATE,
                 Manifest.permission.CAMERA,
                 Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
                 Manifest.permission.ACCESS_COARSE_LOCATION,
                 Manifest.permission.ACCESS_FINE_LOCATION
         }, 1);
@@ -65,6 +66,7 @@ public class PermissionActivity extends AppCompatActivity implements ActivityCom
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode) {
             case 1: {
                 if (grantResults.length > 0) {
@@ -73,17 +75,19 @@ public class PermissionActivity extends AppCompatActivity implements ActivityCom
                             grantResults[2] != PackageManager.PERMISSION_GRANTED ||
                             grantResults[3] != PackageManager.PERMISSION_GRANTED ||
                             grantResults[4] != PackageManager.PERMISSION_GRANTED ||
-                            grantResults[5] != PackageManager.PERMISSION_GRANTED
+                            grantResults[5] != PackageManager.PERMISSION_GRANTED ||
+                            grantResults[6] != PackageManager.PERMISSION_GRANTED
                     ) {
-                        if(!ActivityCompat.shouldShowRequestPermissionRationale(this,permissionsRequired[0]) ||
-                                !ActivityCompat.shouldShowRequestPermissionRationale(this,permissionsRequired[1]) ||
-                                !ActivityCompat.shouldShowRequestPermissionRationale(this,permissionsRequired[2]) ||
-                                !ActivityCompat.shouldShowRequestPermissionRationale(this,permissionsRequired[3]) ||
-                                !ActivityCompat.shouldShowRequestPermissionRationale(this,permissionsRequired[4])||
-                                !ActivityCompat.shouldShowRequestPermissionRationale(this,permissionsRequired[5])
-                        ){
+                        if (!ActivityCompat.shouldShowRequestPermissionRationale(this, permissionsRequired[0]) ||
+                                !ActivityCompat.shouldShowRequestPermissionRationale(this, permissionsRequired[1]) ||
+                                !ActivityCompat.shouldShowRequestPermissionRationale(this, permissionsRequired[2]) ||
+                                !ActivityCompat.shouldShowRequestPermissionRationale(this, permissionsRequired[3]) ||
+                                !ActivityCompat.shouldShowRequestPermissionRationale(this, permissionsRequired[4]) ||
+                                !ActivityCompat.shouldShowRequestPermissionRationale(this, permissionsRequired[5]) ||
+                                !ActivityCompat.shouldShowRequestPermissionRationale(this, permissionsRequired[6])
+                        ) {
                             dialog();
-                        }else{
+                        } else {
                             dialogPermission();
                         }
                     } else {
@@ -99,6 +103,7 @@ public class PermissionActivity extends AppCompatActivity implements ActivityCom
 
     protected void dialog() {
         new MaterialDialog.Builder(this)
+                .icon(getResources().getDrawable(R.mipmap.ic_launcher))
                 .content("Please allow all permission on your app setting, thank you")
                 .positiveText(R.string.buttonClose)
                 .callback(new MaterialDialog.ButtonCallback() {

@@ -5,7 +5,6 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
 
@@ -19,25 +18,11 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import com.jakewharton.picasso.OkHttp3Downloader;
 import com.squareup.picasso.Picasso;
-
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 import base.data.sektormodel.SektorJson;
@@ -47,7 +32,7 @@ import base.screen.BaseDialogActivity;
 import base.data.umkmmodel.UmkmModel;
 import base.screen.DetailsGridViewActivity;
 import base.screen.GridItem;
-import base.screen.GridViewActivity;
+import base.screen.AddImageUmkmActivity;
 import base.screen.GridViewDetailAdapter;
 import base.utils.enm.ParameterKey;
 import butterknife.BindView;
@@ -55,7 +40,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import id.sekarpinter.mobile.application.R;
 import okhttp3.OkHttpClient;
-import ops.screen.MainActivityDashboard;
 import ops.screen.MapsDetailUmkmActivity;
 import ops.screen.fragment.PosisiAdapter;
 import ops.screen.fragment.RiwayatAdapter;
@@ -134,9 +118,7 @@ public class DetailSidebaruActivity extends BaseDialogActivity {
         //Initialize with empty data
 
 
-        if(getIntent().getStringExtra(ParameterKey.ID_UMKM) != null){
-            retreiveDataDetailHistory(getIntent().getStringExtra(ParameterKey.ID_UMKM));
-        }
+        retreiveDataDetailHistory(String.valueOf(getIntent().getIntExtra(ParameterKey.ID_UMKM,0)));
 
         mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
@@ -292,92 +274,6 @@ public class DetailSidebaruActivity extends BaseDialogActivity {
         }
     }
 
-    //Downloading data asynchronously
-    public class AsyncHttpTask extends AsyncTask<String, Void, Integer> {
-
-        @Override
-        protected Integer doInBackground(String... params) {
-            Integer result = 0;
-            try {
-                // Create Apache HttpClient
-                HttpClient httpclient = new DefaultHttpClient();
-                HttpResponse httpResponse = httpclient.execute(new HttpGet(params[0]));
-                int statusCode = httpResponse.getStatusLine().getStatusCode();
-
-                // 200 represents HTTP OK
-                if (statusCode == 200) {
-                    String response = streamToString(httpResponse.getEntity().getContent());
-                    parseResult(response);
-                    result = 1; // Successful
-                } else {
-                    result = 0; //"Failed
-                }
-            } catch (Exception e) {
-                Log.d("TAG", e.getLocalizedMessage());
-            }
-
-            return result;
-        }
-
-        @Override
-        protected void onPostExecute(Integer result) {
-            // Download complete. Lets update UI
-
-            if (result == 1) {
-                mGridAdapter.setGridData(mGridData);
-            } else {
-                Toast.makeText(DetailSidebaruActivity.this, "Failed to fetch data!", Toast.LENGTH_SHORT).show();
-            }
-
-            //Hide progressbar
-//            mProgressBar.setVisibility(View.GONE);
-        }
-    }
-
-
-    String streamToString(InputStream stream) throws IOException {
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(stream));
-        String line;
-        String result = "";
-        while ((line = bufferedReader.readLine()) != null) {
-            result += line;
-        }
-
-        // Close stream
-        if (null != stream) {
-            stream.close();
-        }
-        return result;
-    }
-
-//    *//**
-//     * Parsing the feed results and get the list
-//     *
-//     * @param result
-//     *//*
-    private void parseResult(String result) {
-        try {
-            JSONObject response = new JSONObject(result);
-            JSONArray posts = response.optJSONArray("posts");
-            GridItem item;
-            for (int i = 0; i < posts.length(); i++) {
-                JSONObject post = posts.optJSONObject(i);
-                String title = post.optString("title");
-                item = new GridItem();
-                item.getDesc();
-                JSONArray attachments = post.getJSONArray("attachments");
-                if (null != attachments && attachments.length() > 0) {
-                    JSONObject attachment = attachments.getJSONObject(0);
-                    if (attachment != null)
-                        item.setImage(attachment.getString("url"));
-                }
-                mGridData.add(item);
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
-
     @OnClick(R.id.fb_delete)
     public void deleteClick(){
 
@@ -392,7 +288,7 @@ public class DetailSidebaruActivity extends BaseDialogActivity {
         _fotoUlangButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                umkmEndpoint.deleteUmkm("Bearer " + userdata.select().getAccesstoken(), getIntent().getStringExtra(ParameterKey.ID_UMKM)).enqueue(new Callback<SektorJson>() {
+                umkmEndpoint.deleteUmkm("Bearer " + userdata.select().getAccesstoken(), String.valueOf(getIntent().getIntExtra(ParameterKey.ID_UMKM,0))).enqueue(new Callback<SektorJson>() {
                     @Override
                     public void onResponse(Call<SektorJson> call, Response<SektorJson> response) {
                         if(response.isSuccessful()){
@@ -421,14 +317,35 @@ public class DetailSidebaruActivity extends BaseDialogActivity {
     @OnClick(R.id.fb_edit)
     public void editeClick(){
         Intent intent = new Intent(DetailSidebaruActivity.this, UpdateSidebaru.class);
-        intent.putExtra(ParameterKey.ID_UMKM,getIntent().getStringExtra(ParameterKey.ID_UMKM));
+        intent.putExtra(ParameterKey.ID_UMKM,getIntent().getIntExtra(ParameterKey.ID_UMKM,0));
         startActivity(intent);
     }
 
     @OnClick(R.id.fb_tambah_gambar)
     public void tambahGambarClick(){
-        Intent intent = new Intent(DetailSidebaruActivity.this, GridViewActivity.class);
-        intent.putExtra(ParameterKey.ID_UMKM,Integer.valueOf(getIntent().getStringExtra(ParameterKey.ID_UMKM)));
+//        Dialog choose = new android.app.AlertDialog.Builder(DetailSidebaruActivity.this, android.app.AlertDialog.THEME_HOLO_LIGHT)
+//                .setTitle("Choose Upload Method")
+//                .setNegativeButton("Cancel", null)
+//                .setItems(new String[]{"Camera", "Gallery"}, new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialogInterface, int position) {
+//                        if (position == 0) {
+//                            Intent intentprofile = new Intent(DetailSidebaruActivity.this, CameraActivity.class);
+//                            intentprofile.putExtra(ParameterKey.PICTFROM,"CAMERA");
+//                            intentprofile.putExtra(ParameterKey.ID_UMKM,Integer.valueOf(getIntent().getIntExtra(ParameterKey.ID_UMKM,0)));
+//                            startActivity(intentprofile);
+//                        } else if (position == 1) {
+//                            Intent intentprofile = new Intent(DetailSidebaruActivity.this, CameraActivity.class);
+//                            intentprofile.putExtra(ParameterKey.ID_UMKM,Integer.valueOf(getIntent().getIntExtra(ParameterKey.ID_UMKM,0)));
+//                            intentprofile.putExtra(ParameterKey.PICTFROM,"GALLERY");
+//                            startActivity(intentprofile);
+//                        }
+//                    }
+//                }).create();
+//        choose.show();
+
+        Intent intent = new Intent(DetailSidebaruActivity.this, AddImageUmkmActivity.class);
+        intent.putExtra(ParameterKey.ID_UMKM,Integer.valueOf(getIntent().getIntExtra(ParameterKey.ID_UMKM,0)));
         startActivity(intent);
     }
 

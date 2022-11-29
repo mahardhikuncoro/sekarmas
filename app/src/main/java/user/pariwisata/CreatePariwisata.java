@@ -1,5 +1,6 @@
-package user.sidebaru;
+package user.pariwisata;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -13,11 +14,10 @@ import android.graphics.Bitmap;
 import android.graphics.Matrix;
 import android.media.ExifInterface;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.StrictMode;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -30,28 +30,26 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.FileProvider;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import com.afollestad.materialdialogs.MaterialDialog;
+
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 
 import base.data.sektormodel.SektorJson;
 import base.data.sektormodel.SektorModel;
 import base.data.umkmmodel.UmkmCallback;
-import base.network.callback.NetworkClient;
-import base.screen.BaseDialogActivity;
 import base.screen.AddImageUmkmActivity;
-import base.service.umkm.UmkmEndpoint;
-import base.sqlite.model.Userdata;
+import base.screen.BaseDialogActivity;
 import base.utils.enm.ParameterKey;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import id.sekarpinter.mobile.application.BuildConfig;
 import id.sekarpinter.mobile.application.R;
 import id.zelory.compressor.Compressor;
 import okhttp3.MediaType;
@@ -62,10 +60,8 @@ import ops.screen.adapter.SpinnerCostumeAdapter;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
-public class CreateSidebaru extends BaseDialogActivity {
+public class CreatePariwisata extends BaseDialogActivity {
 
 
     @BindView(R.id.btn_image_bar_loc)
@@ -78,7 +74,7 @@ public class CreateSidebaru extends BaseDialogActivity {
     ProgressBar progressBar;
 
     @BindView(R.id.spinner_sektor)
-    Spinner spinnerSektor;
+    Spinner spinnerKategori;
 
     @BindView(R.id.etDataNamasidebaru)
     EditText etNamaSidebar;
@@ -110,8 +106,6 @@ public class CreateSidebaru extends BaseDialogActivity {
     public static final int REQUEST_GALLERY_CODE = 200;
     public static final int REQUEST_CAMERA_CODE = 300;
     MultipartBody.Part fileToUpload;
-    UmkmEndpoint umkmEndpoint;
-    private Userdata userdata;
     private Integer selectedIdSektor;
     private int selectedPosition;
     ArrayList<String> sektorNames;
@@ -123,32 +117,34 @@ public class CreateSidebaru extends BaseDialogActivity {
     String kabupaten = "";
 
     int PERMISSION_ALL = 1;
+    Bitmap imageBitmap;
+
+    String[] permissionsRequired =  {
+            Manifest.permission.INTERNET,
+            Manifest.permission.ACCESS_NETWORK_STATE,
+            Manifest.permission.ACCESS_WIFI_STATE,
+            Manifest.permission.CAMERA,
+            Manifest.permission.ACCESS_COARSE_LOCATION,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.ACCESS_FINE_LOCATION
+
+    };
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.create_sidebaru);
+        setContentView(R.layout.create_pariwisata);
         ButterKnife.bind(this);
         initiateApiData();
         getLastLocation();
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(config.getServer())
-                .addConverterFactory(GsonConverterFactory.create())
-                .client(NetworkClient.getUnsafeOkHttpClient())
-                .build();
-        userdata = new Userdata(CreateSidebaru.this);
-//        tvName.setText(userdata.select().getFullname());
-
-        umkmEndpoint = retrofit.create(UmkmEndpoint.class);
-//        layoutVideoTitle.setVisibility(View.GONE);
-        getSektor();
+        getKategori();
         if(getIntent().getExtras() != null){
             setValueFromMap();
         }
     }
 
     private void setValueFromMap(){
-        spinnerSektor.setSelection(getIntent().getIntExtra("LAPORAN_KATEGORI",0));
+        spinnerKategori.setSelection(getIntent().getIntExtra("LAPORAN_KATEGORI",0));
         mCurrentPhotoPath = getIntent().getStringExtra("LAPORAN_FOTO");
         lng = getIntent().getDoubleExtra("LONGITUDE",0.0);
         lat = getIntent().getDoubleExtra("LATITUDE",0.0);
@@ -166,28 +162,30 @@ public class CreateSidebaru extends BaseDialogActivity {
         setImageFromGalery();
     }
 
-    private void getSektor() {
+    private void getKategori() {
         progressBar.setVisibility(View.VISIBLE);
         if (!networkConnection.isNetworkConnected()) {
             progressBar.setVisibility(View.INVISIBLE);
             dialog(R.string.errorNoInternetConnection);
         } else {
-            umkmEndpoint.getSektorUmkm("Bearer " + userdata.select().getAccesstoken()).enqueue(new Callback<SektorJson>() {
+            pariwisataEndpoint.getKategori("Bearer " + userdata.select().getAccesstoken()).enqueue(new Callback<SektorJson>() {
                 @Override
                 public void onResponse(Call<SektorJson> call, Response<SektorJson> response) {
                     if (response.isSuccessful()) {
                         progressBar.setVisibility(View.INVISIBLE);
                         sektorNames = new ArrayList<>();
                         sektorModels = new ArrayList<>();
-                        for (int i = 0; i < response.body().getData().size(); i++) {
-                            SektorModel sektorModel = new SektorModel();
-                            sektorModel.setId(response.body().getData().get(i).getId());
-                            sektorModel.setName(response.body().getData().get(i).getName());
-                            sektorModels.add(sektorModel);
-                            sektorNames.add(response.body().getData().get(i).getName());
+                        if(response.body().getData() != null && response.body().getData().size() > 0) {
+                            for (int i = 0; i < response.body().getData().size(); i++) {
+                                SektorModel sektorModel = new SektorModel();
+                                sektorModel.setId(response.body().getData().get(i).getId());
+                                sektorModel.setName(response.body().getData().get(i).getName());
+                                sektorModels.add(sektorModel);
+                                sektorNames.add(response.body().getData().get(i).getName());
 
+                            }
                         }
-                        setadapterSektor();
+                        setadapterKategori();
                     }
                 }
 
@@ -200,11 +198,11 @@ public class CreateSidebaru extends BaseDialogActivity {
         }
     }
 
-    private void setadapterSektor(){
-        SpinnerCostumeAdapter spinnerCostumeAdapter = new SpinnerCostumeAdapter(CreateSidebaru.this, sektorNames);
-        spinnerSektor.setAdapter(spinnerCostumeAdapter);
-        spinnerSektor.setSelection(getIntent().getIntExtra("LAPORAN_KATEGORI",0));
-        spinnerSektor.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+    private void setadapterKategori(){
+        SpinnerCostumeAdapter spinnerCostumeAdapter = new SpinnerCostumeAdapter(CreatePariwisata.this, sektorNames);
+        spinnerKategori.setAdapter(spinnerCostumeAdapter);
+        spinnerKategori.setSelection(getIntent().getIntExtra("LAPORAN_KATEGORI",0));
+        spinnerKategori.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 selectedIdSektor = sektorModels.get(position).getId();
@@ -217,7 +215,7 @@ public class CreateSidebaru extends BaseDialogActivity {
 
             }
         });
-        spinnerSektor.setSelection(getIntent().getIntExtra("LAPORAN_KATEGORI",0));
+        spinnerKategori.setSelection(getIntent().getIntExtra("LAPORAN_KATEGORI",0));
         Log.e("SELECTED ", "INTENT  : " + getIntent().getIntExtra("LAPORAN_KATEGORI",0));
     }
 
@@ -273,7 +271,7 @@ public class CreateSidebaru extends BaseDialogActivity {
             HashMap<String, RequestBody> map = new HashMap<>();
             map.put("nama", nama);
             map.put("alamat", alamat);
-            map.put("sektor_id", sektorId);
+            map.put("kategori_id", sektorId);
             map.put("email", email);
             map.put("telepon", telepon);
             map.put("handphone", rbHandphone);
@@ -288,15 +286,15 @@ public class CreateSidebaru extends BaseDialogActivity {
             map.put("produk_utama", rbProdukUtama);
 
 
-            umkmEndpoint.uploadSidebaru("Bearer " + userdata.select().getAccesstoken(),map,fileToUpload).enqueue(new Callback<UmkmCallback>() {
+            pariwisataEndpoint.addPariwisata("Bearer " + userdata.select().getAccesstoken(),map,fileToUpload).enqueue(new Callback<UmkmCallback>() {
                 @Override
                 public void onResponse(Call<UmkmCallback> call, Response<UmkmCallback> response) {
                     if(response.isSuccessful()){
                         if(response.body().getData() != null) {
                             progressBar.setVisibility(View.INVISIBLE);
-                            Intent intent = new Intent(CreateSidebaru.this, AddImageUmkmActivity.class);
+                            Intent intent = new Intent(CreatePariwisata.this, AddImageUmkmActivity.class);
                             intent.putExtra(ParameterKey.ID_UMKM, response.body().getData());
-                            Toast.makeText(CreateSidebaru.this, "Data Berhasil ditambahkan, silahkan unggah gambar !", Toast.LENGTH_LONG)
+                            Toast.makeText(CreatePariwisata.this, "Data Berhasil diinput, silahkan input gambar !", Toast.LENGTH_LONG)
                                     .show();
                             startActivity(intent);
                         }else{
@@ -317,37 +315,14 @@ public class CreateSidebaru extends BaseDialogActivity {
     @OnClick(R.id.btn_upload_image)
     public void clickOpenGalery(){
         {
-            Dialog choose = new AlertDialog.Builder(CreateSidebaru.this, AlertDialog.THEME_HOLO_LIGHT)
+            Dialog choose = new AlertDialog.Builder(CreatePariwisata.this, AlertDialog.THEME_HOLO_LIGHT)
                     .setTitle("Pilih Media")
                     .setNegativeButton("Cancel", null)
                     .setItems(new String[]{"Camera", "Gallery"}, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int position) {
                             if (position == 0) {
-                                Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                                if (cameraIntent.resolveActivity(CreateSidebaru.this.getPackageManager()) != null) {
-                                    File photoFIle = null;
-                                    try {
-                                        photoFIle = createImageFile();
-                                    } catch (IOException e) {
-                                        e.printStackTrace();
-                                    }
-                                    if (photoFIle != null) {
-                                        if (Build.VERSION.SDK_INT >= 23) {
-                                            photoURI = FileProvider.getUriForFile(CreateSidebaru.this,
-                                                    BuildConfig.APPLICATION_ID + ".fileProvider",
-                                                    photoFIle);
-                                        } else {
-                                            photoURI = Uri.fromFile(photoFIle);
-                                        }
-
-                                        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
-                                        StrictMode.setVmPolicy(builder.build());
-
-                                        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(photoFIle));
-                                        startActivityForResult(cameraIntent, REQUEST_CAMERA_CODE);
-                                    }
-                                }
+                                openCamera();
                             } else if (position == 1) {
                                 Intent openGalleryIntent = new Intent(Intent.ACTION_PICK);
                                 openGalleryIntent.setType("image/*, video/*");
@@ -359,9 +334,27 @@ public class CreateSidebaru extends BaseDialogActivity {
         }
     }
 
+    public void openCamera() {
+
+        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+        StrictMode.setVmPolicy(builder.build());
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[] {
+                    Manifest.permission.CAMERA}, 0);
+        }else {
+            takePicture();
+        }
+    }
+
+    public void takePicture() {
+        Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(cameraIntent, REQUEST_CAMERA_CODE);
+    }
+
+
     @OnClick(R.id.btn_image_bar_loc)
     public void openMap(){
-        Dialog choose = new AlertDialog.Builder(CreateSidebaru.this, AlertDialog.THEME_HOLO_LIGHT)
+        Dialog choose = new AlertDialog.Builder(CreatePariwisata.this, AlertDialog.THEME_HOLO_LIGHT)
                 .setTitle("Pilih Lokasi")
                 .setNegativeButton("Cancel", null)
                 .setItems(new String[]{"Lokasi Sekarang", "Pilih dari peta"}, new DialogInterface.OnClickListener() {
@@ -374,7 +367,7 @@ public class CreateSidebaru extends BaseDialogActivity {
                             alamat = getCompleteAddressString(lat,lng);
                             etAlamatSidebar.setText(alamat);
                         } else if (which == 1) {
-                            Intent openMap = new Intent(CreateSidebaru.this, MapsActivity.class);
+                            Intent openMap = new Intent(CreatePariwisata.this, MapsActivity.class);
                             openMap.putExtra("LAPORAN_KATEGORI",selectedPosition);
                             openMap.putExtra("LAPORAN_FOTO",mCurrentPhotoPath);
                             openMap.putExtra("IS_IMAGE_GALERY",isImageGalery);
@@ -398,32 +391,21 @@ public class CreateSidebaru extends BaseDialogActivity {
         choose.show();
     }
 
-    private File createImageFile() throws IOException {
-        // Create an image file name
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "JPEG_" + timeStamp + "_";
-        File storageDir = Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_PICTURES);
-        File image = File.createTempFile(
-                imageFileName,  // prefix
-                ".jpg",         // suffix
-                storageDir      // directory
-        );
-
-        // Save a file: path for use with ACTION_VIEW intents
-        mCurrentPhotoPath = "file:" + image.getAbsolutePath();
-        return image;
-    }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode != RESULT_CANCELED) {
-            isImageGalery = true;
-            if (requestCode == REQUEST_GALLERY_CODE && resultCode == Activity.RESULT_OK) {
-                uri = data.getData();
+
+        if (resultCode == RESULT_OK) {
+            if (requestCode == REQUEST_CAMERA_CODE) {
+                imageBitmap = (Bitmap) data.getExtras().get("data");
+                imgUpload.setImageBitmap(imageBitmap);
+                File fileCameraRaw = handlePhoto(this, data);
+//                RequestBody mFile = RequestBody.create(MediaType.parse("image/jpeg"), fileCameraRaw);
+//                fileToUpload = MultipartBody.Part.createFormData("profile_picture", fileCameraRaw.getName(), mFile);
+            }else if (requestCode == REQUEST_GALLERY_CODE && resultCode == Activity.RESULT_OK) {
+                photoURI = data.getData();
                 String mimeType = "";
-                mCurrentPhotoPath = getRealPathFromURIPath(uri, CreateSidebaru.this);
+                mCurrentPhotoPath = getRealPathFromURIPath(photoURI, CreatePariwisata.this);
                 File file = new File(mCurrentPhotoPath);
                 try {
                     mimeType = file.toURL().openConnection().getContentType();
@@ -433,33 +415,50 @@ public class CreateSidebaru extends BaseDialogActivity {
                 String[] type = mimeType.split("/");
                 String formatType = type[0];
                 if (formatType.equals("image")) {
+                    Uri imagePath = Uri.parse(mCurrentPhotoPath);
                     try {
+                        File fileCameraRaw = new File(getRealPathFromURIPath(imagePath, this));
+                        ExifInterface exifInterface = new ExifInterface(fileCameraRaw.getAbsolutePath());
                         Matrix matrix = new Matrix();
-                        matrix.postRotate(getCameraPhotoOrientation(this, uri, file));
-                        File fileCompress = new Compressor(this).compressToFile(file);
-                        Bitmap imageCompress = new Compressor(this).compressToBitmap(fileCompress);
+                        matrix.postRotate(getCameraPhotoOrientation(CreatePariwisata.this, imagePath, file));
+                        File fileCompress = new Compressor(CreatePariwisata.this).compressToFile(file);
+                        Bitmap imageCompress = new Compressor(CreatePariwisata.this).compressToBitmap(fileCompress);
                         Bitmap newBitmap = Bitmap.createBitmap(imageCompress, 0, 0, imageCompress.getWidth(),
                                 imageCompress.getHeight(), matrix, true);
                         imgUpload.setVisibility(View.VISIBLE);
                         imgUpload.setImageBitmap(newBitmap);
-//                        layoutVideoTitle.setVisibility(View.GONE);
                         RequestBody mFile = RequestBody.create(MediaType.parse(mimeType), fileCompress);
                         fileToUpload = MultipartBody.Part.createFormData("profile_picture", fileCompress.getName(), mFile);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
                 } else if (formatType.equals("video")) {
-//                    layoutVideoTitle.setVisibility(View.VISIBLE);
                     imgUpload.setVisibility(View.GONE);
-//                    tvVideoTitle.setText(file.getName());
                     RequestBody mFile = RequestBody.create(MediaType.parse(mimeType), file);
                     fileToUpload = MultipartBody.Part.createFormData("profile_picture", file.getName(), mFile);
                 }
-            } else if (requestCode == REQUEST_CAMERA_CODE && resultCode == Activity.RESULT_OK) {
-                setImageFromCameraToView();
             }
         }
     }
+
+    private File handlePhoto(Context context, Intent intent) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage(context.getContentResolver(), imageBitmap, "sekar_pinter_take_photo" + System.currentTimeMillis(), null);
+
+        if (context.getContentResolver() != null) {
+            Cursor cursor = context.getContentResolver().query(Uri.parse(path), null, null, null, null);
+            if (cursor != null) {
+                cursor.moveToFirst();
+                int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+                path = cursor.getString(idx);
+                cursor.close();
+            }
+        }
+
+        return new File(path);
+    }
+
 
     private String getRealPathFromURIPath(Uri contentURI, Activity activity) {
         @SuppressLint("Recycle")
@@ -470,23 +469,6 @@ public class CreateSidebaru extends BaseDialogActivity {
             cursor.moveToFirst();
             int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
             return cursor.getString(idx);
-        }
-    }
-    private void setImageFromCameraToView(){
-        Uri imagePath = Uri.parse(mCurrentPhotoPath);
-        try {
-            File fileCameraRaw = new File(getRealPathFromURIPath(imagePath, this));
-            Matrix matrix = new Matrix();
-            matrix.postRotate(getCameraPhotoOrientation(this, imagePath, fileCameraRaw));
-            File fileCompress = new Compressor(this).compressToFile(fileCameraRaw);
-            Bitmap bitmapCompress = new Compressor(this).compressToBitmap(fileCompress);
-            Bitmap newBitmap = Bitmap.createBitmap(bitmapCompress, 0, 0, bitmapCompress.getWidth(),
-                    bitmapCompress.getHeight(), matrix, true);
-            imgUpload.setImageBitmap(newBitmap);
-            RequestBody mFile = RequestBody.create(MediaType.parse("image/jpeg"), fileCompress);
-            fileToUpload = MultipartBody.Part.createFormData("profile_picture", fileCompress.getName(), mFile);
-        } catch (IOException e) {
-            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -567,11 +549,63 @@ public class CreateSidebaru extends BaseDialogActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == PERMISSION_ALL) {
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            } else {
-                Toast.makeText(this, "camera permission denied", Toast.LENGTH_LONG).show();
+        if (requestCode == 0) {
+            if (grantResults.length > 0) {
+                if (grantResults[0] != PackageManager.PERMISSION_GRANTED ||
+                        grantResults[1] != PackageManager.PERMISSION_GRANTED ||
+                        grantResults[2] != PackageManager.PERMISSION_GRANTED ||
+                        grantResults[3] != PackageManager.PERMISSION_GRANTED ||
+                        grantResults[4] != PackageManager.PERMISSION_GRANTED ||
+                        grantResults[5] != PackageManager.PERMISSION_GRANTED ||
+                        grantResults[6] != PackageManager.PERMISSION_GRANTED
+                ) {
+                    if (!ActivityCompat.shouldShowRequestPermissionRationale(this, permissionsRequired[0]) ||
+                            !ActivityCompat.shouldShowRequestPermissionRationale(this, permissionsRequired[1]) ||
+                            !ActivityCompat.shouldShowRequestPermissionRationale(this, permissionsRequired[2]) ||
+                            !ActivityCompat.shouldShowRequestPermissionRationale(this, permissionsRequired[3]) ||
+                            !ActivityCompat.shouldShowRequestPermissionRationale(this, permissionsRequired[4]) ||
+                            !ActivityCompat.shouldShowRequestPermissionRationale(this, permissionsRequired[5]) ||
+                            !ActivityCompat.shouldShowRequestPermissionRationale(this, permissionsRequired[6])
+                    ){
+                        dialog();
+                    } else {
+                        dialogPermission();
+                    }
+                }
             }
         }
     }
+
+    private void dialogPermission() {
+        ActivityCompat.requestPermissions(this, new String[] {
+                Manifest.permission.INTERNET,
+                Manifest.permission.ACCESS_NETWORK_STATE,
+                Manifest.permission.ACCESS_WIFI_STATE,
+                Manifest.permission.CAMERA,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.ACCESS_FINE_LOCATION
+        }, 1);
+    }
+
+    protected void dialog() {
+        new MaterialDialog.Builder(this)
+                .icon(getResources().getDrawable(R.mipmap.ic_launcher))
+                .content("Please allow all permission on your app setting, thank you")
+                .positiveText(R.string.buttonClose)
+                .callback(new MaterialDialog.ButtonCallback() {
+                    @Override
+                    public void onPositive(MaterialDialog dialog) {
+                        dialog.dismiss();
+                        Intent intent = new Intent();
+                        intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                        Uri uri = Uri.fromParts("package", getPackageName(), null);
+                        intent.setData(uri);
+                        startActivity(intent);
+                    }
+                })
+                .cancelable(false)
+                .show();
+    }
+
 }

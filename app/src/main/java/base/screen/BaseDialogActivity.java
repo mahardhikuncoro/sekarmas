@@ -59,6 +59,7 @@ import base.service.kontak.KontakEndpoint;
 import base.service.laporan.LaporanEndpoint;
 import base.service.login.EndpointLogin;
 import base.service.information.InformationEndpoint;
+import base.service.pariwisata.PariwisataEndpoint;
 import base.service.registrasi.RegistrasiEndpoint;
 import base.service.umkm.UmkmEndpoint;
 import base.service.visimisi.VisiMisiEndpoint;
@@ -93,6 +94,7 @@ public class BaseDialogActivity extends AppCompatActivity {
     protected InformationEndpoint informationEndpoint;
     protected VisiMisiEndpoint visiMisiEndpoint;
     protected KontakEndpoint kontakEndpoint;
+    protected PariwisataEndpoint pariwisataEndpoint;
     protected TelephonyManager telephonyManager;
     protected String UserImei = "";
     protected Userdata userdata;
@@ -144,6 +146,7 @@ public class BaseDialogActivity extends AppCompatActivity {
         kontakEndpoint = retrofit.create(KontakEndpoint.class);
         laporanEndpoint = retrofit.create(LaporanEndpoint.class);
         registrasiEndpoint = retrofit.create(RegistrasiEndpoint.class);
+        pariwisataEndpoint = retrofit.create(PariwisataEndpoint.class);
 
     }
 
@@ -192,6 +195,28 @@ public class BaseDialogActivity extends AppCompatActivity {
 
         dialog.show();
     }
+
+    protected void dialogMessage(String rString, boolean finish) {
+        MaterialDialog dialog = new MaterialDialog.Builder(this)
+                .title(rString)
+                .icon(getResources().getDrawable(R.mipmap.ic_launcher))
+                .positiveText(R.string.buttonTutup)
+                .positiveColor(getResources().getColor(R.color.black))
+                .callback(new MaterialDialog.ButtonCallback() {
+                    @Override
+                    public void onPositive(MaterialDialog dialog) {
+                        dialog.dismiss();
+                        if(finish){
+                            finish();
+                        }
+                    }
+                })
+                .cancelable(false)
+                .build();
+
+        dialog.show();
+    }
+
 
     protected void hideKeyboard() {
         InputMethodManager inputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);

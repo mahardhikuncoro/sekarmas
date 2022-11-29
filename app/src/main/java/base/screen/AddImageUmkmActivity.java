@@ -1,26 +1,26 @@
 package base.screen;
-
-import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
 import android.media.ExifInterface;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -31,27 +31,19 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
-
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import base.location.BaseNetworkCallback;
 import base.network.callback.NetworkClient;
 import base.service.umkm.UmkmEndpoint;
 import base.utils.enm.ParameterKey;
-import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import id.sekarpinter.mobile.application.BuildConfig;
@@ -60,17 +52,17 @@ import id.zelory.compressor.Compressor;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
-import ops.screen.MainActivityDashboard;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import user.DashboardActivity;
+import user.pariwisata.AddUlasanActivity;
 
-public class GridViewActivity extends BaseDialogActivity {
+public class AddImageUmkmActivity extends BaseDialogActivity {
 
-    private static final String TAG = GridViewActivity.class.getSimpleName();
+    private static final String TAG = AddImageUmkmActivity.class.getSimpleName();
     private GridView mGridView;
     private ProgressBar mProgressBar;
 
@@ -83,22 +75,28 @@ public class GridViewActivity extends BaseDialogActivity {
     public static final int REQUEST_CAMERA_CODE = 300;
     MultipartBody.Part fileToUpload;
     UmkmEndpoint umkmEndpoint;
-
     ImageView btnPost;
     Integer idUmkm=0;
+    List<String> permissionsRequired = new ArrayList<>();
+    private Bitmap imageBitmap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_gridview);
+        setContentView(R.layout.add_image_activity);
         ButterKnife.bind(this);
+
+        permissionsRequired.add(Manifest.permission.CAMERA);
+        permissionsRequired.add(Manifest.permission.READ_EXTERNAL_STORAGE);
+        permissionsRequired.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        permissionsRequired.add(Manifest.permission.ACCESS_COARSE_LOCATION);
+        permissionsRequired.add(Manifest.permission.ACCESS_FINE_LOCATION);
 
         mGridView = (GridView) findViewById(R.id.gridView);
         mProgressBar = (ProgressBar) findViewById(R.id.post_progress_bar);
         btnPost = (ImageView) findViewById(R.id.btn_post_umkm);
         mProgressBar.setVisibility(View.GONE);
         idUmkm = getIntent().getIntExtra(ParameterKey.ID_UMKM,0);
-        Log.e("ID UMKM ",": "+idUmkm);
 
         //Initialize with empty data
 //        GridItem gridItem = new GridItem();
@@ -106,13 +104,6 @@ public class GridViewActivity extends BaseDialogActivity {
 //        gridItem.setTitle("Test 1");
         initiateApiData();
         getLastLocation();
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(config.getServer())
-                .addConverterFactory(GsonConverterFactory.create())
-                .client(NetworkClient.getUnsafeOkHttpClient())
-                .build();
-
-        umkmEndpoint = retrofit.create(UmkmEndpoint.class);
 
         mGridData = new ArrayList<>();
 //        mGridData.add(gridItem);
@@ -122,7 +113,7 @@ public class GridViewActivity extends BaseDialogActivity {
         btnPost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(GridViewActivity.this);
+                    AlertDialog.Builder builder = new AlertDialog.Builder(AddImageUmkmActivity.this);
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                         builder.setView(R.layout.progress_bar).setCancelable(false);
                     }
@@ -143,7 +134,7 @@ public class GridViewActivity extends BaseDialogActivity {
                 //Get item at position
                 GridItem item = (GridItem) parent.getItemAtPosition(position);
 
-                Intent intent = new Intent(GridViewActivity.this, DetailsGridViewActivity.class);
+                Intent intent = new Intent(AddImageUmkmActivity.this, DetailsGridViewActivity.class);
                 ImageView imageView = (ImageView) v.findViewById(R.id.grid_item_image);
 
                 // Interesting data to pass across are the thumbnail size/location, the
@@ -172,91 +163,20 @@ public class GridViewActivity extends BaseDialogActivity {
 //        mProgressBar.setVisibility(View.VISIBLE);
     }
 
-
-    //Downloading data asynchronously
-    public class AsyncHttpTask extends AsyncTask<String, Void, Integer> {
-
-        @Override
-        protected Integer doInBackground(String... params) {
-            Integer result = 0;
-            try {
-                // Create Apache HttpClient
-                HttpClient httpclient = new DefaultHttpClient();
-                HttpResponse httpResponse = httpclient.execute(new HttpGet(params[0]));
-                int statusCode = httpResponse.getStatusLine().getStatusCode();
-
-                // 200 represents HTTP OK
-                if (statusCode == 200) {
-                    String response = streamToString(httpResponse.getEntity().getContent());
-                    parseResult(response);
-                    result = 1; // Successful
-                } else {
-                    result = 0; //"Failed
+    public boolean hasPermissions(List<String> permissions) {
+        if (permissions != null) {
+            for (String permission : permissions) {
+                if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
+                    return false;
                 }
-            } catch (Exception e) {
-                Log.d(TAG, e.getLocalizedMessage());
             }
-
-            return result;
         }
-
-        @Override
-        protected void onPostExecute(Integer result) {
-            // Download complete. Lets update UI
-
-            if (result == 1) {
-                mGridAdapter.setGridData(mGridData);
-            } else {
-                Toast.makeText(GridViewActivity.this, "Failed to fetch data!", Toast.LENGTH_SHORT).show();
-            }
-
-            //Hide progressbar
-            mProgressBar.setVisibility(View.GONE);
-        }
+        return true;
     }
 
-
-    String streamToString(InputStream stream) throws IOException {
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(stream));
-        String line;
-        String result = "";
-        while ((line = bufferedReader.readLine()) != null) {
-            result += line;
-        }
-
-        // Close stream
-        if (null != stream) {
-            stream.close();
-        }
-        return result;
-    }
-
-    /**
-     * Parsing the feed results and get the list
-     *
-     * @param result
-     */
-    private void parseResult(String result) {
-        try {
-            JSONObject response = new JSONObject(result);
-            JSONArray posts = response.optJSONArray("posts");
-            GridItem item;
-            for (int i = 0; i < posts.length(); i++) {
-                JSONObject post = posts.optJSONObject(i);
-                String title = post.optString("title");
-                item = new GridItem();
-                item.getDesc();
-                JSONArray attachments = post.getJSONArray("attachments");
-                if (null != attachments && attachments.length() > 0) {
-                    JSONObject attachment = attachments.getJSONObject(0);
-                    if (attachment != null)
-                        item.setImage(attachment.getString("url"));
-                }
-                mGridData.add(item);
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+    private void takePicture() {
+        Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(cameraIntent, REQUEST_CAMERA_CODE);
     }
 
     @OnClick(R.id.btn_upload_image)
@@ -269,30 +189,47 @@ public class GridViewActivity extends BaseDialogActivity {
 //                        @Override
 //                        public void onClick(DialogInterface dialogInterface, int position) {
 //                            if (position == 0) {
-                                Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                                if (cameraIntent.resolveActivity(GridViewActivity.this.getPackageManager()) != null) {
-                                    File photoFIle = null;
-                                    try {
-                                        photoFIle = createImageFile();
-                                    } catch (IOException e) {
-                                        e.printStackTrace();
-                                    }
-                                    if (photoFIle != null) {
-                                        if (Build.VERSION.SDK_INT >= 23) {
-                                            photoURI = FileProvider.getUriForFile(GridViewActivity.this,
-                                                    BuildConfig.APPLICATION_ID + ".fileProvider",
-                                                    photoFIle);
-                                        } else {
-                                            photoURI = Uri.fromFile(photoFIle);
-                                        }
+            if (!hasPermissions(permissionsRequired)) {
+                String[] permissionArray = new String[permissionsRequired.size()];
+                for (int i = 0; i < permissionsRequired.size(); i++) {
+                    permissionArray[i] = permissionsRequired.get(i);
+                }
+                ActivityCompat.requestPermissions(AddImageUmkmActivity.this, permissionArray, 0);
+            }else {
+                takePicture();
+//                Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//                if (cameraIntent.resolveActivity(AddImageUmkmActivity.this.getPackageManager()) != null) {
+//                    File photoFIle = null;
+//                    try {
+//                        photoFIle = createImageFile();
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                    }
+//                    if (photoFIle != null) {
+//                        if (Build.VERSION.SDK_INT >= 23) {
+//                            photoURI = FileProvider.getUriForFile(AddImageUmkmActivity.this,
+//                                    BuildConfig.APPLICATION_ID + ".fileProvider",
+//                                    photoFIle);
+//                        } else {
+//                            photoURI = Uri.fromFile(photoFIle);
+//                        }
+//
+//                        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+//                        StrictMode.setVmPolicy(builder.build());
+//
+//                        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(photoFIle));
+//                        cameraIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
+//                        List<ResolveInfo> resInfoList = this.getPackageManager().queryIntentActivities(cameraIntent, PackageManager.MATCH_DEFAULT_ONLY);
+//                        for (ResolveInfo resolveInfo : resInfoList) {
+//                            String packageName = resolveInfo.activityInfo.packageName;
+//                            grantUriPermission(packageName, photoURI, Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
+//                        }
+//
+//                        startActivityForResult(cameraIntent, REQUEST_CAMERA_CODE);
+//                    }
+//                }
+            }
 
-                                        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
-                                        StrictMode.setVmPolicy(builder.build());
-
-                                        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(photoFIle));
-                                        startActivityForResult(cameraIntent, REQUEST_CAMERA_CODE);
-                                    }
-                                }
 //                            } else if (position == 1) {
 //                                Intent openGalleryIntent = new Intent(Intent.ACTION_PICK);
 //                                openGalleryIntent.setType("image/*, video/*");
@@ -321,16 +258,35 @@ public class GridViewActivity extends BaseDialogActivity {
         return image;
     }
 
+    private File handlePhoto(Context context, Intent intent) {
+        Bundle extras = intent.getExtras();
+        imageBitmap = (Bitmap) extras.get("data");
+
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage(context.getContentResolver(), imageBitmap, "sekar_pinter_photo" + System.currentTimeMillis(), null);
+
+        if (context.getContentResolver() != null) {
+            Cursor cursor = context.getContentResolver().query(Uri.parse(path), null, null, null, null);
+            if (cursor != null) {
+                cursor.moveToFirst();
+                int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+                path = cursor.getString(idx);
+                cursor.close();
+            }
+        }
+        return new File(path);
+    }
+
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode != RESULT_CANCELED) {
             if (requestCode == REQUEST_GALLERY_CODE && resultCode == Activity.RESULT_OK) {
-
-
                 uri = data.getData();
                 String mimeType = "";
-                String filePath = getRealPathFromURIPath(uri, GridViewActivity.this);
+                String filePath = getRealPathFromURIPath(uri, AddImageUmkmActivity.this);
                 File file = new File(filePath);
                 try {
                     mimeType = file.toURL().openConnection().getContentType();
@@ -342,7 +298,7 @@ public class GridViewActivity extends BaseDialogActivity {
                 if (formatType.equals("image")) {
                     try {
                         if (Build.VERSION.SDK_INT >= 23) {
-                            photoURI = FileProvider.getUriForFile(GridViewActivity.this,
+                            photoURI = FileProvider.getUriForFile(AddImageUmkmActivity.this,
                                     BuildConfig.APPLICATION_ID + ".fileProvider",
                                     file);
                         } else {
@@ -379,7 +335,8 @@ public class GridViewActivity extends BaseDialogActivity {
                     fileToUpload = MultipartBody.Part.createFormData("file", file.getName(), mFile);
                 }
             } else if (requestCode == REQUEST_CAMERA_CODE && resultCode == Activity.RESULT_OK) {
-                setImageFromCameraToView();
+                uri = data.getData();
+                setImageFromCameraToView(data);
             }
         }
 //        if(mGridData.size()>0){
@@ -401,8 +358,22 @@ public class GridViewActivity extends BaseDialogActivity {
             return cursor.getString(idx);
         }
     }
-    private void setImageFromCameraToView(){
-        Uri imagePath = Uri.parse(mCurrentPhotoPath);
+    private void setImageFromCameraToView(Intent data){
+        File fileCameraRaw = handlePhoto(this, data);
+        RequestBody mFile = RequestBody.create(MediaType.parse("image/jpeg"), fileCameraRaw);
+        fileToUpload = MultipartBody.Part.createFormData("file", fileCameraRaw.getName(), mFile);
+
+        GridItem gridItem = new GridItem();
+        gridItem.setImage(fileCameraRaw.getName());
+        gridItem.setDesc(fileCameraRaw.getName());
+        gridItem.setId(idUmkm);
+        gridItem.setBitmapImage(imageBitmap);
+        gridItem.setUri(uri);
+        gridItem.setFileToUpload(fileToUpload);
+        mGridData.add(gridItem);
+        mGridAdapter = new GridViewAdapter(this, R.layout.grid_item_layout, mGridData);
+
+       /* Uri imagePath = Uri.parse(mCurrentPhotoPath);
         try {
             File fileCameraRaw = new File(getRealPathFromURIPath(imagePath, this));
             Matrix matrix = new Matrix();
@@ -426,7 +397,7 @@ public class GridViewActivity extends BaseDialogActivity {
 
         } catch (IOException e) {
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
-        }
+        }*/
     }
 
     public static int getCameraPhotoOrientation(Context context, Uri imageUri, File imageFile) {
@@ -496,6 +467,18 @@ public class GridViewActivity extends BaseDialogActivity {
                     dialog.dismiss();
                 }
             });
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (!hasPermissions(permissionsRequired)) {
+            String[] permissionArray = new String[permissionsRequired.size()];
+            for (int i = 0; i < permissionsRequired.size(); i++) {
+                permissionArray[i] = permissionsRequired.get(i);
+            }
+            ActivityCompat.requestPermissions(this, permissionArray, 0);
         }
     }
 }

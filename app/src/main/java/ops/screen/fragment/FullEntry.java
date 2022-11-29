@@ -75,8 +75,8 @@ public class FullEntry extends BaseDialogActivity implements FullEntryCallback {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        transparentStatusbar();
         super.onCreate(savedInstanceState);
+        transparentStatusbar();
         setContentView(R.layout.fullentry_fragment);
         ButterKnife.bind(this);
         initiateApiData();

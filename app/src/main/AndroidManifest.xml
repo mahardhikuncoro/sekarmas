@@ -3,18 +3,25 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="id.sekarpinter.mobile.application">
 
+    <uses-feature android:name="android.hardware.camera" android:required="true"/>
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+    <uses-feature android:name="android.hardware.camera.flash" />
+
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.READ_PRIVILEGED_PHONE_STATE" tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" tools:ignore="ScopedStorage" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-feature
-        android:name="android.hardware.camera"
-        android:required="true" />
+
+    <permission
+        android:name="com.mike.maps.permission.MAPS_RECEIVE"
+        android:protectionLevel="signature" />
 
     <application
         android:allowBackup="true"
@@ -30,6 +37,10 @@
             android:name="com.google.android.gms.version"
             android:exported="true"
             android:value="@integer/google_play_services_version" />
+
+        <meta-data
+            android:name="com.google.android.maps.v2.API_KEY"
+            android:value="AIzaSyDc2-3marQA7LgAH6SsvRMOs96bPOiCRbk" />
 
         <meta-data
             android:name="io.futurestud.tutorials.glide.glidemodule.UnsafeOkHttpClient"
@@ -62,36 +73,36 @@
         <activity
             android:name="ops.screen.MainActivityDashboard"
             android:exported="false"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
 
         <activity
             android:name="user.PermissionActivity"
             android:exported="false"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name="user.login.LoginActivity"
             android:windowSoftInputMode="stateHidden"
             android:exported="false"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name="user.changepassword.ChangePasswordActivity"
             android:exported="false"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
 
         <activity
             android:name="ops.screen.fragment.FullEntry"
             android:exported="false"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name="ops.screen.fragment.FullEntryListImage"
             android:exported="false"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
 
         <activity
             android:name="ops.screen.FormActivity"
             android:screenOrientation="portrait"
             android:exported="false"
-            android:windowSoftInputMode="adjustPan"></activity>
+            android:windowSoftInputMode="adjustPan" />
 <!--        <activity-->
 <!--            android:name="ops.DinamicLayout"-->
 <!--            android:windowSoftInputMode="adjustPan"-->
@@ -116,8 +127,7 @@
 
         <activity
             android:name="ops.screen.CameraActivity"
-            android:exported="false"
-            android:screenOrientation="portrait">
+            android:exported="false">
         </activity>
         <activity
             android:name="ops.screen.fragment.FullEntryList"
@@ -173,7 +183,7 @@
         </activity>
 
         <activity android:name="user.sidebaru.UpdateSidebaru"   android:exported="false" android:windowSoftInputMode="stateHidden" android:screenOrientation="portrait"> </activity>
-        <activity android:name="base.screen.GridViewActivity"   android:exported="false" android:windowSoftInputMode="stateHidden" android:screenOrientation="portrait"> </activity>
+        <activity android:name="base.screen.AddImageUmkmActivity"   android:exported="false" android:windowSoftInputMode="stateHidden" android:screenOrientation="portrait"> </activity>
         <activity android:name="user.laporan.LaporanActivity"   android:exported="false" android:windowSoftInputMode="stateHidden" android:screenOrientation="portrait"> </activity>
         <activity android:name="user.sidebaru.SidebaruActivity"   android:exported="false" android:windowSoftInputMode="stateHidden" android:screenOrientation="portrait"> </activity>
         <activity android:name="user.informasi.InformasiActivity"   android:exported="false" android:windowSoftInputMode="stateHidden" android:screenOrientation="portrait"> </activity>
@@ -182,13 +192,26 @@
         <activity android:name="user.pengaturan.ProfileActivity" android:exported="false" android:windowSoftInputMode="stateHidden" android:screenOrientation="portrait"> </activity>
         <activity android:name="user.pengaturan.PengaturanActivity" android:exported="false" android:windowSoftInputMode="stateHidden" android:screenOrientation="portrait"> </activity>
         <activity android:name="user.registrasi.RegistrasiActivity" android:exported="false" android:windowSoftInputMode="stateHidden" android:screenOrientation="portrait"> </activity>
-        <activity android:name="ops.screen.MapsActivity"
-            android:exported="false"> </activity>
-        <activity android:name="ops.screen.MapsDetailUmkmActivity"
-            android:exported="false"
-            > </activity>
+        <activity android:name="base.screen.DetailsGridViewActivity" android:exported="false" android:windowSoftInputMode="stateHidden" android:screenOrientation="portrait"> </activity>
+        <activity android:name="ops.screen.MapsActivity" android:exported="false"> </activity>
+        <activity android:name="ops.screen.MapsDetailUmkmActivity" android:exported="false"> </activity>
+        <activity android:name="user.pariwisata.PariwisataActivity" android:exported="false"> </activity>
+        <activity android:name="user.pariwisata.CreatePariwisata" android:exported="false"> </activity>
+        <activity android:name="user.pariwisata.DetailPariwisataActivity" android:exported="false"> </activity>
+        <activity android:name="user.pariwisata.AddDeskripsiActivity" android:exported="false"> </activity>
+        <activity android:name="user.pariwisata.AddFasilitasActity" android:exported="false"> </activity>
+        <activity android:name="user.pariwisata.AddFasilitasGratisActity" android:exported="false"> </activity>
+        <activity android:name="user.pariwisata.AddProdukActity" android:exported="false"> </activity>
+        <activity android:name="user.pariwisata.AddOperasionalActity" android:exported="false"> </activity>
+        <activity android:name="user.pariwisata.AddUlasanActivity" android:exported="false"> </activity>
 
 
     </application>
+
+    <queries>
+        <intent>
+            <action android:name="android.media.action.IMAGE_CAPTURE" />
+        </intent>
+    </queries>
 
 </manifest>

@@ -897,7 +897,7 @@ public class HomeFragment extends Fragment  {
         i.putExtra("FLAG_SUBMIT","1");
         i.putExtra(ParameterKey.ASSIGNED_TYPE,assignedType);
         i.putExtra(ParameterKey.ASSIGNED_TC,tc);
-        i.putExtra(ParameterKey.MENU_DESC,desc);
+        i.putExtra(ParameterKey.NAMA_UMKM,desc);
         i.putExtra(ParameterKey.IS_ADD, isAdd );
         startActivity(i);
     }

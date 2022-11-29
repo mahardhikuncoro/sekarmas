@@ -134,7 +134,7 @@ public class UpdateSidebaru extends BaseDialogActivity {
     String kabupaten = "";
     Integer idSektor=0;
     Integer sektorPosition=0;
-    String idUmkm="";
+    Integer idUmkm=0;
 
     int PERMISSION_ALL = 1;
 
@@ -151,7 +151,7 @@ public class UpdateSidebaru extends BaseDialogActivity {
                 .client(NetworkClient.getUnsafeOkHttpClient())
                 .build();
         userdata = new Userdata(UpdateSidebaru.this);
-        idUmkm= getIntent().getStringExtra(ParameterKey.ID_UMKM);
+        idUmkm= getIntent().getIntExtra(ParameterKey.ID_UMKM,0);
 
         tvTitleForm.setText("Update Umkm");
         lnProfile.setVisibility(View.GONE);
@@ -161,7 +161,7 @@ public class UpdateSidebaru extends BaseDialogActivity {
         if(getIntent().getBooleanExtra("IS_UPDATE",false)){
             setValueFromMap();
         }else{
-            retreiveDetailUmkm(idUmkm);
+            retreiveDetailUmkm(String.valueOf(idUmkm));
         }
     }
 
@@ -252,7 +252,7 @@ public class UpdateSidebaru extends BaseDialogActivity {
     }
 
     private void setValueFromMap(){
-        idUmkm = getIntent().getStringExtra("ID_UMKM");
+        idUmkm = getIntent().getIntExtra("ID_UMKM",0);
         sektorPosition = getIntent().getIntExtra("SEKTOR_POSITION",0);
         mCurrentPhotoPath = getIntent().getStringExtra("LAPORAN_FOTO");
         lng = getIntent().getDoubleExtra("LONGITUDE",0.0);
@@ -387,7 +387,7 @@ public class UpdateSidebaru extends BaseDialogActivity {
             map.put("latitude", latitude);
             map.put("longitude", longitude);
 
-            umkmEndpoint.updateSidebaru("Bearer " + userdata.select().getAccesstoken(),map,getIntent().getStringExtra(ParameterKey.ID_UMKM)).enqueue(new Callback<UmkmCallback>() {
+            umkmEndpoint.updateSidebaru("Bearer " + userdata.select().getAccesstoken(),map,String.valueOf(idUmkm)).enqueue(new Callback<UmkmCallback>() {
                 @Override
                 public void onResponse(Call<UmkmCallback> call, Response<UmkmCallback> response) {
                     if(response.isSuccessful()){

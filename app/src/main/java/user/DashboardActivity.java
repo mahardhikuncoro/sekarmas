@@ -60,6 +60,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import user.informasi.InformasiActivity;
 import user.kontakdarurat.KontakDaruratActivity;
 import user.laporan.LaporanActivity;
+import user.pariwisata.PariwisataActivity;
 import user.pengaturan.PengaturanActivity;
 import user.pengaturan.ProfileActivity;
 import user.sidebaru.SidebaruActivity;
@@ -418,7 +419,8 @@ public class DashboardActivity extends BaseDialogActivity implements BaseSliderV
                     Intent intent = new Intent(DashboardActivity.this, KontakDaruratActivity.class);
                     startActivity(intent);
                 }else{
-                    dialogMessage("Fitur Masih dalam tahap pengembangan");
+                    Intent intent = new Intent(DashboardActivity.this, PariwisataActivity.class);
+                    startActivity(intent);
                 }
             }
         });

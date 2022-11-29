@@ -387,6 +387,19 @@
     <string name="errorImagesidebaru">Mohon pilih foto profil sidebaru !</string>
     <string name="errorApi"> Terjadi Kesalahan mohon ulangi beberapa saat lagi !</string>
 
+<!--    PARIWISATA-->
 
+    <string name="pariwisata_name">Nama Pariwisata</string>
+    <string name="errorJudulDeskripsi">Mohon isi nama judul deskripsi !</string>
+    <string name="errorDeskripsiwisata">Mohon isi deskripsi wisata!</string>
+    <string name="errorNamaFasilitas">Mohon isi nama fasilitas wisata!</string>
+    <string name="errorSatuan">Mohon isi satuan!</string>
+    <string name="errorHarga">Mohon isi harga!</string>
+    <string name="errorRating">Mohon berikan rating </string>
+    <string name="suksesAddFasilitas">Berhasil menambahkan fasilitas !</string>
+    <string name="suksesAddDeskripsi">Berhasil menambahkan deskripsi !</string>
+    <string name="suksesAddProduk">Berhasil menambahkan produk !</string>
+    <string name="suksesAddOperasional">Berhasil menambahkan jam operasional !</string>
+    <string name="suksesAddGaleri">Berhasil menambahkan galeri!</string>
 
 </resources>

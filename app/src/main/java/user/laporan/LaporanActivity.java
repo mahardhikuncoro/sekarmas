@@ -25,13 +25,7 @@ import java.util.ArrayList;
 
 import base.data.laporan.DataLaporan;
 import base.data.laporan.LaporanJson;
-import base.network.callback.NetworkClient;
-import base.network.callback.NetworkConnection;
 import base.screen.BaseDialogActivity;
-import base.service.laporan.LaporanEndpoint;
-import base.sqlite.model.Config;
-import base.sqlite.model.FormData;
-import base.sqlite.model.Userdata;
 import base.utils.enm.ParameterKey;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -42,8 +36,6 @@ import ops.screen.adapter.LaporanAdapter;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class LaporanActivity extends BaseDialogActivity {
 
@@ -206,7 +198,7 @@ public class LaporanActivity extends BaseDialogActivity {
         i.putExtra("FLAG_SUBMIT","1");
         i.putExtra(ParameterKey.ASSIGNED_TYPE,assignedType);
         i.putExtra(ParameterKey.ASSIGNED_TC,tc);
-        i.putExtra(ParameterKey.MENU_DESC,desc);
+        i.putExtra(ParameterKey.NAMA_UMKM,desc);
         i.putExtra(ParameterKey.IS_ADD, isAdd );
         startActivity(i);
     }

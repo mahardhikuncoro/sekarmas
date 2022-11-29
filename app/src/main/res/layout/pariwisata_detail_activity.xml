@@ -1,0 +1,549 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/bckgroundEntryFragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <RelativeLayout
+        android:id="@+id/rl_titlebar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/blue_background"
+        android:paddingTop="15dp"
+        android:paddingBottom="15dp"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        >
+
+        <ImageView
+            android:id="@+id/btnback_toolbar"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:gravity="center"
+            android:src="@drawable/ic_back" />
+
+        <TextView
+            android:id="@+id/tv_title_sidebaru"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@+id/btnback_toolbar"
+            android:gravity="center"
+            android:paddingBottom="15dp"
+
+            android:singleLine="false"
+            android:text="E-Pariwisata"
+            android:textColor="@color/white"
+            android:textSize="24dp"
+            android:textStyle="bold" />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/btn_post"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:visibility="gone"
+            android:layout_alignParentEnd="true"
+            android:src="@drawable/ic_add_laporan" />
+
+    </RelativeLayout>
+
+
+
+    <ScrollView
+        android:id="@+id/layoutScrollPribadi"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="-15dp"
+        android:layout_below="@+id/rl_titlebar">
+
+        <RelativeLayout
+            android:id="@+id/form_data_pribadi"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:id="@+id/ln_img_profil"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <FrameLayout
+                    android:id="@+id/rootview"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/cv_img_post"
+                        android:layout_marginBottom="-15dp"
+                        app:cardCornerRadius="15dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <!--The child view inside the cardview should have extra padding,so that negative margin will not affect the bottom padding of its child.Here normally we have 16dp bottom padding for child + margin bottom of the parent is 3dp=19dp comes.-->
+
+                        <FrameLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:paddingBottom="15dp">
+
+                            <RelativeLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent" >
+
+                                <ImageView
+                                    android:id="@+id/iv_profile_sidebaru"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="220dp"
+                                    android:scaleType="centerCrop"
+                                    android:src="@drawable/img_default" />
+
+                                <TextView
+                                    android:id="@+id/tv_nama_sidebaru"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_above="@+id/etAlamatsidebaru"
+                                    android:layout_alignParentBottom="true"
+                                    android:layout_centerHorizontal="true"
+                                    android:paddingLeft="20dp"
+                                    android:paddingBottom="50dp"
+                                    android:text=""
+                                    android:textColor="@color/white"
+                                    android:textSize="20dp"
+                                    android:textStyle="bold" />
+
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentBottom="true"
+                                    android:layout_marginLeft="15dp"
+                                    android:paddingBottom="20dp"
+                                    android:src="@drawable/ic_location"
+                                    fab:tint="@color/white" />
+
+                                <TextView
+                                    android:id="@+id/etAlamatsidebaru"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentBottom="true"
+                                    android:layout_marginLeft="40dp"
+                                    android:layout_marginRight="120dp"
+                                    android:paddingBottom="22dp"
+                                    android:text=""
+                                    android:textColor="@color/white"
+                                    android:textSize="9dp"
+                                    android:textStyle="bold" />
+
+                                <LinearLayout
+                                    android:id="@+id/btn_image_bar_loc"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_alignParentBottom="true"
+                                    android:layout_toLeftOf="@+id/etAlamatsidebaru"
+                                    android:padding="10dp">
+
+                                    <Button
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginBottom="10dp"
+                                        android:background="@drawable/button_orange_selector"
+                                        android:visibility="gone"
+                                        android:text="Lokasi" />
+                                </LinearLayout>
+                                <ProgressBar
+                                    android:id="@+id/post_progress_bar"
+                                    style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@+id/tv_nama_sidebaru"
+                                    android:layout_alignParentBottom="true"
+                                    android:layout_marginBottom="20dp"
+                                    android:indeterminateOnly="true" />
+
+                            </RelativeLayout>
+
+                        </FrameLayout>
+                    </androidx.cardview.widget.CardView>
+                </FrameLayout>
+            </LinearLayout>
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/ln_img_profil"
+                android:background="@color/white">
+
+                <LinearLayout
+                    android:id="@+id/ln_kategori"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="16dp"
+                    android:orientation="vertical">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_kategori"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/white" />
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/ln_deskripsi_wisata"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/ln_kategori"
+                    android:layout_margin="16dp"
+                    android:layout_gravity="center"
+                    android:orientation="vertical">
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ln_fasilitas"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:layout_below="@+id/ln_deskripsi_wisata"
+                    android:layout_margin="16dp"
+                    android:layout_gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="10dp"
+                        android:gravity="center_vertical"
+                        android:text="Fasilitas"
+                        android:textAllCaps="false"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/ln_fasilitas_gratis"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/ln_fasilitas"
+                    android:visibility="gone"
+                    android:layout_margin="16dp"
+                    android:layout_gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="10dp"
+                        android:gravity="center_vertical"
+                        android:text="Fasilitas Gratis"
+                        android:textAllCaps="false"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ln_jam_operasional"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/ln_fasilitas_gratis"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:visibility="gone"
+                    android:background="@drawable/shape_round_shadow_white"
+                    android:orientation="vertical"
+                    android:paddingTop="6dp"
+                    android:paddingBottom="6dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="12dp"
+                        android:layout_marginTop="12dp"
+                        android:gravity="center_vertical"
+                        android:text="Jam Operasional"
+                        android:textAllCaps="false"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <LinearLayout
+                        android:id="@+id/ln_senin"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/ln_fasilitas_gratis"
+                        android:layout_gravity="center"
+                        android:layout_margin="16dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tvSenin"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="10dp"
+                            android:gravity="center_vertical"
+                            android:text="Senin"
+                            android:textAllCaps="false"
+                            android:textSize="16sp" />
+
+                        <TextView
+                            android:id="@+id/tvSelasa"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="4dp"
+                            android:layout_marginTop="4dp"
+                            android:layout_marginRight="10dp"
+                            android:gravity="center_vertical"
+                            android:text="Selasa"
+                            android:textAllCaps="false"
+                            android:textSize="16sp" />
+
+                        <TextView
+                            android:id="@+id/tvRabu"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginTop="4dp"
+                            android:layout_marginRight="10dp"
+                            android:gravity="center_vertical"
+                            android:text="Rabu"
+                            android:textAllCaps="false"
+                            android:textSize="16sp" />
+
+                        <TextView
+                            android:id="@+id/tvKamis"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="4dp"
+                            android:layout_marginTop="4dp"
+                            android:layout_marginRight="10dp"
+                            android:gravity="center_vertical"
+                            android:text="Kamis"
+                            android:textAllCaps="false"
+                            android:textSize="16sp" />
+
+                        <TextView
+                            android:id="@+id/tvJumat"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="4dp"
+                            android:layout_marginTop="4dp"
+                            android:layout_marginRight="10dp"
+                            android:gravity="center_vertical"
+                            android:text="Jumat"
+                            android:textAllCaps="false"
+                            android:textSize="16sp" />
+
+                        <TextView
+                            android:id="@+id/tvSabtu"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="4dp"
+                            android:layout_marginTop="4dp"
+                            android:layout_marginRight="10dp"
+                            android:gravity="center_vertical"
+                            android:text="Sabtu"
+                            android:textAllCaps="false"
+                            android:textSize="16sp" />
+
+                        <TextView
+                            android:id="@+id/tvMinggu"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="4dp"
+                            android:layout_marginTop="4dp"
+                            android:layout_marginRight="10dp"
+                            android:gravity="center_vertical"
+                            android:text="Minggu"
+                            android:textAllCaps="false"
+                            android:textSize="16sp" />
+
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/lnProduk"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:layout_below="@+id/ln_jam_operasional"
+                    android:layout_margin="16dp"
+                    android:layout_gravity="center"
+                    android:paddingTop="6dp"
+                    android:paddingBottom="6dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:layout_marginLeft="12dp"
+                        android:layout_marginBottom="12dp"
+                        android:gravity="center_vertical"
+                        android:text="Produk"
+                        android:textAllCaps="false"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rvProduk"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/white" />
+
+                </LinearLayout>
+
+
+                <RelativeLayout
+                    android:id="@+id/linearout_gv"
+                    android:visibility="gone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/lnProduk"
+                    android:layout_margin="5dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:orientation="horizontal">
+
+                    <GridView
+                        android:id="@+id/gridView_detail"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:clickable="true"
+                        android:columnWidth="100dp"
+                        android:drawSelectorOnTop="true"
+                        android:focusable="true"
+                        android:gravity="center"
+                        android:numColumns="auto_fit"
+                        android:stretchMode="columnWidth"
+                        android:verticalSpacing="5dp" />
+                </RelativeLayout>
+            </RelativeLayout>
+        </RelativeLayout>
+    </ScrollView>
+
+
+    <com.getbase.floatingactionbutton.FloatingActionsMenu
+        android:id="@+id/multiple_actions"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="40dp"
+        fab:fab_addButtonColorNormal="@color/blue_background"
+        fab:fab_addButtonColorPressed="@color/blue_end"
+        fab:fab_addButtonPlusIconColor="@color/white"
+        fab:fab_labelStyle="@style/menu_labels_style">
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fb_desc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_edit"
+            android:tint="@color/white"
+            app:fabSize="normal"
+            fab:fab_colorNormal="@color/blue_start"
+            fab:fab_colorPressed="@color/blue_end"
+            fab:fab_title="Tambah Ringkasan Data" />
+
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fb_add_fasilitas"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_edit"
+            android:tint="@color/white"
+            app:fabSize="normal"
+            fab:fab_colorNormal="@color/blue_start"
+            fab:fab_colorPressed="@color/blue_end"
+            fab:fab_title="Tambahkan Fasilitas" />
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fb_add_fasilitas_gratis"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_edit"
+            android:tint="@color/white"
+            app:fabSize="normal"
+            fab:fab_colorNormal="@color/blue_start"
+            fab:fab_colorPressed="@color/blue_end"
+            fab:fab_title="Tambahkan Fasilitas Gratis" />
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fb_add_produk"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_edit"
+            android:tint="@color/white"
+            app:fabSize="normal"
+            fab:fab_colorNormal="@color/blue_start"
+            fab:fab_colorPressed="@color/blue_end"
+            fab:fab_title="Tambahkan Produk" />
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fb_add_operasional"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_edit"
+            android:tint="@color/white"
+            app:fabSize="normal"
+            fab:fab_colorNormal="@color/blue_start"
+            fab:fab_colorPressed="@color/blue_end"
+            fab:fab_title="Atur Jam Operasional" />
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fb_add_ulasan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_edit"
+            android:tint="@color/white"
+            app:fabSize="normal"
+            fab:fab_colorNormal="@color/blue_start"
+            fab:fab_colorPressed="@color/blue_end"
+            fab:fab_title="Tambah Ulasan" />
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fb_tambah_gambar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_newdoc"
+            android:tint="@color/white"
+            app:fabSize="normal"
+            fab:fab_colorNormal="@color/blue_start"
+            fab:fab_colorPressed="@color/blue_end"
+            fab:fab_title="Tambah Gambar" />
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fb_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_delete"
+            android:tint="@color/white"
+            android:visibility="gone"
+            fab:fab_colorNormal="@color/pink"
+            fab:fab_colorPressed="@color/pink_pressed"
+            fab:fab_plusIconColor="@color/white"
+            fab:fab_title="Hapus data" />
+
+    </com.getbase.floatingactionbutton.FloatingActionsMenu>
+
+
+
+
+
+</RelativeLayout>

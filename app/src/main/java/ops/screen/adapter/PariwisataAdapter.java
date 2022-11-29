@@ -1,10 +1,8 @@
-package ops.screen.fragment;
+package ops.screen.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -13,6 +11,8 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.jakewharton.picasso.OkHttp3Downloader;
 import com.squareup.picasso.Callback;
@@ -20,54 +20,52 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
+import base.data.pariwisatamodel.PariwisataModel;
 import base.network.callback.NetworkClientNew;
-import base.network.callback.NetworkConnection;
-import base.data.umkmmodel.UmkmModel;
-import base.sqlite.model.Config;
 import base.utils.enm.ParameterKey;
 import id.sekarpinter.mobile.application.R;
 import okhttp3.OkHttpClient;
-import ops.screen.adapter.LaporanItem;
-import user.sidebaru.DetailSidebaruActivity;
+import user.pariwisata.DetailPariwisataActivity;
 
 
-public class UmkmAdapter extends RecyclerView.Adapter<UmkmAdapter.ViewHolder> {
+public class PariwisataAdapter extends RecyclerView.Adapter<PariwisataAdapter.ViewHolder> {
 
-    private List<UmkmModel> list;
+    private List<PariwisataModel> list;
     private Context context;
     private int lastPosition = -1;
-    private Config config;
-    private NetworkConnection networkConnection;
+    private int id = 0;
 
 
-    public UmkmAdapter(List<UmkmModel> list, Context context) {
+    public PariwisataAdapter(List<PariwisataModel> list, Context context, Integer id) {
         this.list = list;
         this.context = context;
-//        this.callback = callback;
+        this.id = id;
     }
 
 
     @Override
-    public UmkmAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_umkm_holder, parent, false);
-        return new UmkmListItem(view);
+    public PariwisataAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_wisata, parent, false);
+        return new PariwisataItem(view);
     }
 
     @Override
-    public void onBindViewHolder(final UmkmAdapter.ViewHolder holder, @SuppressLint("RecyclerView") final int position) {
-            ((UmkmListItem) holder).namaNasabah.setText("" + list.get(position).getNama());
-            ((UmkmListItem) holder).idNasabah.setText("" + list.get(position).getAlamat());
-            ((UmkmListItem) holder).namaNasabah.setGravity(Gravity.CENTER_VERTICAL);
-            if(list.get(position).getStatus().equals("created"))
-                ((UmkmListItem) holder).ivSatus.setImageResource(R.drawable.ic_pending);
-            else if(list.get(position).getStatus().equals("approved"))
-                ((UmkmListItem) holder).ivSatus.setImageResource(R.drawable.ic_done_status);
-            else
-                ((UmkmListItem) holder).ivSatus.setImageResource(R.drawable.ic_reject);
+    public void onBindViewHolder(final PariwisataAdapter.ViewHolder holder, @SuppressLint("RecyclerView") final int position) {
 
-            if(list.get(position).getProfilePicture() != null) {
+        if(list.get(position).getKategoriId() == id) {
+            ((PariwisataItem) holder).namaNasabah.setText("" + list.get(position).getNama());
+            ((PariwisataItem) holder).idNasabah.setText("" + list.get(position).getAlamat());
+            ((PariwisataItem) holder).namaNasabah.setGravity(Gravity.CENTER_VERTICAL);
+//            if(list.get(position).getStatus().equals("created"))
+//                ((PariwisataItem) holder).ivSatus.setImageResource(R.drawable.ic_pending);
+//            else if(list.get(position).getStatus().equals("approved"))
+//                ((PariwisataItem) holder).ivSatus.setImageResource(R.drawable.ic_done_status);
+//            else
+//                ((PariwisataItem) holder).ivSatus.setImageResource(R.drawable.ic_reject);
+
+            if (list.get(position).getProfilePicture() != null) {
                 String url = list.get(position).getProfilePicture();
-                Log.e("URL_PHOTO", " "+url);
+                Log.e("URL_PHOTO", " " + url);
                 if (url != null && !url.isEmpty()) {
                     OkHttpClient picassoClient = NetworkClientNew.getUnsafeOkHttpClient();
                     Picasso picasso = new Picasso.Builder(context).downloader(new OkHttp3Downloader(picassoClient)).build();
@@ -77,7 +75,7 @@ public class UmkmAdapter extends RecyclerView.Adapter<UmkmAdapter.ViewHolder> {
                             .error(R.drawable.img_default)
                             .fit()
                             .centerCrop()
-                            .into(((UmkmListItem) holder).ivList, new Callback() {
+                            .into(((PariwisataItem) holder).ivList, new Callback() {
                                 @Override
                                 public void onSuccess() {
                                 }
@@ -88,16 +86,17 @@ public class UmkmAdapter extends RecyclerView.Adapter<UmkmAdapter.ViewHolder> {
                             });
                 }
             }
+        }
 
 
         setAnimation(holder.itemView, position);
 
-        ((UmkmListItem) holder).rentalLinear.setOnClickListener(new View.OnClickListener() {
+        ((PariwisataItem) holder).rentalLinear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Integer idUmkm = list.get(position).getId();
-                Intent intent = new Intent(context, DetailSidebaruActivity.class);
-                intent.putExtra(ParameterKey.ID_UMKM, idUmkm);
+                Integer idPariwisata = list.get(position).getId();
+                Intent intent = new Intent(context, DetailPariwisataActivity.class);
+                intent.putExtra(ParameterKey.ID_UMKM, idPariwisata);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
             }

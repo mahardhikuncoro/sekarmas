@@ -30,7 +30,7 @@
             android:layout_toRightOf="@+id/btnback_toolbar"
             android:gravity="center"
             android:singleLine="false"
-            android:text="Upload Gambar Sidebaru"
+            android:text="Tambah Gambar UMKM"
             android:textColor="@color/white"
             android:textSize="24dp"
             android:textStyle="bold" />
@@ -59,19 +59,19 @@
 
     <GridView
         android:id="@+id/gridView"
-        android:background="@color/white"
-        android:layout_below="@+id/post_progress_bar"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/line_top_location"
+        android:layout_below="@+id/post_progress_bar"
+        android:background="@color/white"
+        android:clickable="true"
         android:columnWidth="100dp"
         android:drawSelectorOnTop="true"
+        android:focusable="true"
         android:gravity="center"
         android:numColumns="auto_fit"
         android:stretchMode="columnWidth"
-        android:verticalSpacing="5dp"
-        android:layout_above="@+id/line_top_location"
-        android:focusable="true"
-        android:clickable="true"/>
+        android:verticalSpacing="5dp" />
 
 
     <View
@@ -86,9 +86,9 @@
         android:id="@+id/btn_upload_image"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:gravity="center"
         android:layout_alignParentBottom="true"
-        android:background="@color/md_orange_900">
+        android:background="@color/md_orange_900"
+        android:gravity="center">
 
         <ImageView
             android:layout_width="wrap_content"
@@ -100,11 +100,11 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textStyle="bold"
-            android:textColor="@color/white"
-            android:padding="5dp"
             android:gravity="center_horizontal|center_vertical"
-            android:text="TAMBAH GAMBAR" />
+            android:padding="5dp"
+            android:text="TAMBAH GAMBAR"
+            android:textColor="@color/white"
+            android:textStyle="bold" />
     </LinearLayout>
 
 
