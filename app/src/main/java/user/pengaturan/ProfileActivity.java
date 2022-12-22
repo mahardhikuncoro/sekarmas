@@ -29,14 +29,13 @@ import base.network.callback.NetworkClient;
 import base.network.callback.NetworkClientNew;
 import base.network.callback.ResponseStatus;
 import base.screen.BaseDialogActivity;
-import base.service.URL;
 import base.sqlite.model.Userdata;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import id.sekarpinter.mobile.application.R;
 import okhttp3.OkHttpClient;
-import ops.screen.CameraActivity;
+import ops.screen.AddImagePariwisataActivity;
 
 public class ProfileActivity extends BaseDialogActivity{
 
@@ -203,7 +202,7 @@ public class ProfileActivity extends BaseDialogActivity{
                     Manifest.permission.WRITE_EXTERNAL_STORAGE
             }, 1);
         }else {
-            Intent intentprofile = new Intent(this.getApplicationContext(), CameraActivity.class);
+            Intent intentprofile = new Intent(this.getApplicationContext(), AddImagePariwisataActivity.class);
             intentprofile.putExtra("REGNO","11");
             intentprofile.putExtra("TC","5.0");
             intentprofile.putExtra("UPLOAD_TYPE","profile");

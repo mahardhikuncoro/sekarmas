@@ -42,7 +42,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class LaporanAdapter extends RecyclerView.Adapter<LaporanItem> implements Filterable {
 
-    private ArrayList<DataLaporan> list;
+    private List<DataLaporan> list;
     private static List<DataLaporan> listFiltered;
     private Context context;
     private int lastPosition = -1;
@@ -53,13 +53,13 @@ public class LaporanAdapter extends RecyclerView.Adapter<LaporanItem> implements
     LaporanEndpoint laporanEndpoint;
 
 
-    public LaporanAdapter(Context context, ArrayList<DataLaporan> list) {
+    public LaporanAdapter(Context context, ArrayList<DataLaporan> list, TaskListInterface taskListInterface) {
 
         notifyDataSetChanged();
         this.list = list;
         this.context = context;
         this.listFiltered = list;
-        this.listener = listener;
+        this.listener = taskListInterface;
 
         config = new Config(context);
         networkConnection = new NetworkConnection(context);
@@ -129,11 +129,6 @@ public class LaporanAdapter extends RecyclerView.Adapter<LaporanItem> implements
                              }
                          });
              }
-
-
-
-             Log.e("IMAGE URL"," : "+list.get(position).getImageUrl());
-             Log.e(" URL"," : " + list.get(position).getImageUrl());
          }
 
 
@@ -160,6 +155,13 @@ public class LaporanAdapter extends RecyclerView.Adapter<LaporanItem> implements
                 intent.putExtra("id_laporan",id_laporan);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
+            }
+        });
+
+        ((LaporanItem) holder).ivMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.onOptionClick(list.get(position));
             }
         });
 

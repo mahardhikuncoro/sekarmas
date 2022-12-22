@@ -29,6 +29,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -60,8 +61,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         Toast.makeText(this, "Map is Ready", Toast.LENGTH_SHORT).show();
-        Log.d(TAG, "onMapReady: map is ready");
+        Log.e(TAG, "onMapReady: map is ready " + mLocationPermissionsGranted) ;
         mMap = googleMap;
+
+        googleMap.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
+
+        googleMap.addMarker(new MarkerOptions()
+                .position(new LatLng(37.4233438, -122.0728817))
+                .title("LinkedIn")
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
 
         if (mLocationPermissionsGranted) {
             getDeviceLocation();
@@ -197,7 +205,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     private void getDeviceLocation(){
-        Log.d(TAG, "getDeviceLocation: getting the devices current location");
+        Log.e(TAG, "getDeviceLocation: getting the devices current location");
 
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
 
@@ -266,7 +274,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private void initMap(){
         Log.d(TAG, "initMap: initializing map");
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
-
         mapFragment.getMapAsync(MapsActivity.this);
     }
 

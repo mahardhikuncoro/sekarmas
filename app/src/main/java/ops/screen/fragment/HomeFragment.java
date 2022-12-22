@@ -238,7 +238,7 @@ public class HomeFragment extends Fragment  {
                         for(DataLaporan data : response.body().getData()) {
                             laporaArrayList.add(data);
                         }
-                        setAdapter();
+//                        setAdapter();
                     }
                 }
 
@@ -315,12 +315,12 @@ public class HomeFragment extends Fragment  {
         }
     }
 
-    private void setAdapter() {
-        laporanAdapter = new LaporanAdapter(getActivity().getApplicationContext(), laporaArrayList);
-        laporanAdapter.notifyDataSetChanged();
-        recyclerView.setAdapter(laporanAdapter);
-
-    }
+//    private void setAdapter() {
+//        laporanAdapter = new LaporanAdapter(getActivity().getApplicationContext(), laporaArrayList);
+//        laporanAdapter.notifyDataSetChanged();
+//        recyclerView.setAdapter(laporanAdapter);
+//
+//    }
 
     protected void getMenuAccess(){
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());

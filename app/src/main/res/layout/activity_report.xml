@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/blue_background">
+
+    <RelativeLayout
+        android:id="@+id/rl_titlebar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+      android:layout_margin="15dp">
+
+        <ImageView
+            android:id="@+id/iv_backbutton"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:src="@drawable/ic_back" />
+
+        <TextView
+            android:id="@+id/txtViewName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@+id/iv_backbutton"
+            android:gravity="center"
+            android:singleLine="false"
+            android:text="Laporkan Kontent"
+            android:textColor="@color/white"
+            android:textSize="24dp"
+            android:textStyle="bold" />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/create_post_button"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentEnd="true"
+            android:visibility="invisible"
+            android:src="@drawable/ic_add_laporan" />
+
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/rl_pengaturan"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/rl_titlebar"
+        android:layout_gravity="center"
+        android:orientation="vertical"
+        android:background="@color/apply_kendaraanBackground">
+
+        <TextView
+            android:id="@+id/tv_pertanyaan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="24dp"
+            android:gravity="center"
+            android:singleLine="false"
+            android:text="Kontent tersebut mengandung unsur ?"
+            android:textColor="@color/black"
+            android:textSize="24dp"
+            android:textStyle="bold" />
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_pengaturan"
+            android:layout_below="@+id/tv_pertanyaan"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </RelativeLayout>
+
+    </RelativeLayout>

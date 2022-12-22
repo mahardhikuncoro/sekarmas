@@ -16,8 +16,9 @@
 
         <ImageView
             android:id="@+id/btnback_toolbar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
             android:background="@drawable/ic_back"
             android:backgroundTint="@color/white"/>
 

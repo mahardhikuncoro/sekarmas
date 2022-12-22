@@ -126,7 +126,7 @@
         </activity>
 
         <activity
-            android:name="ops.screen.CameraActivity"
+            android:name="ops.screen.AddImagePariwisataActivity"
             android:exported="false">
         </activity>
         <activity
@@ -204,6 +204,7 @@
         <activity android:name="user.pariwisata.AddProdukActity" android:exported="false"> </activity>
         <activity android:name="user.pariwisata.AddOperasionalActity" android:exported="false"> </activity>
         <activity android:name="user.pariwisata.AddUlasanActivity" android:exported="false"> </activity>
+        <activity android:name="user.report.ReportActivity" android:exported="false"> </activity>
 
 
     </application>

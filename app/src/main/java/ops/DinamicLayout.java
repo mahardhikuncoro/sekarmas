@@ -72,7 +72,7 @@ import base.sqlite.model.Config;
 import base.sqlite.model.Userdata;
 import base.utils.enm.ParameterKey;
 import id.sekarpinter.mobile.application.R;
-import ops.screen.CameraActivity;
+import ops.screen.AddImagePariwisataActivity;
 import ops.screen.FormActivity;
 import ops.screen.MainActivityDashboard;
 import ops.screen.fragment.FullEntry;
@@ -765,7 +765,7 @@ public class DinamicLayout extends LinearLayout {
                 @Override
                 public void onClick(View view) {
                     Log.e(" HALLO ", "ID NYA : " + itemChoose + " " + tc + " " + regno);
-                    Intent intentuserdata = new Intent(getContext(), CameraActivity.class);
+                    Intent intentuserdata = new Intent(getContext(), AddImagePariwisataActivity.class);
                     intentuserdata.putExtra("SECTION_NAME", sectionname);
                     intentuserdata.putExtra("REGNO", regno);
                     intentuserdata.putExtra("TC", tc);

@@ -8,9 +8,13 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.provider.Settings;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -21,11 +25,13 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import base.data.laporan.DataLaporan;
 import base.data.laporan.LaporanJson;
 import base.screen.BaseDialogActivity;
+import base.sqlite.model.TaskListDetailModel;
 import base.utils.enm.ParameterKey;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -33,9 +39,11 @@ import butterknife.OnClick;
 import id.sekarpinter.mobile.application.R;
 import ops.screen.TaskListActivity;
 import ops.screen.adapter.LaporanAdapter;
+import ops.screen.fragment.TaskListInterface;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import user.report.ReportActivity;
 
 public class LaporanActivity extends BaseDialogActivity {
 
@@ -83,12 +91,14 @@ public class LaporanActivity extends BaseDialogActivity {
 
 
     private void callListLaporan() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            builder.setView(R.layout.progress_bar).setCancelable(false);
+        if(dialog == null) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                builder.setView(R.layout.progress_bar).setCancelable(false);
+            }
+            dialog = builder.create();
+            dialog.show();
         }
-        dialog = builder.create();
-        dialog.show();
         _swiperefresh.setRefreshing(true);
         if (!networkConnection.isNetworkConnected()) {
             _swiperefresh.setRefreshing(false);
@@ -120,7 +130,58 @@ public class LaporanActivity extends BaseDialogActivity {
     }
 
     private void setAdapter() {
-        laporanAdapter = new LaporanAdapter(this, laporaArrayList);
+        laporanAdapter = new LaporanAdapter(this, laporaArrayList, new TaskListInterface() {
+            @Override
+            public void onListSelected(TaskListDetailModel list) {
+
+            }
+
+            @Override
+            public void onOptionClick(DataLaporan model) {
+                final AlertDialog dialogBuilder = new AlertDialog.Builder(LaporanActivity.this).create();
+                LayoutInflater inflater = getLayoutInflater();
+                View dialogView = inflater.inflate(R.layout.popup_ugc, null);
+                final LinearLayout lnReport = (LinearLayout) dialogView.findViewById(R.id.lnReport);
+                final LinearLayout lnHide = (LinearLayout) dialogView.findViewById(R.id.lnHide);
+                final LinearLayout lnBlockandReport = (LinearLayout) dialogView.findViewById(R.id.lnBlockandReport);
+                lnReport.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(LaporanActivity.this, ReportActivity.class);
+                        intent.putExtra("kontent", (Parcelable) model);
+                        intent.putExtra("type", "pengaduan");
+                        intent.putExtra("isreport", true);
+                        startActivity(intent);
+                        dialogBuilder.dismiss();
+                    }
+                });
+                lnHide.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(LaporanActivity.this, ReportActivity.class);
+                        intent.putExtra("kontent", (Parcelable) model);
+                        intent.putExtra("type", "pengaduan");
+                        intent.putExtra("ishide", true);
+                        startActivity(intent);
+                        dialogBuilder.dismiss();
+                    }
+                });
+                lnBlockandReport.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(LaporanActivity.this, ReportActivity.class);
+                        intent.putExtra("kontent", (Parcelable) model);
+                        intent.putExtra("type", "pengaduan");
+                        intent.putExtra("isblock", true);
+                        startActivity(intent);
+                        dialogBuilder.dismiss();
+                    }
+                });
+
+                dialogBuilder.setView(dialogView);
+                dialogBuilder.show();
+            }
+        });
         laporanAdapter.notifyDataSetChanged();
         recyclerView.setAdapter(laporanAdapter);
 
@@ -205,13 +266,20 @@ public class LaporanActivity extends BaseDialogActivity {
 
     @OnClick(R.id.iv_backbutton)
     public void clickBack(){
-        finish();
+        onBackPressed();
     }
 
     @Override
     public void onBackPressed() {
+        if(dialog!= null){
+            dialog.dismiss();
+        }
         finish();
     }
 
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        callListLaporan();
+    }
 }

@@ -48,7 +48,7 @@ import id.sekarpinter.mobile.application.R;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
-import ops.screen.CameraActivity;
+import ops.screen.AddImagePariwisataActivity;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -207,7 +207,7 @@ public class FormOfflineDocument extends BaseDialogActivity {
                    _inputnamadokumen.setError("Mohon isi nama dokumen");
                 }else{
                     Log.e("ID IMAGE ", " : " + idImage);
-                    Intent intentprofile = new Intent(this, CameraActivity.class);
+                    Intent intentprofile = new Intent(this, AddImagePariwisataActivity.class);
                     intentprofile.putExtra("REGNO", getIntent().getStringExtra("REGNO"));
                     intentprofile.putExtra("TC", getIntent().getStringExtra("TC"));
                     intentprofile.putExtra("UPLOAD_TYPE", "survey_offline");
@@ -257,7 +257,7 @@ public class FormOfflineDocument extends BaseDialogActivity {
             public void onClick(View v) {
                 Log.e("ID IMAGE "," : " + idImage );
                 Log.e("ID REGNO "," : " + getIntent().getStringExtra("REGNO") );
-                Intent intentprofile = new Intent(getApplicationContext(), CameraActivity.class);
+                Intent intentprofile = new Intent(getApplicationContext(), AddImagePariwisataActivity.class);
                 intentprofile.putExtra("REGNO", getIntent().getStringExtra("REGNO"));
                 intentprofile.putExtra("TC", getIntent().getStringExtra("TC"));
                 intentprofile.putExtra("UPLOAD_TYPE","survey_offline");

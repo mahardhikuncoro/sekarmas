@@ -1,11 +1,17 @@
 
 package base.data.laporan;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import androidx.annotation.NonNull;
+
+import java.io.Serializable;
 import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class DataLaporan {
+public class DataLaporan implements Serializable, Parcelable {
 
     @SerializedName("id")
     @Expose
@@ -61,6 +67,47 @@ public class DataLaporan {
     @SerializedName("user")
     @Expose
     private User user;
+
+    protected DataLaporan(Parcel in) {
+        id = in.readString();
+        userId = in.readString();
+        categoryId = in.readString();
+        title = in.readString();
+        description = in.readString();
+        if (in.readByte() == 0) {
+            status = null;
+        } else {
+            status = in.readInt();
+        }
+        latitude = in.readString();
+        longitude = in.readString();
+        kabupatenKota = in.readString();
+        if (in.readByte() == 0) {
+            isPublic = null;
+        } else {
+            isPublic = in.readInt();
+        }
+        createdAt = in.readString();
+        updatedAt = in.readString();
+        imageUrl = in.readString();
+        if (in.readByte() == 0) {
+            commentCount = null;
+        } else {
+            commentCount = in.readInt();
+        }
+    }
+
+    public static final Creator<DataLaporan> CREATOR = new Creator<DataLaporan>() {
+        @Override
+        public DataLaporan createFromParcel(Parcel in) {
+            return new DataLaporan(in);
+        }
+
+        @Override
+        public DataLaporan[] newArray(int size) {
+            return new DataLaporan[size];
+        }
+    };
 
     public String getId() {
         return id;
@@ -206,4 +253,41 @@ public class DataLaporan {
         this.user = user;
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(@NonNull Parcel dest, int flags) {
+        dest.writeString(id);
+        dest.writeString(userId);
+        dest.writeString(categoryId);
+        dest.writeString(title);
+        dest.writeString(description);
+        if (status == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeInt(status);
+        }
+        dest.writeString(latitude);
+        dest.writeString(longitude);
+        dest.writeString(kabupatenKota);
+        if (isPublic == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeInt(isPublic);
+        }
+        dest.writeString(createdAt);
+        dest.writeString(updatedAt);
+        dest.writeString(imageUrl);
+        if (commentCount == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeInt(commentCount);
+        }
+    }
 }

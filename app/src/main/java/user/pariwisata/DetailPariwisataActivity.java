@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -35,6 +36,8 @@ import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import com.jakewharton.picasso.OkHttp3Downloader;
 import com.squareup.picasso.Picasso;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,14 +57,17 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import id.sekarpinter.mobile.application.R;
 import okhttp3.OkHttpClient;
-import ops.screen.CameraActivity;
+import ops.screen.AddImagePariwisataActivity;
 import ops.screen.MapsDetailUmkmActivity;
 import ops.screen.adapter.KategoriAdapter;
 import ops.screen.adapter.ProdukAdapter;
+import ops.screen.adapter.UlasanAdapter;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import user.DashboardActivity;
+import user.laporan.LaporanActivity;
+import user.report.ReportActivity;
 
 public class DetailPariwisataActivity extends BaseDialogActivity implements KategoriAdapter.OnKategoriListener{
 
@@ -84,7 +90,11 @@ public class DetailPariwisataActivity extends BaseDialogActivity implements Kate
     @BindView(R.id.tvSabtu)
     TextView tvSabtu;
     @BindView(R.id.tvMinggu)
-    TextView tvMingggu;
+    TextView tvMinggu;
+    @BindView(R.id.tvAvgRating)
+    TextView tvAvgRating;
+    @BindView(R.id.tvJumlahUlasan)
+    TextView tvJumlahUlasan;
     @BindView(R.id.iv_profile_sidebaru)
     ImageView ivProfile;
 
@@ -93,6 +103,7 @@ public class DetailPariwisataActivity extends BaseDialogActivity implements Kate
     @BindView(R.id.fb_delete) FloatingActionButton fbDelete;
     @BindView(R.id.rv_kategori) RecyclerView rvKategori;
     @BindView(R.id.rvProduk) RecyclerView rvProduk;
+    @BindView(R.id.rvUlasan) RecyclerView rvUlasan;
     @BindView(R.id.multiple_actions) FloatingActionsMenu  menuMultipleActions ;
     @BindView(R.id.gridView_detail) GridView mGridView;
     @BindView(R.id.ln_deskripsi_wisata) LinearLayout lnDeskripsiWisata;
@@ -100,8 +111,9 @@ public class DetailPariwisataActivity extends BaseDialogActivity implements Kate
     @BindView(R.id.ln_fasilitas_gratis) LinearLayout lnFasilitasGratis;
     @BindView(R.id.ln_jam_operasional) LinearLayout lnJamOperasional;
     @BindView(R.id.lnProduk) LinearLayout lnProduk;
-    @BindView(R.id.linearout_gv)
-    RelativeLayout linearoutGv;
+    @BindView(R.id.lnUlasan) LinearLayout lnUlasan;
+    @BindView(R.id.linearout_gv) RelativeLayout linearoutGv;
+    @BindView(R.id.iv_menu) ImageView ivMenu;
 
     protected Bundle bundle;
     private Integer idSektor=0;
@@ -113,8 +125,10 @@ public class DetailPariwisataActivity extends BaseDialogActivity implements Kate
     protected Double latitude ;
     List<String> permissionsRequired = new ArrayList<>();
     private KategoriAdapter kategoriAdapter;
+    private UlasanAdapter ulasanAdapter;
     private Integer selectedId = 1;
     private List<SektorModel> kategoriList;
+    private List<UlasanJson> ulasanList;
     private List<KontentWisata> deskripsiList;
     private List<KontentWisata> fasilitasList;
     private List<KontentWisata> fasilitasGratisList;
@@ -144,9 +158,13 @@ public class DetailPariwisataActivity extends BaseDialogActivity implements Kate
         rvProduk.setLayoutManager(linearLayoutProduk);
         rvProduk.setHasFixedSize(true);
 
+
+        LinearLayoutManager linearLayoutUlasan = new LinearLayoutManager(DetailPariwisataActivity.this, LinearLayoutManager.VERTICAL,false);
+        rvUlasan.setLayoutManager(linearLayoutUlasan);
+        rvUlasan.setHasFixedSize(true);
+
         //Initialize with empty data
         retreiveDetailPariwisata(getIntent().getIntExtra(ParameterKey.ID_UMKM, 0));
-        getDataUlasan(getIntent().getIntExtra(ParameterKey.ID_UMKM, 0));
     }
 
     public boolean hasPermissions(List<String> permissions) {
@@ -198,6 +216,11 @@ public class DetailPariwisataActivity extends BaseDialogActivity implements Kate
         kategoriAdapter = new KategoriAdapter(DetailPariwisataActivity.this, kategoriList, this, selectedId);
         rvKategori.setAdapter(kategoriAdapter);
     }
+
+    private void setAdapterUlasan() {
+        ulasanAdapter = new UlasanAdapter(ulasanList, DetailPariwisataActivity.this);
+        rvUlasan.setAdapter(ulasanAdapter);
+    }
     public void getDataUlasan(Integer idUmkm){
         progressBar.setVisibility(View.VISIBLE);
         if (!networkConnection.isNetworkConnected()) {
@@ -207,12 +230,23 @@ public class DetailPariwisataActivity extends BaseDialogActivity implements Kate
             pariwisataEndpoint.getUlasan("Bearer " + userdata.select().getAccesstoken(), idUmkm, "null").enqueue(new Callback<List<UlasanJson>>() {
                 @Override
                 public void onResponse(Call<List<UlasanJson>> call, Response<List<UlasanJson>> response) {
-
+                    if(response.isSuccessful()){
+                        progressBar.setVisibility(View.GONE);
+                        ulasanList = new ArrayList<>();
+                        ulasanList.addAll(response.body());
+                        double sumRating = 0;
+                        for (UlasanJson ulasanJson : response.body()){
+                            sumRating = sumRating + ulasanJson.getRating();
+                        }
+                        tvAvgRating.setText(BigDecimal.valueOf(sumRating/response.body().size()).setScale(1, RoundingMode.HALF_DOWN)+"");
+                        tvJumlahUlasan.setText(response.body().size()+" Ulasan");
+                        setAdapterUlasan();
+                    }
                 }
 
                 @Override
                 public void onFailure(Call<List<UlasanJson>> call, Throwable t) {
-
+                    progressBar.setVisibility(View.GONE);
                 }
             });
         }
@@ -252,16 +286,8 @@ public class DetailPariwisataActivity extends BaseDialogActivity implements Kate
                                         }
 
                                         @Override
-                                        public void onError() {
-                                            Log.e("ERROR", " ");
-
-                                        }
+                                        public void onError() {Log.e("ERROR", " ");}
                                     });
-                        }
-
-                        if(userdata.select().getId().equals(response.body().getCreatedBy())){
-//                            fbDelete.setVisibility(View.VISIBLE);
-//                            fbEdit.setVisibility(View.VISIBLE);
                         }
 
                         deskripsiList = new ArrayList<>();
@@ -276,68 +302,70 @@ public class DetailPariwisataActivity extends BaseDialogActivity implements Kate
                         fasilitasGratisList.addAll(response.body().getFasilitasGratis());
                         setFasilitasGratis();
 
-                        jam = new KontentWisata();
-                        jam.setSenin(response.body().getJam().get(0).getSenin());
-                        jam.setSelasa(response.body().getJam().get(0).getSelasa());
-                        jam.setRabu(response.body().getJam().get(0).getRabu());
-                        jam.setKamis(response.body().getJam().get(0).getKamis());
-                        jam.setJumat(response.body().getJam().get(0).getJumat());
-                        jam.setSabtu(response.body().getJam().get(0).getSabtu());
-                        jam.setMinggu(response.body().getJam().get(0).getMinggu());
-                        setJamOperasional();
+                        if(response.body().getJam() != null) {
+                            jam = new KontentWisata();
+                            jam.setSenin(response.body().getJam().get(0).getSenin());
+                            jam.setSelasa(response.body().getJam().get(0).getSelasa());
+                            jam.setRabu(response.body().getJam().get(0).getRabu());
+                            jam.setKamis(response.body().getJam().get(0).getKamis());
+                            jam.setJumat(response.body().getJam().get(0).getJumat());
+                            jam.setSabtu(response.body().getJam().get(0).getSabtu());
+                            jam.setMinggu(response.body().getJam().get(0).getMinggu());
+                            setJamOperasional();
+                        }
 
                         produkList = new ArrayList<>();
                         produkList.addAll(response.body().getProduk());
                         setProdukList();
-//
-//                        mGridData = new ArrayList<>();
-//                        if(response.body().getGaleri()!=null) {
-//                            int i=0;
-//                            for (KontentWisata galeri : response.body().getGaleri()) {
-//                                GridItem gridItem = new GridItem();
-//                                gridItem.setImage(galeri.getUrl());
-//                                gridItem.setId(i);
-//                                gridItem.setDesc(galeri.getDeskripsi());
-//                                gridItem.setBitmapImage(null);
-//                                gridItem.setUri(null);
-//                                gridItem.setFileToUpload(null);
-//                                mGridData.add(gridItem);
-//                                i++;
-//                            }
-//
-//                            mGridAdapter = new GridViewDetailAdapter(DetailPariwisataActivity.this, R.layout.grid_item_layout, mGridData);
-//                            mGridView.setAdapter(mGridAdapter);
-//
-//                            mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//                                public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-//                                    //Get item at position
-//                                    GridItem item = (GridItem) parent.getItemAtPosition(position);
-//
-//                                    Intent intent = new Intent(DetailPariwisataActivity.this, DetailsGridViewActivity.class);
-//                                    ImageView imageView = (ImageView) v.findViewById(R.id.grid_item_image);
-//
-//                                    // Interesting data to pass across are the thumbnail size/location, the
-//                                    // resourceId of the source bitmap, the picture description, and the
-//                                    // orientation (to avoid returning back to an obsolete configuration if
-//                                    // the device rotates again in the meantime)
-//
-//                                    int[] screenLocation = new int[2];
-//                                    imageView.getLocationOnScreen(screenLocation);
-//
-//                                    //Pass the image title and url to DetailsActivity
-//                                    intent.putExtra("left", screenLocation[0]).
-//                                            putExtra("top", screenLocation[1]).
-//                                            putExtra("width", imageView.getWidth()).
-//                                            putExtra("height", imageView.getHeight()).
-//                                            putExtra("title", item.getDesc()).
-//                                            putExtra("image", item.getImage());
-//
-//                                    //Start details activity
-//                                    startActivity(intent);
-//                                }
-//                            });
-//
-//                        }
+
+                        mGridData = new ArrayList<>();
+                        if(response.body().getGaleri()!=null) {
+                            int i=0;
+                            for (KontentWisata galeri : response.body().getGaleri()) {
+                                GridItem gridItem = new GridItem();
+                                gridItem.setImage(galeri.getUrl());
+                                gridItem.setId(i);
+                                gridItem.setDesc(galeri.getDeskripsi());
+                                gridItem.setBitmapImage(null);
+                                gridItem.setUri(null);
+                                gridItem.setFileToUpload(null);
+                                mGridData.add(gridItem);
+                                i++;
+                            }
+
+                            mGridAdapter = new GridViewDetailAdapter(DetailPariwisataActivity.this, R.layout.grid_item_layout, mGridData);
+                            mGridView.setAdapter(mGridAdapter);
+
+                            mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+                                    //Get item at position
+                                    GridItem item = (GridItem) parent.getItemAtPosition(position);
+
+                                    Intent intent = new Intent(DetailPariwisataActivity.this, DetailsGridViewActivity.class);
+                                    ImageView imageView = (ImageView) v.findViewById(R.id.grid_item_image);
+
+                                    // Interesting data to pass across are the thumbnail size/location, the
+                                    // resourceId of the source bitmap, the picture description, and the
+                                    // orientation (to avoid returning back to an obsolete configuration if
+                                    // the device rotates again in the meantime)
+
+                                    int[] screenLocation = new int[2];
+                                    imageView.getLocationOnScreen(screenLocation);
+
+                                    //Pass the image title and url to DetailsActivity
+                                    intent.putExtra("left", screenLocation[0]).
+                                            putExtra("top", screenLocation[1]).
+                                            putExtra("width", imageView.getWidth()).
+                                            putExtra("height", imageView.getHeight()).
+                                            putExtra("title", item.getDesc()).
+                                            putExtra("image", item.getImage());
+
+                                    //Start details activity
+                                    startActivity(intent);
+                                }
+                            });
+
+                        }
                     }
                 }
 
@@ -432,7 +460,7 @@ public class DetailPariwisataActivity extends BaseDialogActivity implements Kate
         tvKamis.setText("Kamis  :   " + jam.getKamis());
         tvJumat.setText("Jumat  :    " + jam.getJumat());
         tvSabtu.setText("Sabtu  :   " + jam.getSabtu());
-        tvMingggu.setText("Minggu   :   " + jam.getMinggu());
+        tvMinggu.setText("Minggu   :   " + jam.getMinggu());
     }
 
     private void setProdukList(){
@@ -446,7 +474,56 @@ public class DetailPariwisataActivity extends BaseDialogActivity implements Kate
         intent.putExtra(ParameterKey.ID_UMKM,getIntent().getIntExtra(ParameterKey.ID_UMKM, 0));
         startActivity(intent);
     }
-    @OnClick(R.id.fb_add_ulasan)
+
+    @OnClick(R.id.iv_menu)
+    public void clickMenu(){
+        {
+            final AlertDialog dialogBuilder = new AlertDialog.Builder(DetailPariwisataActivity.this).create();
+            LayoutInflater inflater = getLayoutInflater();
+            View dialogView = inflater.inflate(R.layout.popup_ugc, null);
+            final LinearLayout lnReport = (LinearLayout) dialogView.findViewById(R.id.lnReport);
+            final LinearLayout lnHide = (LinearLayout) dialogView.findViewById(R.id.lnHide);
+            final LinearLayout lnBlockandReport = (LinearLayout) dialogView.findViewById(R.id.lnBlockandReport);
+            lnReport.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(DetailPariwisataActivity.this, ReportActivity.class);
+                    intent.putExtra(ParameterKey.ID_UMKM, getIntent().getIntExtra(ParameterKey.ID_UMKM,0));
+                    intent.putExtra("type", "pariwisata");
+                    intent.putExtra("isreport", true);
+                    startActivity(intent);
+                    dialogBuilder.dismiss();
+                }
+            });
+            lnHide.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(DetailPariwisataActivity.this, ReportActivity.class);
+                    intent.putExtra(ParameterKey.ID_UMKM, getIntent().getIntExtra(ParameterKey.ID_UMKM,0));
+                    intent.putExtra("type", "pariwisata");
+                    intent.putExtra("ishide", true);
+                    startActivity(intent);
+                    dialogBuilder.dismiss();
+                }
+            });
+            lnBlockandReport.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(DetailPariwisataActivity.this, ReportActivity.class);
+                    intent.putExtra(ParameterKey.ID_UMKM, getIntent().getIntExtra(ParameterKey.ID_UMKM,0));
+                    intent.putExtra("type", "pariwisata");
+                    intent.putExtra("isreport", true);
+                    intent.putExtra("ishide", true);
+                    startActivity(intent);
+                    dialogBuilder.dismiss();
+                }
+            });
+
+            dialogBuilder.setView(dialogView);
+            dialogBuilder.show();
+        }
+    }
+    @OnClick(R.id.btnAddUlasan)
     public void addUlasan(){
         Intent intent = new Intent(DetailPariwisataActivity.this, AddUlasanActivity.class);
         intent.putExtra(ParameterKey.ID_UMKM,getIntent().getIntExtra(ParameterKey.ID_UMKM, 0));
@@ -538,13 +615,13 @@ public class DetailPariwisataActivity extends BaseDialogActivity implements Kate
                         @Override
                         public void onClick(DialogInterface dialogInterface, int position) {
                             if (position == 0) {
-                                Intent intentprofile = new Intent(DetailPariwisataActivity.this, CameraActivity.class);
+                                Intent intentprofile = new Intent(DetailPariwisataActivity.this, AddImagePariwisataActivity.class);
                                 intentprofile.putExtra(ParameterKey.PICTFROM, "CAMERA");
                                 intentprofile.putExtra(ParameterKey.ID_UMKM, Integer.valueOf(getIntent().getIntExtra(ParameterKey.ID_UMKM, 0)));
                                 startActivity(intentprofile);
                                 finish();
                             } else if (position == 1) {
-                                Intent intentprofile = new Intent(DetailPariwisataActivity.this, CameraActivity.class);
+                                Intent intentprofile = new Intent(DetailPariwisataActivity.this, AddImagePariwisataActivity.class);
                                 intentprofile.putExtra(ParameterKey.ID_UMKM, Integer.valueOf(getIntent().getIntExtra(ParameterKey.ID_UMKM, 0)));
                                 intentprofile.putExtra(ParameterKey.PICTFROM, "GALLERY");
                                 startActivity(intentprofile);
@@ -606,6 +683,7 @@ public class DetailPariwisataActivity extends BaseDialogActivity implements Kate
             lnJamOperasional.setVisibility(View.GONE);
             lnProduk.setVisibility(View.GONE);
             linearoutGv.setVisibility(View.GONE);
+            lnUlasan.setVisibility(View.GONE);
         }else if(selectedId == 2){
             lnDeskripsiWisata.setVisibility(View.GONE);
             lnFasilitasGratis.setVisibility(View.VISIBLE);
@@ -613,6 +691,7 @@ public class DetailPariwisataActivity extends BaseDialogActivity implements Kate
             lnJamOperasional.setVisibility(View.GONE);
             lnProduk.setVisibility(View.GONE);
             linearoutGv.setVisibility(View.GONE);
+            lnUlasan.setVisibility(View.GONE);
         }else if(selectedId == 3){
             lnDeskripsiWisata.setVisibility(View.GONE);
             lnFasilitasGratis.setVisibility(View.GONE);
@@ -620,6 +699,7 @@ public class DetailPariwisataActivity extends BaseDialogActivity implements Kate
             lnJamOperasional.setVisibility(View.VISIBLE);
             lnProduk.setVisibility(View.VISIBLE);
             linearoutGv.setVisibility(View.GONE);
+            lnUlasan.setVisibility(View.GONE);
         }else if(selectedId == 4){
             lnDeskripsiWisata.setVisibility(View.GONE);
             lnFasilitasGratis.setVisibility(View.GONE);
@@ -627,6 +707,16 @@ public class DetailPariwisataActivity extends BaseDialogActivity implements Kate
             lnJamOperasional.setVisibility(View.GONE);
             lnProduk.setVisibility(View.GONE);
             linearoutGv.setVisibility(View.VISIBLE);
+            lnUlasan.setVisibility(View.GONE);
+        }else if(selectedId == 5){
+            getDataUlasan(getIntent().getIntExtra(ParameterKey.ID_UMKM, 0));
+            lnDeskripsiWisata.setVisibility(View.GONE);
+            lnFasilitasGratis.setVisibility(View.GONE);
+            lnFasilitasWisata.setVisibility(View.GONE);
+            lnJamOperasional.setVisibility(View.GONE);
+            lnProduk.setVisibility(View.GONE);
+            linearoutGv.setVisibility(View.GONE);
+            lnUlasan.setVisibility(View.VISIBLE);
         }
     }
 }

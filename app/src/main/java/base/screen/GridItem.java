@@ -5,7 +5,8 @@ import android.net.Uri;
 
 import okhttp3.MultipartBody;
 
-public class GridItem {
+public class
+GridItem {
     private String image;
     private Integer id;
     private String desc;

@@ -106,9 +106,9 @@ public class PariwisataModel {
     @Expose
     private List<KontentWisata> fasilitasGratis = new ArrayList<>();
 
-//    @SerializedName("galeri")
-//    @Expose
-//    private List<KontentWisata> galeri = new ArrayList<>();
+    @SerializedName("galeri")
+    @Expose
+    private List<KontentWisata> galeri = new ArrayList<>();
 
     @SerializedName("jam")
     @Expose
@@ -363,11 +363,11 @@ public class PariwisataModel {
         this.jam = jam;
     }
 
-//    public List<KontentWisata> getGaleri() {
-//        return galeri;
-//    }
-//
-//    public void setGaleri(List<KontentWisata> galeri) {
-//        this.galeri = galeri;
-//    }
+    public List<KontentWisata> getGaleri() {
+        return galeri;
+    }
+
+    public void setGaleri(List<KontentWisata> galeri) {
+        this.galeri = galeri;
+    }
 }

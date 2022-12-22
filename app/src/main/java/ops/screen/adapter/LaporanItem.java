@@ -47,6 +47,9 @@ public class LaporanItem extends LaporanAdapter.ViewHolder {
     @BindView(R.id.img_profile)
     ImageView imgProfile;
 
+    @BindView(R.id.iv_menu)
+    ImageView ivMenu;
+
 
     public LaporanItem(View view) {
         super(view);

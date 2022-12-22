@@ -14,16 +14,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/blue_background"
-        android:paddingTop="15dp"
-        android:paddingBottom="15dp"
         android:paddingLeft="15dp"
+        android:paddingTop="15dp"
         android:paddingRight="15dp"
-        >
+        android:paddingBottom="15dp">
 
         <ImageView
             android:id="@+id/btnback_toolbar"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_marginTop="6dp"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
             android:gravity="center"
             android:src="@drawable/ic_back" />
 
@@ -43,13 +43,13 @@
             android:textSize="24dp"
             android:textStyle="bold" />
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/btn_post"
+        <ImageView
+            android:id="@+id/iv_menu"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:visibility="gone"
             android:layout_alignParentEnd="true"
-            android:src="@drawable/ic_add_laporan" />
+            app:tint="@color/white"
+            android:src="@drawable/ic_option" />
 
     </RelativeLayout>
 
@@ -430,6 +430,79 @@
                         android:stretchMode="columnWidth"
                         android:verticalSpacing="5dp" />
                 </RelativeLayout>
+
+                <LinearLayout
+                    android:id="@+id/lnUlasan"
+                    android:visibility="gone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/linearout_gv"
+                    android:layout_margin="16dp"
+                    android:layout_gravity="center"
+                    android:paddingTop="6dp"
+                    android:paddingBottom="6dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:layout_marginLeft="12dp"
+                        android:gravity="center"
+                        android:text="RATING"
+                        android:textAllCaps="false"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+                    <TextView
+                        android:id="@+id/tvAvgRating"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="12dp"
+                        android:gravity="center"
+                        android:text="-"
+                        android:textAllCaps="false"
+                        android:textSize="56sp"
+                        android:textColor="@color/orange_dark"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tvJumlahUlasan"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="12dp"
+                        android:gravity="center"
+                        android:text="- Ulasan"
+                        android:textAllCaps="false"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <LinearLayout
+                        android:id="@+id/btnAddUlasan"
+                        android:layout_width="match_parent"
+                        android:layout_height="42dp"
+                        android:layout_below="@+id/img_upload"
+                        android:layout_marginBottom="12dp"
+                        android:background="@drawable/button_orange_selector"
+                        android:gravity="center">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="5dp"
+                            android:text="Tambah Ulasan"
+                            android:textColor="@color/white"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rvUlasan"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/white" />
+
+                </LinearLayout>
+
             </RelativeLayout>
         </RelativeLayout>
     </ScrollView>
@@ -505,17 +578,6 @@
             fab:fab_colorNormal="@color/blue_start"
             fab:fab_colorPressed="@color/blue_end"
             fab:fab_title="Atur Jam Operasional" />
-
-        <com.getbase.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fb_add_ulasan"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_edit"
-            android:tint="@color/white"
-            app:fabSize="normal"
-            fab:fab_colorNormal="@color/blue_start"
-            fab:fab_colorPressed="@color/blue_end"
-            fab:fab_title="Tambah Ulasan" />
 
         <com.getbase.floatingactionbutton.FloatingActionButton
             android:id="@+id/fb_tambah_gambar"

@@ -20,8 +20,12 @@ import android.os.Environment;
 import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -31,8 +35,6 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.core.content.FileProvider;
-
-import com.google.android.material.textfield.TextInputEditText;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -59,7 +61,6 @@ import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import user.laporan.CreateLaporan;
 import user.login.LoginActivity;
 
 /**
@@ -126,68 +127,164 @@ public class RegistrasiActivity extends BaseDialogActivity {
     @OnClick(R.id.btn_regist)
     public void clickDaftar(){
         if(validasi()){
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                builder.setView(R.layout.progress_bar).setCancelable(false);
-            }
-            dialog = builder.create();
-            dialog.show();
-            if (!networkConnection.isNetworkConnected()) {
-                dialog.dismiss();
-                dialog(R.string.errorNoInternetConnection);
-            } else {
+            {
 
-                RequestBody rbnama = RequestBody.create(MediaType.parse("text/plain"), etNama.getText().toString());
-                RequestBody rbtelpon = RequestBody.create(MediaType.parse("text/plain"), etNoTelp.getText().toString());
-                RequestBody rbgender = RequestBody.create(MediaType.parse("text/plain"), gender);
-                RequestBody rbtangal_lahir = RequestBody.create(MediaType.parse("text/plain"), etTglLahir.getText().toString());
-                RequestBody rbemail = RequestBody.create(MediaType.parse("text/plain"), etEmail.getText().toString());
-                RequestBody rbusername = RequestBody.create(MediaType.parse("text/plain"),etUsername.getText().toString());
-                RequestBody rbpassword = RequestBody.create(MediaType.parse("text/plain"),etPassword.getText().toString());
-                RequestBody rbpassword_konfirmasi = RequestBody.create(MediaType.parse("text/plain"), etPasswordKonfirmasi.getText().toString());
+                final AlertDialog dialogBuilder = new AlertDialog.Builder(this).create();
+                LayoutInflater inflater = this.getLayoutInflater();
+                View dialogView = inflater.inflate(R.layout.popup_privacy_policy, null);
+                final CheckBox cbSetujui = (CheckBox) dialogView.findViewById(R.id.cbSetujui);
+                final Button btnRegist = (Button) dialogView.findViewById(R.id.btnRegist);
 
-                HashMap<String, RequestBody> map = new HashMap<>();
-                map.put("fullname", rbnama);
-                map.put("username", rbusername);
-                map.put("email", rbemail);
-                map.put("password", rbpassword);
-                map.put("phone", rbtelpon);
-                map.put("gender", rbgender);
-                map.put("password_confirmation", rbpassword_konfirmasi);
-                map.put("date_of_birth", rbtangal_lahir);
+                dialogBuilder.setView(dialogView);
+                dialogBuilder.show();
 
-                registrasiEndpoint.registrasi(map, fileToUpload).enqueue(new Callback<BaseNetworkCallback>() {
+                cbSetujui.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                     @Override
-                    public void onResponse(Call<BaseNetworkCallback> call, Response<BaseNetworkCallback> response) {
-                        try {
+                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                        if(isChecked){
+                            btnRegist.setClickable(true);
+                            btnRegist.setBackground(getDrawable(R.drawable.button_orange_selector));
+                            btnRegist.setTextColor(getResources().getColor(R.color.white));
+                        }else{
+                            btnRegist.setClickable(false);
+                            btnRegist.setBackground(getDrawable(R.drawable.rounded_gray_dark));
+                            btnRegist.setTextColor(getResources().getColor(R.color.md_grey_600));
+                        }
+                    }
+                });
+                btnRegist.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(RegistrasiActivity.this);
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                            builder.setView(R.layout.progress_bar).setCancelable(false);
+                        }
+                        dialog = builder.create();
+                        dialog.show();
+                        if (!networkConnection.isNetworkConnected()) {
                             dialog.dismiss();
-                            if (response.isSuccessful()) {
-                                dialog.dismiss();
-                                if (response.body().getSuccess()) {
-                                    Toast.makeText(RegistrasiActivity.this, response.body().getMessage(), Toast.LENGTH_LONG).show();
-                                    Intent intent = new Intent(RegistrasiActivity.this, LoginActivity.class);
-                                    startActivity(intent);
-                                } else {
-                                    dialogMessage(response.body().getMessage().replace("|", "\n\n"));
+                            dialog(R.string.errorNoInternetConnection);
+                        } else {
+                            RequestBody rbnama = RequestBody.create(MediaType.parse("text/plain"), etNama.getText().toString());
+                            RequestBody rbtelpon = RequestBody.create(MediaType.parse("text/plain"), etNoTelp.getText().toString());
+                            RequestBody rbgender = RequestBody.create(MediaType.parse("text/plain"), gender);
+                            RequestBody rbtangal_lahir = RequestBody.create(MediaType.parse("text/plain"), etTglLahir.getText().toString());
+                            RequestBody rbemail = RequestBody.create(MediaType.parse("text/plain"), etEmail.getText().toString());
+                            RequestBody rbusername = RequestBody.create(MediaType.parse("text/plain"),etUsername.getText().toString());
+                            RequestBody rbpassword = RequestBody.create(MediaType.parse("text/plain"),etPassword.getText().toString());
+                            RequestBody rbpassword_konfirmasi = RequestBody.create(MediaType.parse("text/plain"), etPasswordKonfirmasi.getText().toString());
+
+                            HashMap<String, RequestBody> map = new HashMap<>();
+                            map.put("fullname", rbnama);
+                            map.put("username", rbusername);
+                            map.put("email", rbemail);
+                            map.put("password", rbpassword);
+                            map.put("phone", rbtelpon);
+                            map.put("gender", rbgender);
+                            map.put("password_confirmation", rbpassword_konfirmasi);
+                            map.put("date_of_birth", rbtangal_lahir);
+
+                            registrasiEndpoint.registrasi(map, fileToUpload).enqueue(new Callback<BaseNetworkCallback>() {
+                                @Override
+                                public void onResponse(Call<BaseNetworkCallback> call, Response<BaseNetworkCallback> response) {
+                                    try {
+                                        dialog.dismiss();
+                                        if (response.isSuccessful()) {
+                                            dialog.dismiss();
+                                            if (response.body().getSuccess()) {
+                                                dialogBuilder.dismiss();
+                                                Toast.makeText(RegistrasiActivity.this, response.body().getMessage(), Toast.LENGTH_LONG).show();
+                                                Intent intent = new Intent(RegistrasiActivity.this, LoginActivity.class);
+                                                startActivity(intent);
+                                            } else {
+                                                dialogMessage(response.body().getMessage().replace("|", "\n\n"));
+                                            }
+
+                                        } else {
+                                            dialogMessage(response.body().getMessage().replace("|", "\n\n"));
+                                        }
+                                    }catch (Exception e) {
+                                        dialog.dismiss();
+                                        dialogMessage("ERROR "+e.toString());
+                                    }
                                 }
 
+                                @Override
+                                public void onFailure(Call<BaseNetworkCallback> call, Throwable t) {
+                                    dialog.dismiss();
+                                }
+                            });
+                        }
+                    }
+                });
+
+            }
+
+        }
+
+    }
+
+    private void sendRegister(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            builder.setView(R.layout.progress_bar).setCancelable(false);
+        }
+        dialog = builder.create();
+        dialog.show();
+        if (!networkConnection.isNetworkConnected()) {
+            dialog.dismiss();
+            dialog(R.string.errorNoInternetConnection);
+        } else {
+
+            RequestBody rbnama = RequestBody.create(MediaType.parse("text/plain"), etNama.getText().toString());
+            RequestBody rbtelpon = RequestBody.create(MediaType.parse("text/plain"), etNoTelp.getText().toString());
+            RequestBody rbgender = RequestBody.create(MediaType.parse("text/plain"), gender);
+            RequestBody rbtangal_lahir = RequestBody.create(MediaType.parse("text/plain"), etTglLahir.getText().toString());
+            RequestBody rbemail = RequestBody.create(MediaType.parse("text/plain"), etEmail.getText().toString());
+            RequestBody rbusername = RequestBody.create(MediaType.parse("text/plain"),etUsername.getText().toString());
+            RequestBody rbpassword = RequestBody.create(MediaType.parse("text/plain"),etPassword.getText().toString());
+            RequestBody rbpassword_konfirmasi = RequestBody.create(MediaType.parse("text/plain"), etPasswordKonfirmasi.getText().toString());
+
+            HashMap<String, RequestBody> map = new HashMap<>();
+            map.put("fullname", rbnama);
+            map.put("username", rbusername);
+            map.put("email", rbemail);
+            map.put("password", rbpassword);
+            map.put("phone", rbtelpon);
+            map.put("gender", rbgender);
+            map.put("password_confirmation", rbpassword_konfirmasi);
+            map.put("date_of_birth", rbtangal_lahir);
+
+            registrasiEndpoint.registrasi(map, fileToUpload).enqueue(new Callback<BaseNetworkCallback>() {
+                @Override
+                public void onResponse(Call<BaseNetworkCallback> call, Response<BaseNetworkCallback> response) {
+                    try {
+                        dialog.dismiss();
+                        if (response.isSuccessful()) {
+                            dialog.dismiss();
+                            if (response.body().getSuccess()) {
+                                Toast.makeText(RegistrasiActivity.this, response.body().getMessage(), Toast.LENGTH_LONG).show();
+                                Intent intent = new Intent(RegistrasiActivity.this, LoginActivity.class);
+                                startActivity(intent);
                             } else {
                                 dialogMessage(response.body().getMessage().replace("|", "\n\n"));
                             }
-                        }catch (Exception e) {
-                            dialog.dismiss();
-                            dialogMessage("ERROR "+e.toString());
+
+                        } else {
+                            dialogMessage(response.body().getMessage().replace("|", "\n\n"));
                         }
-                    }
-
-                    @Override
-                    public void onFailure(Call<BaseNetworkCallback> call, Throwable t) {
+                    }catch (Exception e) {
                         dialog.dismiss();
+                        dialogMessage("ERROR "+e.toString());
                     }
-                });
-            }
-        }
+                }
 
+                @Override
+                public void onFailure(Call<BaseNetworkCallback> call, Throwable t) {
+                    dialog.dismiss();
+                }
+            });
+        }
     }
 
     @OnClick(R.id.et_tgl_lahir)

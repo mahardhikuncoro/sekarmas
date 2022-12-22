@@ -1,68 +1,42 @@
 package ops.screen;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.graphics.Matrix;
-import android.graphics.drawable.ColorDrawable;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.StrictMode;
 import android.provider.MediaStore;
 
 import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
 
 import android.provider.Settings;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
 
-import base.endpoint.UploadImageJson;
 import base.location.BaseNetworkCallback;
-import base.network.callback.ResponseCallback;
 import base.screen.BaseDialogActivity;
 import base.utils.enm.ParameterKey;
 import butterknife.BindView;
@@ -73,13 +47,11 @@ import id.zelory.compressor.Compressor;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
-import ops.screen.offline.DokumenOfflineList;
-import ops.screen.offline.FormOfflineDocument;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class CameraActivity extends BaseDialogActivity {
+public class AddImagePariwisataActivity extends BaseDialogActivity {
 
     @BindView(R.id.btnRetake) Button btnRetake;
     @BindView(R.id.btnSave) Button btnSave;
@@ -98,7 +70,7 @@ public class CameraActivity extends BaseDialogActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.camera_activity);
+        setContentView(R.layout.preview_image_activity);
         ButterKnife.bind(this);
         initiateApiData();
         progressBar.setVisibility(View.GONE);
@@ -224,7 +196,7 @@ public class CameraActivity extends BaseDialogActivity {
             }else if (requestCode == REQUEST_GALLERY_CODE && resultCode == Activity.RESULT_OK) {
                 photoURI = data.getData();
                 String mimeType = "";
-                mCurrentPhotoPath = getRealPathFromURIPath(photoURI, CameraActivity.this);
+                mCurrentPhotoPath = getRealPathFromURIPath(photoURI, AddImagePariwisataActivity.this);
                 File file = new File(mCurrentPhotoPath);
                 try {
                     mimeType = file.toURL().openConnection().getContentType();
@@ -239,9 +211,9 @@ public class CameraActivity extends BaseDialogActivity {
                         File fileCameraRaw = new File(getRealPathFromURIPath(imagePath, this));
                         ExifInterface exifInterface = new ExifInterface(fileCameraRaw.getAbsolutePath());
                         Matrix matrix = new Matrix();
-                        matrix.postRotate(getCameraPhotoOrientation(CameraActivity.this, imagePath, file));
-                        File fileCompress = new Compressor(CameraActivity.this).compressToFile(file);
-                        Bitmap imageCompress = new Compressor(CameraActivity.this).compressToBitmap(fileCompress);
+                        matrix.postRotate(getCameraPhotoOrientation(AddImagePariwisataActivity.this, imagePath, file));
+                        File fileCompress = new Compressor(AddImagePariwisataActivity.this).compressToFile(file);
+                        Bitmap imageCompress = new Compressor(AddImagePariwisataActivity.this).compressToBitmap(fileCompress);
                         Bitmap newBitmap = Bitmap.createBitmap(imageCompress, 0, 0, imageCompress.getWidth(),
                                 imageCompress.getHeight(), matrix, true);
                         imageView.setVisibility(View.VISIBLE);
@@ -290,10 +262,8 @@ public class CameraActivity extends BaseDialogActivity {
                             }else{
                                 try {
                                     JSONObject jObjError = new JSONObject(response.body().toString());
-                                    Log.e("HAA "," :" + jObjError.getString("messages"));
                                     dialogMessage(jObjError.getString("messages"));
                                 } catch (Exception e) {
-                                    Log.e("HUU "," :" + e.toString());
                                 }
                             }
                         }else{
@@ -307,10 +277,7 @@ public class CameraActivity extends BaseDialogActivity {
                     }catch (Exception e){
                         dialogMessage(getResources().getString(R.string.errorBackend));
                     }
-
-
                 }
-
                 @Override
                 public void onFailure(Call<BaseNetworkCallback> call, Throwable t) {
                     dialog.dismiss();

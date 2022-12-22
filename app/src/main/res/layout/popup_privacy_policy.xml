@@ -1,0 +1,106 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/lnTop"
+        android:layout_above="@+id/layoutButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:padding="20dp"
+            android:elevation="7dp"
+            android:id="@+id/selectbranchLayout"
+            android:orientation="vertical"
+            android:background="@color/blue_background">
+
+            <TextView
+                android:id="@+id/selectBranchLabel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Privacy Policy"
+                android:textColor="@color/white"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:gravity="center"/>
+
+        </LinearLayout>
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/selectbranchLayout"
+            android:layout_alignParentTop="true">
+        <LinearLayout
+            android:id="@+id/fieldBranch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="15dp"
+            android:paddingBottom="24dp"
+            android:elevation="7dp"
+            android:orientation="vertical"
+            android:background="@color/apply_kendaraanBackground"
+            android:padding="10dp">
+
+            <TextView
+                android:id="@+id/tvTitlePrivasi"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/black"
+                android:text="Terms and Conditions"/>
+
+            <TextView
+                android:id="@+id/tvPrivasi"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:gravity="left"
+                android:textAppearance="?android:attr/textAppearance"
+                android:textColor="@color/black"
+                android:text="@string/privacyPolicy"/>
+
+            <CheckBox
+                android:id="@+id/cbSetujui"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:text="I have read and agree to the terms and conditions">
+
+            </CheckBox>
+        </LinearLayout>
+        </ScrollView>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layoutButton"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btnRegist"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:layout_margin="12dp"
+            android:text="Registrasi"
+            android:clickable="false"
+            android:textColor="@color/md_grey_600"
+            android:background="@drawable/rounded_gray_dark"/>
+    </LinearLayout>
+
+</RelativeLayout>

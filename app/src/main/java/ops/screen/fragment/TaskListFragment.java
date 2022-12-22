@@ -46,6 +46,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import base.data.informationmodel.Information;
+import base.data.laporan.DataLaporan;
 import base.data.visimisimodel.Misi;
 import base.data.visimisimodel.Visi;
 import base.data.visimisimodel.VisiMisi;
@@ -379,6 +380,12 @@ public class TaskListFragment extends Fragment implements TaskListInterface, Bas
     public void onListSelected(TaskListDetailModel list) {
 
     }
+
+    @Override
+    public void onOptionClick(DataLaporan list) {
+
+    }
+
     private void removeUserData(String message){
         Intent intent = new Intent(getActivity().getApplicationContext(), LoginActivity.class);
         startActivity(intent);

@@ -28,6 +28,13 @@ public class UlasanJson extends BaseNetworkCallback {
     @SerializedName("deleted_at")
     @Expose
     private String deletedAt;
+    @SerializedName("created_by")
+    @Expose
+    private String createdBy;
+
+    @SerializedName("created_by_username")
+    @Expose
+    private String createdByUsername;
 
     @SerializedName("media")
     @Expose
@@ -90,5 +97,21 @@ public class UlasanJson extends BaseNetworkCallback {
 
     public void setFoto(List<Medium> foto) {
         this.foto = foto;
+    }
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public String getCreatedByUsername() {
+        return createdByUsername;
+    }
+
+    public void setCreatedByUsername(String createdByUsername) {
+        this.createdByUsername = createdByUsername;
     }
 }

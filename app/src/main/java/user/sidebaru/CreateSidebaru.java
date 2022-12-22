@@ -299,6 +299,7 @@ public class CreateSidebaru extends BaseDialogActivity {
                             Toast.makeText(CreateSidebaru.this, "Data Berhasil ditambahkan, silahkan unggah gambar !", Toast.LENGTH_LONG)
                                     .show();
                             startActivity(intent);
+                            finish();
                         }else{
                             dialog(R.string.errorApi);
                         }

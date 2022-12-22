@@ -1,12 +1,17 @@
 package user.sidebaru;
 
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -24,6 +29,7 @@ import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import com.jakewharton.picasso.OkHttp3Downloader;
 import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
+import java.util.List;
 
 import base.data.sektormodel.SektorJson;
 import base.data.sektormodel.SektorModel;
@@ -40,6 +46,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import id.sekarpinter.mobile.application.R;
 import okhttp3.OkHttpClient;
+import ops.screen.AddImagePariwisataActivity;
 import ops.screen.MapsDetailUmkmActivity;
 import ops.screen.fragment.PosisiAdapter;
 import ops.screen.fragment.RiwayatAdapter;
@@ -90,10 +97,7 @@ public class DetailSidebaruActivity extends BaseDialogActivity {
     @BindView(R.id.multiple_actions) FloatingActionsMenu  menuMultipleActions ;
     @BindView(R.id.gridView_detail) GridView mGridView;
 
-    private Dialog dialog;
     protected Bundle bundle;
-    private RiwayatAdapter _riwayatAdapter;
-    private PosisiAdapter _posisiAdapter;
     private Integer idSektor=0;
 
     private GridViewDetailAdapter mGridAdapter;
@@ -101,9 +105,8 @@ public class DetailSidebaruActivity extends BaseDialogActivity {
     protected Double longitude ;
     protected Double latitude ;
 
-    private Integer selectedIdSektor;
     private String sectorName;
-    private int selectedPosition;
+    List<String> permissionsRequired = new ArrayList<>();
     ArrayList<String> sektorNames;
     ArrayList<SektorModel> sektorModels;
 
@@ -113,6 +116,12 @@ public class DetailSidebaruActivity extends BaseDialogActivity {
         setContentView(R.layout.umkm_detail_activity);
         ButterKnife.bind(this);
         initiateApiData();
+        permissionsRequired.add(Manifest.permission.CAMERA);
+        permissionsRequired.add(Manifest.permission.READ_EXTERNAL_STORAGE);
+        permissionsRequired.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        permissionsRequired.add(Manifest.permission.ACCESS_COARSE_LOCATION);
+        permissionsRequired.add(Manifest.permission.ACCESS_FINE_LOCATION);
+        ParameterKey.activityTemp = this;
         getLastLocation();
         setToolbar();
         //Initialize with empty data
@@ -150,7 +159,16 @@ public class DetailSidebaruActivity extends BaseDialogActivity {
         });
     }
 
-
+    public boolean hasPermissions(List<String> permissions) {
+        if (permissions != null) {
+            for (String permission : permissions) {
+                if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
 
 
     public void retreiveDataDetailHistory(String idUmkm){
@@ -323,30 +341,34 @@ public class DetailSidebaruActivity extends BaseDialogActivity {
 
     @OnClick(R.id.fb_tambah_gambar)
     public void tambahGambarClick(){
-//        Dialog choose = new android.app.AlertDialog.Builder(DetailSidebaruActivity.this, android.app.AlertDialog.THEME_HOLO_LIGHT)
-//                .setTitle("Choose Upload Method")
-//                .setNegativeButton("Cancel", null)
-//                .setItems(new String[]{"Camera", "Gallery"}, new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialogInterface, int position) {
-//                        if (position == 0) {
-//                            Intent intentprofile = new Intent(DetailSidebaruActivity.this, CameraActivity.class);
-//                            intentprofile.putExtra(ParameterKey.PICTFROM,"CAMERA");
-//                            intentprofile.putExtra(ParameterKey.ID_UMKM,Integer.valueOf(getIntent().getIntExtra(ParameterKey.ID_UMKM,0)));
-//                            startActivity(intentprofile);
-//                        } else if (position == 1) {
-//                            Intent intentprofile = new Intent(DetailSidebaruActivity.this, CameraActivity.class);
-//                            intentprofile.putExtra(ParameterKey.ID_UMKM,Integer.valueOf(getIntent().getIntExtra(ParameterKey.ID_UMKM,0)));
-//                            intentprofile.putExtra(ParameterKey.PICTFROM,"GALLERY");
-//                            startActivity(intentprofile);
-//                        }
-//                    }
-//                }).create();
-//        choose.show();
-
-        Intent intent = new Intent(DetailSidebaruActivity.this, AddImageUmkmActivity.class);
-        intent.putExtra(ParameterKey.ID_UMKM,Integer.valueOf(getIntent().getIntExtra(ParameterKey.ID_UMKM,0)));
-        startActivity(intent);
+        if (!hasPermissions(permissionsRequired)) {
+            String[] permissionArray = new String[permissionsRequired.size()];
+            for (int i = 0; i < permissionsRequired.size(); i++) {
+                permissionArray[i] = permissionsRequired.get(i);
+            }
+            ActivityCompat.requestPermissions(this, permissionArray, 0);
+        }else {
+            Dialog choose = new android.app.AlertDialog.Builder(this, AlertDialog.THEME_HOLO_LIGHT)
+                    .setTitle("Choose Upload Method")
+                    .setNegativeButton("Cancel", null)
+                    .setItems(new String[]{"Camera", "Gallery"}, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int position) {
+                            if (position == 0) {
+                                Intent intentprofile = new Intent(DetailSidebaruActivity.this, AddImageUmkmActivity.class);
+                                intentprofile.putExtra(ParameterKey.PICTFROM, "CAMERA");
+                                intentprofile.putExtra(ParameterKey.ID_UMKM, Integer.valueOf(getIntent().getIntExtra(ParameterKey.ID_UMKM, 0)));
+                                startActivity(intentprofile);
+                            } else if (position == 1) {
+                                Intent intentprofile = new Intent(DetailSidebaruActivity.this, AddImageUmkmActivity.class);
+                                intentprofile.putExtra(ParameterKey.ID_UMKM, Integer.valueOf(getIntent().getIntExtra(ParameterKey.ID_UMKM, 0)));
+                                intentprofile.putExtra(ParameterKey.PICTFROM, "GALLERY");
+                                startActivity(intentprofile);
+                            }
+                        }
+                    }).create();
+            choose.show();
+        }
     }
 
     @OnClick(R.id.btn_image_bar_loc)
@@ -372,6 +394,12 @@ public class DetailSidebaruActivity extends BaseDialogActivity {
     @Override
     public void onBackPressed() {
         finish();
+    }
+
+    @Override
+    protected void onResume() {
+        retreiveDataDetailHistory(String.valueOf(getIntent().getIntExtra(ParameterKey.ID_UMKM,0)));
+        super.onResume();
     }
 }
 

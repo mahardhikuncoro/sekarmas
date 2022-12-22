@@ -61,6 +61,7 @@ import base.service.login.EndpointLogin;
 import base.service.information.InformationEndpoint;
 import base.service.pariwisata.PariwisataEndpoint;
 import base.service.registrasi.RegistrasiEndpoint;
+import base.service.report.ReportEndpoint;
 import base.service.umkm.UmkmEndpoint;
 import base.service.visimisi.VisiMisiEndpoint;
 import base.sqlite.model.FormData;
@@ -95,6 +96,7 @@ public class BaseDialogActivity extends AppCompatActivity {
     protected VisiMisiEndpoint visiMisiEndpoint;
     protected KontakEndpoint kontakEndpoint;
     protected PariwisataEndpoint pariwisataEndpoint;
+    protected ReportEndpoint reportEndpoint;
     protected TelephonyManager telephonyManager;
     protected String UserImei = "";
     protected Userdata userdata;
@@ -147,6 +149,7 @@ public class BaseDialogActivity extends AppCompatActivity {
         laporanEndpoint = retrofit.create(LaporanEndpoint.class);
         registrasiEndpoint = retrofit.create(RegistrasiEndpoint.class);
         pariwisataEndpoint = retrofit.create(PariwisataEndpoint.class);
+        reportEndpoint = retrofit.create(ReportEndpoint.class);
 
     }
 

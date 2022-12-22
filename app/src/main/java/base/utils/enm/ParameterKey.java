@@ -1,5 +1,7 @@
 package base.utils.enm;
 
+import android.app.Activity;
+
 public class ParameterKey {
 
     public static final String REGNO            = "REGNO";
@@ -28,4 +30,6 @@ public class ParameterKey {
     public static final String ID_UMKM          = "ID_UMKM";
     public static final String NAMA_UMKM        = "NAMA_UMKM";
     public static final String PICTFROM         = "PICTFROM";
+
+    public static Activity activityTemp;
 }

@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -18,9 +17,7 @@ import java.util.List;
 
 import id.sekarpinter.mobile.application.R;
 import user.changepassword.ChangePasswordActivity;
-import user.informasi.InformasiDetail;
 import user.pengaturan.PengaturanInterface;
-import user.pengaturan.ProfileActivity;
 
 
 /**
@@ -42,7 +39,7 @@ public class PengaturanAdapter extends RecyclerView.Adapter<PengaturanAdapter.Sc
     @NonNull
     @Override
     public ScaleAdapterViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new ScaleAdapterViewHolder(LayoutInflater.from(context).inflate(R.layout.pengaturan_item, parent, false));
+        return new ScaleAdapterViewHolder(LayoutInflater.from(context).inflate(R.layout.item_pengaturan, parent, false));
     }
 
     @Override

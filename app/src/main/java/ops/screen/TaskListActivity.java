@@ -25,6 +25,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import base.data.laporan.DataLaporan;
 import base.network.callback.TaskListJson;
 import base.screen.BaseDialogActivity;
 import base.sqlite.model.TaskListDetailModel;
@@ -153,6 +154,11 @@ public class TaskListActivity extends BaseDialogActivity {
                                     public void onListSelected(TaskListDetailModel list) {
 
                                     }
+
+                                    @Override
+                                    public void onOptionClick(DataLaporan list) {
+
+                                    }
                                 });
                                 taskListAdapter.notifyDataSetChanged();
                                 taskListRecycleAll.setAdapter(taskListAdapter);
@@ -204,8 +210,13 @@ public class TaskListActivity extends BaseDialogActivity {
                                     public void onListSelected(TaskListDetailModel list) {
 
                                     }
+
+                                    @Override
+                                    public void onOptionClick(DataLaporan list) {
+
+                                    }
                                 });
-                                taskListAdapter.notifyDataSetChanged();
+                                        taskListAdapter.notifyDataSetChanged();
                                 taskListRecycleAll.setAdapter(taskListAdapter);
                             }
 
