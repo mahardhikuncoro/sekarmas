@@ -2,6 +2,7 @@ package user.pariwisata;
 
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -148,6 +149,7 @@ public class DetailPariwisataActivity extends BaseDialogActivity implements Kate
         permissionsRequired.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
         permissionsRequired.add(Manifest.permission.ACCESS_COARSE_LOCATION);
         permissionsRequired.add(Manifest.permission.ACCESS_FINE_LOCATION);
+        ParameterKey.activityTemp = this;
 
         LinearLayoutManager linearLayoutKategori = new LinearLayoutManager(DetailPariwisataActivity.this, LinearLayoutManager.HORIZONTAL,false);
         rvKategori.setLayoutManager(linearLayoutKategori);
@@ -235,11 +237,15 @@ public class DetailPariwisataActivity extends BaseDialogActivity implements Kate
                         ulasanList = new ArrayList<>();
                         ulasanList.addAll(response.body());
                         double sumRating = 0;
-                        for (UlasanJson ulasanJson : response.body()){
+                        for (UlasanJson ulasanJson : response.body()) {
                             sumRating = sumRating + ulasanJson.getRating();
                         }
-                        tvAvgRating.setText(BigDecimal.valueOf(sumRating/response.body().size()).setScale(1, RoundingMode.HALF_DOWN)+"");
-                        tvJumlahUlasan.setText(response.body().size()+" Ulasan");
+                        try {
+                            tvAvgRating.setText(BigDecimal.valueOf(sumRating / response.body().size()).setScale(1, RoundingMode.HALF_DOWN) + "");
+                            tvJumlahUlasan.setText(response.body().size() + " Ulasan");
+
+                        }catch(Exception e){}
+
                         setAdapterUlasan();
                     }
                 }
@@ -302,7 +308,7 @@ public class DetailPariwisataActivity extends BaseDialogActivity implements Kate
                         fasilitasGratisList.addAll(response.body().getFasilitasGratis());
                         setFasilitasGratis();
 
-                        if(response.body().getJam() != null) {
+                        if(response.body().getJam() != null && response.body().getJam().size() > 0) {
                             jam = new KontentWisata();
                             jam.setSenin(response.body().getJam().get(0).getSenin());
                             jam.setSelasa(response.body().getJam().get(0).getSelasa());

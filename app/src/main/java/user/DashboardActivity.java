@@ -4,11 +4,13 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -66,6 +68,7 @@ import user.pengaturan.ProfileActivity;
 import user.sidebaru.SidebaruActivity;
 import user.visimisi.VisiMisiActivity;
 
+
 public class DashboardActivity extends BaseDialogActivity implements BaseSliderView.OnSliderClickListener, ViewPagerEx.OnPageChangeListener{
 
     @BindView(R.id.slider)
@@ -99,6 +102,7 @@ public class DashboardActivity extends BaseDialogActivity implements BaseSliderV
     private ArrayList<String> sliderList;
 
     private SliderSQL slidersql;
+    private Boolean doubleBackToExitPressedOnce = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -485,5 +489,27 @@ public class DashboardActivity extends BaseDialogActivity implements BaseSliderV
                 }
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (doubleBackToExitPressedOnce) {
+            Intent intentok = new Intent(Intent.ACTION_MAIN);
+            intentok.addCategory(Intent.CATEGORY_HOME);
+            intentok.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intentok.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intentok);
+            finish();
+            return;
+        }
+        doubleBackToExitPressedOnce = true;
+        Toast.makeText(this, R.string.doubleBackPressConfirmation, Toast.LENGTH_SHORT).show();
+        new Handler().postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                doubleBackToExitPressedOnce = false;
+            }
+        }, 2000);
     }
 }

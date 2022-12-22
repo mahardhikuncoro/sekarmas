@@ -15,6 +15,8 @@ import java.util.ArrayList;
 
 import base.data.pariwisatamodel.PariwisataJson;
 import base.data.pariwisatamodel.PariwisataModel;
+import base.data.reportmodel.ReportJson;
+import base.data.reportmodel.ReportModel;
 import base.data.sektormodel.SektorJson;
 import base.data.sektormodel.SektorModel;
 import base.screen.BaseDialogActivity;
@@ -23,10 +25,12 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import id.sekarpinter.mobile.application.R;
 import ops.screen.adapter.KategoriAdapter;
+import ops.screen.adapter.KategoriReportAdapter;
 import ops.screen.adapter.PariwisataAdapter;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import user.report.ReportActivity;
 
 public class PariwisataActivity extends BaseDialogActivity implements KategoriAdapter.OnKategoriListener{
 
@@ -47,7 +51,7 @@ public class PariwisataActivity extends BaseDialogActivity implements KategoriAd
     private KategoriAdapter kategoriAdapter;
     private Integer selectedId = 0;
     private ArrayList<SektorModel> kategoriList;
-
+    private ArrayList<ReportModel> reportList;
 
 
     @Override
@@ -66,7 +70,7 @@ public class PariwisataActivity extends BaseDialogActivity implements KategoriAd
         rvKategori.setHasFixedSize(true);
 
         prepare();
-        getKategori();
+        getBlackList();
     }
 
     private void getKategori() {
@@ -114,12 +118,14 @@ public class PariwisataActivity extends BaseDialogActivity implements KategoriAd
 
 
     protected void getPariwisata(){
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            builder.setView(R.layout.progress_bar).setCancelable(false);
+        if(dialog == null) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                builder.setView(R.layout.progress_bar).setCancelable(false);
+            }
+            dialog = builder.create();
+            dialog.show();
         }
-        dialog = builder.create();
-        dialog.show();
         _swiperefresh.setRefreshing(true);
         if (!networkConnection.isNetworkConnected()) {
             dialog.dismiss();
@@ -128,26 +134,56 @@ public class PariwisataActivity extends BaseDialogActivity implements KategoriAd
             pariwisataEndpoint.getPariwisataByKategory("Bearer " + userdata.select().getAccesstoken(), selectedId).enqueue(new Callback<PariwisataJson>() {
                 @Override
                 public void onResponse(Call<PariwisataJson> call, Response<PariwisataJson> response) {
-                    {
-                        if (response.isSuccessful()) {
-                            dialog.dismiss();
-                            _swiperefresh.setRefreshing(false);
-                            if(response.body().getData() != null) {
-                                wisataList = new ArrayList<>();
-                                wisataList.addAll(response.body().getData());
-                                setAdapter(selectedId);
+                    if (response.isSuccessful()) {
+                        dialog.dismiss();
+                        _swiperefresh.setRefreshing(false);
+                        if(response.body().getData() != null) {
+                            wisataList = new ArrayList<>();
+                            wisataList.addAll(response.body().getData());
+                            for(PariwisataModel pariwisataModel : response.body().getData()) {
+                                for(ReportModel reportModel : reportList){
+                                    if(String.valueOf(pariwisataModel.getId()).equals(reportModel.getObjectId())) {
+                                        if(reportModel.getObjectType().equals("pariwisata") && (reportModel.getIsHidden()== 1 || reportModel.getIsReported() == 1)) {
+                                            wisataList.remove(pariwisataModel);
+                                        }
+                                    }
+                                }
                             }
-                        } else{
-                            dialog.dismiss();
-                            dialogMessage(getResources().getString(R.string.errorBackend));
+                            setAdapter(selectedId);
                         }
+                    } else{
+                        dialog.dismiss();
+                        dialogMessage(getResources().getString(R.string.errorBackend));
                     }
                 }
-
                 @Override
                 public void onFailure(Call<PariwisataJson> call, Throwable t) {
                     _swiperefresh.setRefreshing(false);
                     dialogMessage(getResources().getString(R.string.errorBackend));
+                }
+            });
+        }
+    }
+
+    protected void getBlackList(){
+        if (!networkConnection.isNetworkConnected()) {
+            dialog(R.string.errorNoInternetConnection);
+        } else {
+            Call<ReportJson> resetPasswordJsonCall = reportEndpoint.getBlackList("Bearer " + userdata.select().getAccesstoken(), userdata.select().getId());
+            resetPasswordJsonCall.enqueue(new Callback<ReportJson>() {
+                @Override
+                public void onResponse(Call<ReportJson> call, Response<ReportJson> response) {
+                    if (response.isSuccessful()) {
+                        reportList = new ArrayList<>();
+                        reportList.addAll(response.body().getData());
+                        getKategori();
+                    } else {
+                        dialogMessage(getResources().getString(R.string.errorBackend), false);
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ReportJson> call, Throwable t) {
                 }
             });
         }
@@ -190,4 +226,12 @@ public class PariwisataActivity extends BaseDialogActivity implements KategoriAd
         getPariwisata();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(dialog!= null){
+            dialog.dismiss();
+        }
+       getBlackList();
+    }
 }

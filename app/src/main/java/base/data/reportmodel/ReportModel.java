@@ -21,16 +21,16 @@ public class ReportModel implements Serializable {
     private Integer kategoriId;
     @SerializedName("is_hidden")
     @Expose
-    private Boolean isHidden;
+    private Integer isHidden;
     @SerializedName("is_reported")
     @Expose
-    private Boolean isReported;
+    private Integer isReported;
     @SerializedName("deskripsi")
     @Expose
     private String deskripsi;
     @SerializedName("object")
     @Expose
-    private DataLaporan object;
+    private Object object;
 
     public String getObjectId() {
         return objectId;
@@ -56,20 +56,20 @@ public class ReportModel implements Serializable {
         this.kategoriId = kategoriId;
     }
 
-    public Boolean getHidden() {
+    public Integer getIsHidden() {
         return isHidden;
     }
 
-    public void setHidden(Boolean hidden) {
-        isHidden = hidden;
+    public void setIsHidden(Integer isHidden) {
+        this.isHidden = isHidden;
     }
 
-    public Boolean getReported() {
+    public Integer getIsReported() {
         return isReported;
     }
 
-    public void setReported(Boolean reported) {
-        isReported = reported;
+    public void setIsReported(Integer isReported) {
+        this.isReported = isReported;
     }
 
     public String getDeskripsi() {
@@ -80,11 +80,11 @@ public class ReportModel implements Serializable {
         this.deskripsi = deskripsi;
     }
 
-    public DataLaporan getObject() {
+    public Object getObject() {
         return object;
     }
 
-    public void setObject(DataLaporan object) {
+    public void setObject(Object object) {
         this.object = object;
     }
 }

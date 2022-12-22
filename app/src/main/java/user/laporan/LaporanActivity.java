@@ -30,6 +30,9 @@ import java.util.ArrayList;
 
 import base.data.laporan.DataLaporan;
 import base.data.laporan.LaporanJson;
+import base.data.pariwisatamodel.PariwisataModel;
+import base.data.reportmodel.ReportJson;
+import base.data.reportmodel.ReportModel;
 import base.screen.BaseDialogActivity;
 import base.sqlite.model.TaskListDetailModel;
 import base.utils.enm.ParameterKey;
@@ -57,9 +60,8 @@ public class LaporanActivity extends BaseDialogActivity {
     SwipeRefreshLayout _swiperefresh;
 
     LaporanAdapter laporanAdapter;
-
     ArrayList<DataLaporan> laporaArrayList;
-
+    private ArrayList<ReportModel> reportList;
     private Dialog dialog;
 
     @Override
@@ -75,7 +77,7 @@ public class LaporanActivity extends BaseDialogActivity {
         }else {
             initView();
             prepare();
-            callListLaporan();
+            getBlackList();
         }
     }
 
@@ -113,8 +115,15 @@ public class LaporanActivity extends BaseDialogActivity {
                     _linearRecycle.setVisibility(View.VISIBLE);
                     if (response.isSuccessful()){
                         laporaArrayList = new ArrayList<>();
-                        for(DataLaporan data : response.body().getData()) {
-                            laporaArrayList.add(data);
+                        laporaArrayList.addAll(response.body().getData());
+                        for(DataLaporan dataLaporan : response.body().getData()) {
+                            for(ReportModel reportModel : reportList){
+                                if(String.valueOf(dataLaporan.getId()).equals(reportModel.getObjectId())) {
+                                    if(reportModel.getObjectType().equals("pengaduan") && (reportModel.getIsHidden()== 1 || reportModel.getIsReported() == 1)) {
+                                        laporaArrayList.remove(dataLaporan);
+                                    }
+                                }
+                            }
                         }
                         setAdapter();
                     }
@@ -186,6 +195,31 @@ public class LaporanActivity extends BaseDialogActivity {
         recyclerView.setAdapter(laporanAdapter);
 
     }
+
+    protected void getBlackList(){
+        if (!networkConnection.isNetworkConnected()) {
+            dialog(R.string.errorNoInternetConnection);
+        } else {
+            Call<ReportJson> resetPasswordJsonCall = reportEndpoint.getBlackList("Bearer " + userdata.select().getAccesstoken(), userdata.select().getId());
+            resetPasswordJsonCall.enqueue(new Callback<ReportJson>() {
+                @Override
+                public void onResponse(Call<ReportJson> call, Response<ReportJson> response) {
+                    if (response.isSuccessful()) {
+                        reportList = new ArrayList<>();
+                        reportList.addAll(response.body().getData());
+                        callListLaporan();
+                    } else {
+                        dialogMessage(getResources().getString(R.string.errorBackend), false);
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ReportJson> call, Throwable t) {
+                }
+            });
+        }
+    }
+
 
     private void initView() {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(LaporanActivity.this, LinearLayoutManager.VERTICAL,false);
@@ -280,6 +314,6 @@ public class LaporanActivity extends BaseDialogActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        callListLaporan();
+        getBlackList();
     }
 }

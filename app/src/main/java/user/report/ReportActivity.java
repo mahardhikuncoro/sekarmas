@@ -90,17 +90,19 @@ public class ReportActivity extends BaseDialogActivity {
             dataLaporan = (DataLaporan) getIntent().getParcelableExtra("kontent");
             request.setObjectId(dataLaporan.getId());
             request.setObjectType(kontentType);
-            request.setHidden(getIntent().getBooleanExtra("ishide", false));
-            request.setReported(getIntent().getBooleanExtra("isreport", false));
+            request.setIsHidden(getIntent().getBooleanExtra("ishide", false) ? 1 : 0);
+            request.setIsReported(getIntent().getBooleanExtra("isreport", false) ? 1 : 0);
             request.setKategoriId(model.getId());
-            request.setDeskripsi("");
+            request.setObject(null);
+            request.setDeskripsi(model.getName());
         }else if(kontentType.equals("pariwisata")){
             request.setObjectId(String.valueOf(getIntent().getIntExtra(ParameterKey.ID_UMKM,0)));
             request.setObjectType(kontentType);
-            request.setHidden(getIntent().getBooleanExtra("ishide", false));
-            request.setReported(getIntent().getBooleanExtra("isreport", false));
+            request.setIsHidden(getIntent().getBooleanExtra("ishide", false) ? 1 : 0);
+            request.setIsReported(getIntent().getBooleanExtra("isreport", false) ? 1 : 0);
             request.setKategoriId(model.getId());
-            request.setDeskripsi("");
+            request.setObject(null);
+            request.setDeskripsi(model.getName());
         }
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -120,6 +122,10 @@ public class ReportActivity extends BaseDialogActivity {
                     dialog.dismiss();
                     if(response.body().getSuccess()){
                         dialogMessage("Terima kasih, Laporan anda akan kami proses !", true);
+                        if(ParameterKey.activityTemp != null){
+                            ParameterKey.activityTemp.finish();
+                            ParameterKey.activityTemp = null;
+                        }
                     }else{
                         dialogMessage(getResources().getString(R.string.errorBackend),false);
                     }

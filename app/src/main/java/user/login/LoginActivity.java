@@ -58,6 +58,7 @@ public class LoginActivity extends LoginAcitivityApiData {
         if(userdata.count()>0){
             Intent intent = new Intent(getApplicationContext(), DashboardActivity.class);
             startActivity(intent);
+            finish();
         } else{
             try {
                 prepare();
