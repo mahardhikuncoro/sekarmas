@@ -140,11 +140,13 @@ public class PariwisataActivity extends BaseDialogActivity implements KategoriAd
                         if(response.body().getData() != null) {
                             wisataList = new ArrayList<>();
                             wisataList.addAll(response.body().getData());
-                            for(PariwisataModel pariwisataModel : response.body().getData()) {
-                                for(ReportModel reportModel : reportList){
-                                    if(String.valueOf(pariwisataModel.getId()).equals(reportModel.getObjectId())) {
-                                        if(reportModel.getObjectType().equals("pariwisata") && (reportModel.getIsHidden()== 1 || reportModel.getIsReported() == 1)) {
-                                            wisataList.remove(pariwisataModel);
+                            if(reportList.size()>0 && wisataList.size() > 0) {
+                                for (PariwisataModel pariwisataModel : response.body().getData()) {
+                                    for (ReportModel reportModel : reportList) {
+                                        if (String.valueOf(pariwisataModel.getId()).equals(reportModel.getObjectId())) {
+                                            if (reportModel.getObjectType().equals("pariwisata") && (reportModel.getIsHidden() == 1 || reportModel.getIsReported() == 1)) {
+                                                wisataList.remove(pariwisataModel);
+                                            }
                                         }
                                     }
                                 }
