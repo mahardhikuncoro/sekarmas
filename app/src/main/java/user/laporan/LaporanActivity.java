@@ -13,8 +13,6 @@ import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -25,12 +23,10 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
 import base.data.laporan.DataLaporan;
 import base.data.laporan.LaporanJson;
-import base.data.pariwisatamodel.PariwisataModel;
 import base.data.reportmodel.ReportJson;
 import base.data.reportmodel.ReportModel;
 import base.screen.BaseDialogActivity;
@@ -60,7 +56,7 @@ public class LaporanActivity extends BaseDialogActivity {
     SwipeRefreshLayout _swiperefresh;
 
     LaporanAdapter laporanAdapter;
-    ArrayList<DataLaporan> laporaArrayList;
+    ArrayList<DataLaporan> pengaduanList;
     private ArrayList<ReportModel> reportList;
     private Dialog dialog;
 
@@ -114,13 +110,15 @@ public class LaporanActivity extends BaseDialogActivity {
                     _swiperefresh.setRefreshing(false);
                     _linearRecycle.setVisibility(View.VISIBLE);
                     if (response.isSuccessful()){
-                        laporaArrayList = new ArrayList<>();
-                        laporaArrayList.addAll(response.body().getData());
-                        for(DataLaporan dataLaporan : response.body().getData()) {
-                            for(ReportModel reportModel : reportList){
-                                if(String.valueOf(dataLaporan.getId()).equals(reportModel.getObjectId())) {
-                                    if(reportModel.getObjectType().equals("pengaduan") && (reportModel.getIsHidden()== 1 || reportModel.getIsReported() == 1)) {
-                                        laporaArrayList.remove(dataLaporan);
+                        pengaduanList = new ArrayList<>();
+                        pengaduanList.addAll(response.body().getData());
+                        if(reportList.size()>0 && pengaduanList.size() > 0) {
+                            for (DataLaporan dataLaporan : response.body().getData()) {
+                                for (ReportModel reportModel : reportList) {
+                                    if (String.valueOf(dataLaporan.getId()).equals(reportModel.getObjectId())) {
+                                        if (reportModel.getObjectType().equals("pengaduan") && (reportModel.getIsHidden() == 1 || reportModel.getIsReported() == 1)) {
+                                            pengaduanList.remove(dataLaporan);
+                                        }
                                     }
                                 }
                             }
@@ -139,7 +137,7 @@ public class LaporanActivity extends BaseDialogActivity {
     }
 
     private void setAdapter() {
-        laporanAdapter = new LaporanAdapter(this, laporaArrayList, new TaskListInterface() {
+        laporanAdapter = new LaporanAdapter(this, pengaduanList, new TaskListInterface() {
             @Override
             public void onListSelected(TaskListDetailModel list) {
 
