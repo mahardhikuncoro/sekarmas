@@ -29,8 +29,8 @@ android {
 
         sekarpinter {
             dimension "type"
-            versionCode 1
-            versionName "1.0.0"
+            versionCode 7
+            versionName "1.0.5"
             applicationIdSuffix ".sekarpinter.mobile.application"
         }
     }
