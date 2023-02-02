@@ -1,15 +1,20 @@
 package user.login;
 
 import android.app.ActivityManager;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import com.google.android.material.textfield.TextInputLayout;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -20,7 +25,9 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 
+import base.location.BaseNetworkCallback;
 import base.sqlite.model.SliderSQL;
 import base.utils.Security;
 import butterknife.BindString;
@@ -28,6 +35,11 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import id.sekarpinter.mobile.application.R;
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import user.DashboardActivity;
 import user.changepassword.ChangePasswordActivity;
 import user.registrasi.RegistrasiActivity;
@@ -134,8 +146,39 @@ public class LoginActivity extends LoginAcitivityApiData {
 
     @OnClick(R.id.tv_register)
     public void registerNewUser(){
-        Intent intent = new Intent(LoginActivity.this, RegistrasiActivity.class);
-        startActivity(intent);
+        {
+            final AlertDialog dialogBuilder = new AlertDialog.Builder(this).create();
+            LayoutInflater inflater = this.getLayoutInflater();
+            View dialogView = inflater.inflate(R.layout.popup_privacy_policy, null);
+            final CheckBox cbSetujui = (CheckBox) dialogView.findViewById(R.id.cbSetujui);
+            final Button btnRegist = (Button) dialogView.findViewById(R.id.btnRegist);
+
+            dialogBuilder.setView(dialogView);
+            dialogBuilder.show();
+
+            cbSetujui.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if(isChecked){
+                        btnRegist.setClickable(true);
+                        btnRegist.setBackground(getDrawable(R.drawable.button_orange_selector));
+                        btnRegist.setTextColor(getResources().getColor(R.color.white));
+                    }else{
+                        btnRegist.setClickable(false);
+                        btnRegist.setBackground(getDrawable(R.drawable.rounded_gray_dark));
+                        btnRegist.setTextColor(getResources().getColor(R.color.md_grey_600));
+                    }
+                }
+            });
+            btnRegist.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialogBuilder.dismiss();
+                    Intent intent = new Intent(LoginActivity.this, RegistrasiActivity.class);
+                    startActivity(intent);
+                }
+            });
+        }
     }
 
     @OnClick(R.id.tv_reset)
