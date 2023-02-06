@@ -97,7 +97,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="0.5"
             android:layout_margin="12dp"
-            android:text="Registrasi"
+            android:text="Yes, I Agree"
             android:clickable="false"
             android:textColor="@color/md_grey_600"
             android:background="@drawable/rounded_gray_dark"/>

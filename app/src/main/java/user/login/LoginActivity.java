@@ -4,12 +4,13 @@ import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import com.google.android.material.textfield.TextInputLayout;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -25,9 +26,7 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
 
-import base.location.BaseNetworkCallback;
 import base.sqlite.model.SliderSQL;
 import base.utils.Security;
 import butterknife.BindString;
@@ -35,13 +34,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import id.sekarpinter.mobile.application.R;
-import okhttp3.MediaType;
-import okhttp3.RequestBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 import user.DashboardActivity;
-import user.changepassword.ChangePasswordActivity;
 import user.registrasi.RegistrasiActivity;
 
 public class LoginActivity extends LoginAcitivityApiData {
@@ -58,6 +51,9 @@ public class LoginActivity extends LoginAcitivityApiData {
     private Boolean doubleBackToExitPressedOnce = false;
 
     @BindString(R.string.buildName) String buildName;
+    private static final String FRESH_INSTALL = "FRESH_INSTALL";
+    private SharedPreferences sharedPref;
+    private Boolean isFreshInstall = true;
 
 
     @Override
@@ -67,6 +63,12 @@ public class LoginActivity extends LoginAcitivityApiData {
         ButterKnife.bind(this);
         transparentStatusbar();
         initiateApiData();
+        sharedPref = getPreferences(Context.MODE_PRIVATE);
+        isFreshInstall =  sharedPref.getBoolean(FRESH_INSTALL, true);
+        if(isFreshInstall){
+            popUpTnC();
+        }
+
         if(userdata.count()>0){
             Intent intent = new Intent(getApplicationContext(), DashboardActivity.class);
             startActivity(intent);
@@ -95,11 +97,10 @@ public class LoginActivity extends LoginAcitivityApiData {
     public void onBackPressed() {
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
-        if(extras != null) {
-                Intent intentBack = new Intent(getApplicationContext(), LoginActivity.class);
-                startActivity(intentBack);
-        }
-        else {
+        if (extras != null) {
+            Intent intentBack = new Intent(getApplicationContext(), LoginActivity.class);
+            startActivity(intentBack);
+        } else {
             if (doubleBackToExitPressedOnce) {
                 Intent intentok = new Intent(Intent.ACTION_MAIN);
                 intentok.addCategory(Intent.CATEGORY_HOME);
@@ -146,45 +147,50 @@ public class LoginActivity extends LoginAcitivityApiData {
 
     @OnClick(R.id.tv_register)
     public void registerNewUser(){
-        {
-            final AlertDialog dialogBuilder = new AlertDialog.Builder(this).create();
-            LayoutInflater inflater = this.getLayoutInflater();
-            View dialogView = inflater.inflate(R.layout.popup_privacy_policy, null);
-            final CheckBox cbSetujui = (CheckBox) dialogView.findViewById(R.id.cbSetujui);
-            final Button btnRegist = (Button) dialogView.findViewById(R.id.btnRegist);
-
-            dialogBuilder.setView(dialogView);
-            dialogBuilder.show();
-
-            cbSetujui.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    if(isChecked){
-                        btnRegist.setClickable(true);
-                        btnRegist.setBackground(getDrawable(R.drawable.button_orange_selector));
-                        btnRegist.setTextColor(getResources().getColor(R.color.white));
-                    }else{
-                        btnRegist.setClickable(false);
-                        btnRegist.setBackground(getDrawable(R.drawable.rounded_gray_dark));
-                        btnRegist.setTextColor(getResources().getColor(R.color.md_grey_600));
-                    }
-                }
-            });
-            btnRegist.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    dialogBuilder.dismiss();
-                    Intent intent = new Intent(LoginActivity.this, RegistrasiActivity.class);
-                    startActivity(intent);
-                }
-            });
-        }
+        Intent intent = new Intent(LoginActivity.this, RegistrasiActivity.class);
+        startActivity(intent);
     }
 
     @OnClick(R.id.tv_reset)
     public void resetPassword(){
         Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.sekarpinter.com/password/reset"));
         startActivity(browserIntent);
+    }
+
+    private void popUpTnC(){
+        final AlertDialog dialogBuilder = new AlertDialog.Builder(this).create();
+        LayoutInflater inflater = this.getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.popup_privacy_policy, null);
+        dialogBuilder.setCancelable(false);
+        final CheckBox cbSetujui = (CheckBox) dialogView.findViewById(R.id.cbSetujui);
+        final Button btnRegist = (Button) dialogView.findViewById(R.id.btnRegist);
+
+        dialogBuilder.setView(dialogView);
+        dialogBuilder.show();
+
+        cbSetujui.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    btnRegist.setClickable(true);
+                    btnRegist.setBackground(getDrawable(R.drawable.button_orange_selector));
+                    btnRegist.setTextColor(getResources().getColor(R.color.white));
+                }else{
+                    btnRegist.setClickable(false);
+                    btnRegist.setBackground(getDrawable(R.drawable.rounded_gray_dark));
+                    btnRegist.setTextColor(getResources().getColor(R.color.md_grey_600));
+                }
+            }
+        });
+        btnRegist.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SharedPreferences.Editor editor = sharedPref.edit();
+                editor.putBoolean(FRESH_INSTALL, false);
+                editor.apply();
+                dialogBuilder.dismiss();
+            }
+        });
     }
 
 
@@ -269,7 +275,8 @@ public class LoginActivity extends LoginAcitivityApiData {
 //        }
     }
 
-
-
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
 }
